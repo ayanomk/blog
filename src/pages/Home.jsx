@@ -1,6 +1,10 @@
+import "./Home.css";
+
 function Home() {
   return (
-    <div>Hello</div>
+    <header className="home">
+        <h1 className="home-text">my little adventures</h1>
+    </header>
   )
 }
 
