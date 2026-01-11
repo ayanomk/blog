@@ -1,0 +1,18 @@
+/* All */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* Home.css */
+.home {
+    background-color: rgb(240, 237, 232);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+}
+.home-text {
+    font-size: 30px;
+    color: rgb(107, 29, 47);
+    padding: 20px;
+}
