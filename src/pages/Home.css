@@ -6,13 +6,13 @@
 
 /* Home.css */
 .home {
-    background-color: rgb(240, 237, 232);
+    background-color: #f0ede8;
     height: 100vh;
     display: flex;
     align-items: center;
 }
 .home-text {
     font-size: 30px;
-    color: rgb(107, 29, 47);
+    color: #6b1d2f;
     padding: 20px;
 }

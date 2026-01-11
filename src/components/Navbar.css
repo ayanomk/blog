@@ -1,0 +1,33 @@
+nav {
+    position: fixed;
+    height: 60px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+}
+nav a {
+    margin: 1%;
+    padding: 10px;
+    text-decoration: none;
+    color: black;
+    position: relative;
+    transition: all 0.3s;
+}
+nav a:hover {
+    color: #6b1d2f;
+}
+
+nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0px;
+    width: 0;
+    height: 2px;
+    background: #6b1d2f;
+    transition: width 0.3s;
+}
+nav a:hover::after {
+    width: 100%;
+}
