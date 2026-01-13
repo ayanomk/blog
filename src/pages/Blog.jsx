@@ -1,6 +1,7 @@
 import './Blog.css';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import "leaflet/dist/leaflet.css";
+import { useState } from 'react';
 
 // mock data
 const trips = [
@@ -9,13 +10,41 @@ const trips = [
     { id: 3, city: "Tokyo", title: "Home", year: "2026", lat: 35.68, lng: 139.77 }
 ];
 
+const tripYears = [...new Set(trips.map((t) => t.year))];
+
 
 function Blog() {
+
+    // filter markers
+    const [yearFilter, setYearFilter] = useState([]);
+    const filteredTrips = trips.filter(
+        trip => yearFilter.length == 0 || yearFilter.includes(trip.year)
+    );
+
     return (
         <div className="adventures">
             <header>my adventures around the world</header>
 
             <main>
+                <div className="filter">
+                    <div className="yearFilter">
+                        <h4>Year</h4>
+                        {tripYears.map((year) => (
+                            <div className="filterOption" key={year}>
+                                <label htmlFor={year}>{year}</label>
+                                <input type="checkbox" name={year} id={year} value={year} onChange={(e) => {
+                                    const value = e.target.value;
+                                    if (yearFilter.includes(value)) {
+                                        setYearFilter(yearFilter.filter(y => y !== value));
+                                    } else {
+                                        setYearFilter([...yearFilter, value]);
+                                    }
+                                }} />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
                 <div className='map-wrapper'>
                     <MapContainer
                         center={[35.68, 139.77]}    // tokyo
@@ -27,7 +56,7 @@ function Blog() {
                             attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'/>
 
                     {/* markers */}
-                    {trips.map(trip => (
+                    {filteredTrips.map(trip => (
                         <Marker key = {trip.id} position={[trip.lat, trip.lng]}>
                             <Popup>
                                 <div className="markerPopup">
