@@ -24,3 +24,16 @@ main {
     margin: auto;
     display: flex;
 }
+
+.leaflet-popup-content .markerPopup p {
+    margin: 0px;
+}
+.leaflet-popup-content .markerPopup a {
+    text-decoration: none;
+    color: #000;
+    transition: all 0.2s;
+}
+.leaflet-popup-content .markerPopup a:hover {
+    text-decoration: none;
+    color: #6b1d2f;
+}
