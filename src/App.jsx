@@ -1,7 +1,10 @@
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
+import Blog from './pages/Blog';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+
+import "leaflet/dist/leaflet.css";
 
 function App() {
   return (
@@ -10,6 +13,7 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/adventures" element={<Blog />} />
       </Routes>
 
       <Footer />
