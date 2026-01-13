@@ -5,12 +5,13 @@ import { useState } from 'react';
 
 // mock data
 const trips = [
-    { id: 1, city: "Adelaide - Darwin", title: "The Ghan", year: "2025", lat: -34.9285, lng: 138.6007,  },
-    { id: 2, city: "Dimboola", title: "Pink Lake", year: "2025", lat: -36.4555, lng: 142.0275 },
-    { id: 3, city: "Tokyo", title: "Home", year: "2026", lat: 35.68, lng: 139.77 }
+    { id: 1, city: "Adelaide - Darwin", title: "The Ghan", year: 2025, lat: -34.9285, lng: 138.6007,  },
+    { id: 2, city: "Dimboola", title: "Pink Lake", year: 2025, lat: -36.4555, lng: 142.0275 },
+    { id: 3, city: "Tokyo", title: "Home", year: 2026, lat: 35.68, lng: 139.77 },
+    { id: 4, city: "Den Haag", title: "The Netherlands", year: 2022, lat: 52.0705, lng: 4.3007 }
 ];
 
-const tripYears = [...new Set(trips.map((t) => t.year))];
+const tripYears = [...new Set(trips.map((t) => t.year))].sort((a, b) => a - b);
 
 
 function Blog() {
@@ -33,7 +34,7 @@ function Blog() {
                             <div className="filterOption" key={year}>
                                 <label htmlFor={year}>{year}</label>
                                 <input type="checkbox" name={year} id={year} value={year} onChange={(e) => {
-                                    const value = e.target.value;
+                                    const value = Number(e.target.value);
                                     if (yearFilter.includes(value)) {
                                         setYearFilter(yearFilter.filter(y => y !== value));
                                     } else {
