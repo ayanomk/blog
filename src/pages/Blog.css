@@ -6,9 +6,9 @@
 
 .adventures {
     /* navbar padding */
-    padding-top: 60px;
+    padding-top: calc(60px * 1.5);
 
-    height: calc(100vh - 95px);
+    height: calc(100vh - (60px * 1.5) - 35px );
     background-color: #f0ede8;
     display: flex;
     align-items: center;
@@ -39,13 +39,13 @@ main {
 }
 
 /* filter */
-.filter {
+.filters {
     margin-right: 20px;
 }
-.filter label {
-    padding-right: 15px;
+.filters label {
+    padding-left: 15px;
 }
-.yearFilter {
+.filter {
     display: flex;
     flex-direction: column;
     box-shadow: inset #c6c6c6 2px 2px 15px;
@@ -53,4 +53,12 @@ main {
     padding: 15px;
     border-radius: 20px;
     text-align: center;
+    margin-bottom: 10px;
+}
+.filterOption {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: start;
+    padding-left: 10px;
+    padding-top: 5px;
 }
