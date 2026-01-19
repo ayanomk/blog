@@ -7,11 +7,13 @@ const trips = [
     {
         id: 1,
         title: "The Ghan",
+        description: "First day of The Ghan journey. Boarded the train in Adelaide and headed non-stop to Marla.", // Lots of amazing views, delicious food, and free wines to enjoy the ride.Ending the day in a cosy cabin for a sleep as thunder rolled outside.",
         city: "Adelaide",
         country: "Australia",
         year: 2025,
         month: 11,
         date: 23,
+        hero: "src/img/DSCF1416.JPG",
         sections: [
             {
                 section: "Information",
@@ -132,12 +134,21 @@ function Blog() {
     return (
         <article className="blog">
             <header>
-                <h1>{trips[0].title}</h1>
-                <p>{`${trips[0].city}, ${trips[0].country}`}</p>
-                <p>{`${trips[0].year}/${trips[0].month}/${trips[0].date}`}</p>
+                <div className="title">
+                    <div className='mainTitle'>
+                        <h1>{trips[0].title}</h1>
+                        <p>{trips[0].description}</p>
+                    </div>
+                    <div className='dateLocation'>
+                        <p>{`${trips[0].city}, ${trips[0].country}`}</p>
+                        <p>{`${trips[0].year}/${trips[0].month}/${trips[0].date}`}</p>
+                    </div>
+                </div>
+                <img className='heroImg' src={trips[0].hero} alt="" />
             </header>
 
             <main>
+                
                 {trips[0].sections.map((section, idx) => {
                     // left side info panel
                     if (section.sectionType == "info") {

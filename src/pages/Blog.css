@@ -7,7 +7,7 @@
 
 .blog {
     /* navbar padding & footer padding?*/
-    padding: calc(60px * 1.5) 0px 50px;
+    padding: calc(60px * 1.1) 5% 50px;
 
     background-color: #f0ede8;
 }
@@ -18,7 +18,31 @@ main {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 0px 8%;
+}
+.heroImg {
+    width: 100%;
+    height: 600px;
+    object-fit: cover;
+    /* FIXME! change later for flexibility */
+    object-position: 0 70%;
+}
+.title {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+.mainTitle {
+    width: 75%;
+}
+.dateLocation {
+    text-align: right;
+}
+.title h1 {
+    font-size: 4em;
+}
+.title p {
+    font-size: 1.1em;
 }
 .info {
     width: 22%;
@@ -67,12 +91,28 @@ main table th, main table td{
 @media (max-width: 992px) {
     main {
         flex-direction: column;
-        padding: 0px 10%;
+    }
+    .heroImg {
+        /* FIXME! make it flexible or get value when uploading */
+        object-position: 74% 0%;
     }
     .info {
         width: 100%;
     }
     .content {
         width: 100%;
+    }
+    .title {
+        flex-direction: column;
+    }
+    .mainTitle {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .dateLocation {
+        display: flex;
+    }
+    .dateLocation p:first-child {
+        margin: 0 10px;
     }
 }
