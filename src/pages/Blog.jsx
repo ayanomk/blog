@@ -14,23 +14,30 @@ const trips = [
         date: 23,
         sections: [
             {
-                section: "Schedule of the Day",
-                blocks: [
+                section: "Information",
+                sectionType: "info",
+                subsections: [
                     {
-                        type: "table",
-                        headers: ["Time", "Activity"],
-                        rows: [
-                            ["10:00", "Arrive at Adelaide Parklands Terminal"],
-                            ["11:30", "Board train"],
-                            ["12:15", "Departure"],
-                            ["13:30", "Lunch"],
-                            ["19:15", "Dinner"]
+                        title: "Schedule of the Day",
+                        blocks: [
+                            {
+                                type: "table",
+                                headers: ["Time", "Activity"],
+                                rows: [
+                                    ["10:00", "Arrive at Adelaide Parklands Terminal"],
+                                    ["11:30", "Board train"],
+                                    ["12:15", "Departure"],
+                                    ["13:30", "Lunch"],
+                                    ["19:15", "Dinner"]
+                                ]
+                            }
                         ]
                     }
                 ]
             },
             {
                 section: "The Day",
+                sectionType: "content",
                 subsections: [
                     {
                         title: "Morning",
@@ -89,6 +96,38 @@ const trips = [
     }
 ]
 
+// Create HTML
+const htmlRenderer = (block, blockIdx) => {
+    switch (block.type) {
+        case "table":
+            return (
+                <table key={blockIdx}>
+                    <thead>
+                        <tr>
+                            {block.headers.map((el, elIdx) => (
+                                <th key={elIdx}>{el}</th>
+                            ))}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {block.rows.map((row, rowIdx) => (
+                            <tr key={rowIdx}>
+                                {row.map((el, cellIdx) => (
+                                    <td key={cellIdx}>{el}</td>
+                                ))}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            )
+        case "text":
+            return <p key={blockIdx}>{block.content}</p>
+        default:
+            return null
+    }
+}
+
+// JSX
 function Blog() {
     return (
         <article className="blog">
@@ -99,43 +138,41 @@ function Blog() {
             </header>
 
             <main>
-                {trips[0].sections.map((section) => (
-                    <section>
-                        <h2>{section.section}</h2>
-                        {section.blocks && section.blocks.map((block) => {
-                            switch (block.type) {
-                                case "table":
-                                    return <table>
-                                        <tr>
-                                            {block.headers.map((el) => (
-                                                <th>{el}</th>
-                                            ))}
-                                        </tr>
-                                        {block.rows.map((row) => (
-                                            <tr>
-                                                {row.map((el) => (
-                                                    <td>{el}</td>
-                                                ))}
-                                            </tr>
-                                        ))}
-                                    </table>
-                            }
-                        })}
-                        {section.subsections && section.subsections.map((sub) => (
-                            <div className='subsection'>
-                                <h3>{sub.title}</h3>
-                                {sub.blocks.map((block) => {
-                                    switch (block.type) {
-                                        case "text":
-                                            return <p>{block.content}</p>
-                                        default:
-                                            return null
-                                    }
-                                })}
-                            </div>
-                        ))}
-                    </section>
-                ))}
+                {trips[0].sections.map((section, idx) => {
+                    // left side info panel
+                    if (section.sectionType == "info") {
+                        return (
+                        <aside className={section.sectionType} key={idx}>
+                            {section.subsections && section.subsections.map((sub, subIdx) => {
+                                return (
+                                    <div key={subIdx}>
+                                        <h2>{sub.title}</h2>
+                                        {sub.blocks.map((block, blockIdx) => {
+                                            return htmlRenderer(block, blockIdx);
+                                        })}
+                                    </div>
+                                )
+                            })}
+                        </aside>
+                        )
+
+                    // main content
+                    } else if (section.sectionType == "content") {
+                        return (
+                            <section className={section.sectionType} key={idx}>
+                                <h2>{section.section}</h2> 
+                                {section.subsections && section.subsections.map((sub, subIdx) => (
+                                    <div className='subsection' key={subIdx}>
+                                        <h3>{sub.title}</h3>
+                                        {sub.blocks.map((block, blockIdx) => {
+                                            return htmlRenderer(block, blockIdx);
+                                        })}
+                                    </div>
+                                ))}
+                            </section>
+                        )
+                    }
+                })}
             </main>
         </article>
     )
