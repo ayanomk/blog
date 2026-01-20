@@ -11,10 +11,10 @@
 
     background-color: #f0ede8;
 }
-header {
+.blog header {
     margin-bottom: 50px;
 }
-main {
+.blog main {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -45,43 +45,49 @@ main {
     font-size: 1.1em;
 }
 .info {
-    width: 22%;
+    width: 24%;
 }
 .content {
     width: 73%;
 }
-main section, main aside {
+.blog .asideSub {
+    background-color: #dbdbdb;
+    box-shadow: 0px 0px 5px #bebebe;
+    border-radius: 10px;
+    padding: 10px 20px 20px;
+}
+.blog main section, main aside {
     margin-bottom: 40px;
 }
-main h2 {
+.blog main h2 {
     margin-bottom: 15px;
 }
-main section .subsection {
+.blog main section .subsection {
     margin-bottom: 30px;
 }
-main section .subsection h3 {
+.blog main section .subsection h3 {
     margin-bottom: 15px;
 }
-main section .subsection p {
+.blog main section .subsection p {
     margin-bottom: 12px;
     line-height: 2;
 }
 
-main table {
+.blog main table {
     border-collapse: collapse;
     width: 100%;
     margin: auto;
-    box-shadow: #360202 2px 2px 5px;
+    /* box-shadow: #454545 1px 1px 3px; */
 }
-main table th {
-    background-color: #6b1d2f;
+.blog main table th {
+    background-color: #454545;
     color: #fff;
 }
-main table td {
+.blog main table td {
     background: #fff;
 }
-main table th, main table td{
-    border: 1.5px solid #6b1d2f;
+.blog main table th, main table td{
+    border: 1.5px solid #454545;
     padding: 5px 10px;
     text-align: left;
 }
@@ -89,7 +95,7 @@ main table th, main table td{
 
 /* smartphone */
 @media (max-width: 992px) {
-    main {
+    .blog main {
         flex-direction: column;
     }
     .heroImg {

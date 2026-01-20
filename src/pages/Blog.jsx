@@ -156,7 +156,7 @@ function Blog() {
                         <aside className={section.sectionType} key={idx}>
                             {section.subsections && section.subsections.map((sub, subIdx) => {
                                 return (
-                                    <div key={subIdx}>
+                                    <div className='asideSub' key={subIdx}>
                                         <h2>{sub.title}</h2>
                                         {sub.blocks.map((block, blockIdx) => {
                                             return htmlRenderer(block, blockIdx);
