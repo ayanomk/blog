@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
+import Adventure from './pages/Adventure';
 import Blog from './pages/Blog';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -13,7 +14,8 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/adventures" element={<Blog />} />
+        <Route path="/adventures" element={<Adventure />} />
+        <Route path="/blog" element={<Blog />} />
       </Routes>
 
       <Footer />

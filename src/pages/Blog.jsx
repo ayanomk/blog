@@ -1,100 +1,262 @@
+// import { useParams } from "react-router-dom"
+// const { id } = useParams();
 import './Blog.css';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import "leaflet/dist/leaflet.css";
-import { useState } from 'react';
 
-// mock data
+// FIXME! mock data
 const trips = [
-    { id: 1, city: "Adelaide - Darwin", title: "The Ghan", year: 2025, region: "Oceania", lat: -34.9285, lng: 138.6007,  },
-    { id: 2, city: "Dimboola", title: "Pink Lake", year: 2025, region: "Oceania", lat: -36.4555, lng: 142.0275 },
-    { id: 3, city: "Tokyo", title: "Home", year: 2026, region: "Asia", lat: 35.68, lng: 139.77 },
-    { id: 4, city: "Den Haag", title: "The Netherlands", region: "Europe", year: 2022, lat: 52.0705, lng: 4.3007 }
-];
+    {
+        id: 1,
+        title: "The Ghan",
+        description: "First day of The Ghan journey. Boarded the train in Adelaide and headed non-stop to Marla.", // Lots of amazing views, delicious food, and free wines to enjoy the ride.Ending the day in a cosy cabin for a sleep as thunder rolled outside.",
+        city: "Adelaide",
+        country: "Australia",
+        year: 2025,
+        month: 11,
+        date: 23,
+        hero: "src/img/DSCF1375.JPG",
+        sections: [
+            {
+                section: "Information",
+                sectionType: "info",
+                subsections: [
+                    {
+                        title: "Schedule of the Day",
+                        blocks: [
+                            {
+                                type: "table",
+                                headers: ["Time", "Activity"],
+                                rows: [
+                                    ["10:00", "Arrive at Adelaide Parklands Terminal"],
+                                    ["11:30", "Board train"],
+                                    ["12:15", "Departure"],
+                                    ["13:30", "Lunch"],
+                                    ["19:15", "Dinner"]
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                section: "The Day",
+                sectionType: "content",
+                subsections: [
+                    {
+                        title: "Morning",
+                        blocks: [
+                            {
+                                type: "text",
+                                content: "We left Tonsley at around 9:30 so that we can reach Adelaide Parklands Terminal 2 hours before departure, just as we were instructed on the travel document. When we got there, a lot of people were queuing up for check in and even more people were chilling in the lounge. Once we checked in, we got a welcome drink (tea) with a couple of muffins and relaxed for a bit."
+                            },
+                            {
+                                type: "img",
+                                dir: "imgH",
+                                src: "src/img/IMG_4827.jpeg",
+                            },
+                            {
+                                type: "text",
+                                content: "At 11:30, we headed to our car K and got on board to our room No.2. It was very compact but cute and we had our individual bathroom."
+                            },
+                            {
+                                type: "img",
+                                dir: "imgV3",
+                                src: "src/img/IMG_4803.jpeg"
+                            },
+                            {
+                                type: "img",
+                                dir: "imgV3",
+                                src: "src/img/IMG_4801.jpeg"
+                            },
+                            {
+                                type: "img",
+                                dir: "imgV3",
+                                src: "src/img/IMG_4799.jpeg"
+                            },
+                            {
+                                type: "text",
+                                content: "The Lounge car was full of sofas and small tables with a bar at the end. We sat in the lounge and waited for the departure."
+                            },
+                            {
+                                type: "img",
+                                dir: "imgH",
+                                src: "src/img/DSCF1377.JPG"
+                            }
+                        ]
+                    },
+                    {
+                        title: "Afternoon",
+                        blocks: [
+                            {
+                                type: "text",
+                                content: "A lot of people were in the Lounge car with wines or beers they got from the bar and chatting and greeting. I felt a little out of place since we were the only Asians and I was by far the youngest (I think the youngest I saw were maybe mid 30s?). I’m not fully sure but the train cars were separated into maybe 4 sections: Platinum, Gold Premium, Gold Twin, Gold Single. I think the Gold Twin carriages were K, J, I, H (At least those were the carriages that we shared the same Lounge car and Dining car with). So the people we mingled mostly with are from this section. I wonder if it was different if I had been with Gold Single where all solo travellers gather."
+                            },
+                            {
+                                type: "text",
+                                content: "The train was too long that it was separated into two platforms: the head cars in Platform 1 (including our car K), and the tail cars in Platform 2. As ours were in Platform 1, our side of the train moved out of the platform and reversed into Platform 2 to connect the whole train. It was a unique way of doing it but I guess it’s better than having people walk a single long platform. "
+                            },
+                            {
+                                type: "text",
+                                content: "I’ve never been to the north side of Adelaide so it was nice to see the scenary. It was pretty much just suburbs and then farms and small towns."
+                            },
+                            {
+                                type: "text",
+                                content: "Our lunch was at 13:30 and it was on the dining car called Queen Adelaide Restaurant. We sat on the window side and shared the table with an elderly couple from Perth. I wasn’t aware that we were supposed to share a table… I was freaking out and nervous that I couldn’t fully enjoy the meal. I had a glass of moscato, pumpkin bread, grilled chicken breast & quinoa salad with pistachio pesto, and chocolate & mandarin delice. The main was very filling and I quite liked the pistachio pesto. The dessert looked luxurious with cube shaped chocolate mouse with mandarin mouse in the middle."
+                            },
+                            {
+                                type: "img",
+                                dir: "imgH",
+                                src: "src/img/DSCF1381.JPG"
+                            },
+                            {
+                                type: "img",
+                                dir: "imgH",
+                                src: "src/img/DSCF1382.JPG"
+                            },
+                            {
+                                type: "text",
+                                content: "After lunch, I was exhausted from socialising and just chilled in our little cabin. Also, I was feeling a little panicky since I was stuck in a confined small space and was on the edge of getting a motion sickness…"
+                            },     
+                            {
+                                type: "img",
+                                dir: "imgH",
+                                src: "src/img/IMG_4761_edit.jpeg"
+                            },
+                        ]
+                    },
+                    {
+                        title: "Evening",
+                        blocks: [
+                            {
+                                type: "text",
+                                content: "We headed to the Queen Adelaide Restaurant at 19:15 for dinner. This time we sat on the corridor side and shared the table with an elderly couple from the Netherlands. I got a moscato again, kangaroo meat with beetroot, steak for main, and eton mess.The kangaroo meat was a lot tender than I expected."
+                            },
+                            {
+                                type: "img",
+                                dir: "imgV3",
+                                src: "src/img/IMG_4763.jpeg"
+                            },
+                            {
+                                type: "img",
+                                dir: "imgV3",
+                                src: "src/img/IMG_4765.jpeg"
+                            },
+                            {
+                                type: "img",
+                                dir: "imgV3",
+                                src: "src/img/IMG_4766.jpeg"
+                            },
+                            {
+                                type: "text",
+                                content: "After dinner, we headed back to our cabin, where it was turned into bunk beds."
+                            },
+                            {
+                                type: "text",
+                                content: "There were lightnings outside and it was fun watching that from our space. I even succeeded in getting a photo of it! We were also able to see the stars too. That pretty much concluded the day, although it took me a while to fall asleep with the rough train motion."
+                            },
+                            {
+                                type: "img",
+                                dir: "imgH",
+                                src: "src/img/DSCF1387_edit.JPG"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]
 
-const tripYears = [...new Set(trips.map((t) => t.year))].sort((a, b) => a - b);
-const tripRegions = ["Asia", "Oceania", "Europe", "Africa", "North America"];
-
-
-function Blog() {
-
-    // filter markers
-    const [yearFilter, setYearFilter] = useState([]);
-    const [regionFilter, setRegionFilter] = useState([]);
-    const filteredTrips = trips.filter( trip => {
-        const yearMatch = yearFilter.length == 0 || yearFilter.includes(trip.year);
-        const regionMatch = regionFilter.length == 0 || regionFilter.includes(trip.region);
-        return yearMatch && regionMatch;
-    });
-
-    return (
-        <div className="adventures">
-            <header>my adventures around the world</header>
-
-            <main>
-                <div className="filters">
-                    <div className="filter">
-                        <h4>Year</h4>
-                        {tripYears.map((year) => (
-                            <div className="filterOption" key={year}>
-                                <label htmlFor={year}>{year}</label>
-                                <input type="checkbox" name={year} id={year} value={year} onChange={(e) => {
-                                    const value = Number(e.target.value);
-                                    if (yearFilter.includes(value)) {
-                                        setYearFilter(yearFilter.filter(y => y !== value));
-                                    } else {
-                                        setYearFilter([...yearFilter, value]);
-                                    }
-                                }} />
-                            </div>
+// Create HTML
+const htmlRenderer = (block, blockIdx) => {
+    switch (block.type) {
+        case "table":
+            return (
+                <table key={blockIdx}>
+                    <thead>
+                        <tr>
+                            {block.headers.map((el, elIdx) => (
+                                <th key={elIdx}>{el}</th>
+                            ))}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {block.rows.map((row, rowIdx) => (
+                            <tr key={rowIdx}>
+                                {row.map((el, cellIdx) => (
+                                    <td key={cellIdx}>{el}</td>
+                                ))}
+                            </tr>
                         ))}
-                    </div>
-                    <div className="filter">
-                        <h4>Region</h4>
-                        {tripRegions.map((region) => (
-                            <div className="filterOption" key={region}>
-                                <label htmlFor={region}>{region}</label>
-                                <input type="checkbox" name={region} id={region} value={region} onChange={(e) => {
-                                    const value = e.target.value;
-                                    if (regionFilter.includes(region)) {
-                                        setRegionFilter(regionFilter.filter(r => r !== value));
-                                    } else {
-                                        setRegionFilter([...regionFilter, value]);
-                                    }
-                                }} />
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                <div className='map-wrapper'>
-                    <MapContainer
-                        center={[35.68, 139.77]}    // tokyo
-                        zoom={2}
-                        style={{ height: "100%", width: "100%" }}
-                    >
-                        <TileLayer
-                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                            attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'/>
-
-                    {/* markers */}
-                    {filteredTrips.map(trip => (
-                        <Marker key = {trip.id} position={[trip.lat, trip.lng]}>
-                            <Popup>
-                                <div className="markerPopup">
-                                    <a href={`/adventure/${trip.id}`}>
-                                        <h3>{trip.title}</h3>
-                                    </a>
-                                        <p>{trip.city}</p>
-                                </div>
-                            </Popup>
-                        </Marker>
-                    ))}
-                    </MapContainer>
-                </div>
-            </main>
-        </div>
-    )
+                    </tbody>
+                </table>
+            )
+        case "text":
+            return <p key={blockIdx}>{block.content}</p>
+        case "img":
+            return <img key={blockIdx} className={block.dir} src={block.src} alt="" />
+        default:
+            return null
+    }
 }
 
+// JSX
+function Blog() {
+    return (
+        <article className="blog">
+            <header>
+                <div className="title">
+                    <div className='mainTitle'>
+                        <h1>{trips[0].title}</h1>
+                        <p>{trips[0].description}</p>
+                    </div>
+                    <div className='dateLocation'>
+                        <p>{`${trips[0].city}, ${trips[0].country}`}</p>
+                        <p>{`${trips[0].year}/${trips[0].month}/${trips[0].date}`}</p>
+                    </div>
+                </div>
+                <img className='heroImg' src={trips[0].hero} alt="" />
+            </header>
+
+            <main>
+                
+                {trips[0].sections.map((section, idx) => {
+                    // left side info panel
+                    if (section.sectionType == "info") {
+                        return (
+                        <aside className={section.sectionType} key={idx}>
+                            {section.subsections && section.subsections.map((sub, subIdx) => {
+                                return (
+                                    <div className='asideSub' key={subIdx}>
+                                        <h2>{sub.title}</h2>
+                                        {sub.blocks.map((block, blockIdx) => {
+                                            return htmlRenderer(block, blockIdx);
+                                        })}
+                                    </div>
+                                )
+                            })}
+                        </aside>
+                        )
+
+                    // main content
+                    } else if (section.sectionType == "content") {
+                        return (
+                            <section className={section.sectionType} key={idx}>
+                                <h2>{section.section}</h2> 
+                                {section.subsections && section.subsections.map((sub, subIdx) => (
+                                    <div className='subsection' key={subIdx}>
+                                        <h3>{sub.title}</h3>
+                                        {sub.blocks.map((block, blockIdx) => {
+                                            return htmlRenderer(block, blockIdx);
+                                        })}
+                                    </div>
+                                ))}
+                            </section>
+                        )
+                    }
+                })}
+            </main>
+        </article>
+    )
+}
 
 export default Blog

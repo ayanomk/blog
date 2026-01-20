@@ -1,6 +1,6 @@
 footer {
-    position: fixed;
-    bottom: 0;
+    /* position: fixed; */
+    /* bottom: 0; */
     height: 35px;
     width: 100%;
     font-size: 0.9em;
@@ -8,4 +8,6 @@ footer {
     align-items: center;
     justify-content: center;
     color: #afaead;
+    background-color: #eae6e0;
+    box-shadow: 0 0 2px #b0aba3;
 }
