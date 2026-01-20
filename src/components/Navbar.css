@@ -5,6 +5,8 @@ nav {
     display: flex;
     align-items: center;
     justify-content: right;
+    background-color: #eae6e0;
+    box-shadow: 0 0 5px #b0aba3;
 }
 nav a {
     margin: 1%;
