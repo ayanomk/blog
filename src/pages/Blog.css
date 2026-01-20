@@ -7,7 +7,7 @@
 
 .blog {
     /* navbar padding & footer padding?*/
-    padding: calc(60px * 1.1) 5% 50px;
+    padding: calc(60px * 1.1) 8% 50px;
 
     background-color: #f0ede8;
 }
@@ -21,10 +21,12 @@
 }
 .heroImg {
     width: 100%;
-    height: 600px;
+    max-height: 600px;
+    aspect-ratio: 16 / 9;
+    /* height: 100%; */
     object-fit: cover;
     /* FIXME! change later for flexibility */
-    object-position: 0 70%;
+    object-position: 0 80%;
 }
 .title {
     display: flex;
@@ -45,10 +47,10 @@
     font-size: 1.1em;
 }
 .info {
-    width: 24%;
+    width: 25%;
 }
 .content {
-    width: 73%;
+    width: 70%;
 }
 .blog .asideSub {
     background-color: #dbdbdb;
@@ -61,15 +63,18 @@
 }
 .blog main h2 {
     margin-bottom: 15px;
+    font-size: 2.5em;
 }
 .blog main section .subsection {
     margin-bottom: 30px;
 }
 .blog main section .subsection h3 {
+    font-size: 1.7em;
     margin-bottom: 15px;
 }
 .blog main section .subsection p {
-    margin-bottom: 12px;
+    margin-bottom: 20px;
+    font-size: 1.1em;
     line-height: 2;
 }
 
@@ -91,16 +96,24 @@
     padding: 5px 10px;
     text-align: left;
 }
+.blog .imgH {
+    width: 100%;
+    padding: 0px 5%;
+}
+.blog .imgV2 {
+    width: 50%;
+    padding: 0px 2%;
+}
+.blog .imgV3 {
+    width: 33%;
+    padding: 0px 1%;
+}
 
 
 /* smartphone */
 @media (max-width: 992px) {
     .blog main {
         flex-direction: column;
-    }
-    .heroImg {
-        /* FIXME! make it flexible or get value when uploading */
-        object-position: 74% 0%;
     }
     .info {
         width: 100%;
