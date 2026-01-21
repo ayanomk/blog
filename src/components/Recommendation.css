@@ -1,0 +1,50 @@
+.recommended {
+    padding-bottom: 50px;
+}
+.recommended .recommendedCards {
+    display: flex;
+}
+.recommended .card {
+    margin: 2% 1%;
+    border: 1px solid #b0aba3;
+    background-color: #eae6e0;
+    border-radius: 10px;
+    transition: all 0.3s;
+    width: 25%;
+    min-width: 250px;
+}
+.recommended .cardInfo {
+    padding: 5px 20px 15px;
+}
+.recommended a {
+    text-decoration: none;
+    color: black;
+}
+.recommended .card:hover {
+    background-color: #f3f1ed;
+    box-shadow: 0px 0px 10px #5b5a58;
+}
+.recommended img {
+    width: 100%;
+    object-fit: cover;
+    height: 150px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+}
+
+
+/* Screen size */
+@media (max-width: 992px) {
+    .recommended .card {
+        width: 50%;
+        min-width: none;
+    }
+}
+@media (max-width: 600px) {
+    .recommended .recommendedCards {
+        flex-direction: column;
+    }
+    .recommended .card {
+        width: 100%;
+    }
+}
