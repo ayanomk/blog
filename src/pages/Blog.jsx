@@ -30,7 +30,7 @@ const htmlRenderer = (block, blockIdx) => {
         case "text":
             return <p key={blockIdx}>{block.content}</p>
         case "img":
-            return <img key={blockIdx} className={block.dir} src={block.src} alt="" />
+            return <img key={blockIdx} className={block.dir} src={block.src} alt="" loading="lazy" />
         default:
             return null
     }
@@ -55,7 +55,7 @@ function Blog() {
                         <p>{`${data.year}/${data.month}/${data.date}`}</p>
                     </div>
                 </div>
-                <img className='heroImg' src={data.hero} alt="" />
+                <img className='heroImg' src={data.hero} alt="" loading="lazy" />
             </header>
 
             <main>
