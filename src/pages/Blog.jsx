@@ -1,170 +1,171 @@
-// import { useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 // const { id } = useParams();
 import './Blog.css';
+import { mockData } from '../data/mockData.js';
 
 // FIXME! mock data
-const trips = [
-    {
-        id: 1,
-        title: "The Ghan",
-        description: "First day of The Ghan journey. Boarded the train in Adelaide and headed non-stop to Marla.", // Lots of amazing views, delicious food, and free wines to enjoy the ride.Ending the day in a cosy cabin for a sleep as thunder rolled outside.",
-        city: "Adelaide",
-        country: "Australia",
-        year: 2025,
-        month: 11,
-        date: 23,
-        hero: "src/img/DSCF1375.JPG",
-        sections: [
-            {
-                section: "Information",
-                sectionType: "info",
-                subsections: [
-                    {
-                        title: "Schedule of the Day",
-                        blocks: [
-                            {
-                                type: "table",
-                                headers: ["Time", "Activity"],
-                                rows: [
-                                    ["10:00", "Arrive at Adelaide Parklands Terminal"],
-                                    ["11:30", "Board train"],
-                                    ["12:15", "Departure"],
-                                    ["13:30", "Lunch"],
-                                    ["19:15", "Dinner"]
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                section: "The Day",
-                sectionType: "content",
-                subsections: [
-                    {
-                        title: "Morning",
-                        blocks: [
-                            {
-                                type: "text",
-                                content: "We left Tonsley at around 9:30 so that we can reach Adelaide Parklands Terminal 2 hours before departure, just as we were instructed on the travel document. When we got there, a lot of people were queuing up for check in and even more people were chilling in the lounge. Once we checked in, we got a welcome drink (tea) with a couple of muffins and relaxed for a bit."
-                            },
-                            {
-                                type: "img",
-                                dir: "imgH",
-                                src: "src/img/IMG_4827.jpeg",
-                            },
-                            {
-                                type: "text",
-                                content: "At 11:30, we headed to our car K and got on board to our room No.2. It was very compact but cute and we had our individual bathroom."
-                            },
-                            {
-                                type: "img",
-                                dir: "imgV3",
-                                src: "src/img/IMG_4803.jpeg"
-                            },
-                            {
-                                type: "img",
-                                dir: "imgV3",
-                                src: "src/img/IMG_4801.jpeg"
-                            },
-                            {
-                                type: "img",
-                                dir: "imgV3",
-                                src: "src/img/IMG_4799.jpeg"
-                            },
-                            {
-                                type: "text",
-                                content: "The Lounge car was full of sofas and small tables with a bar at the end. We sat in the lounge and waited for the departure."
-                            },
-                            {
-                                type: "img",
-                                dir: "imgH",
-                                src: "src/img/DSCF1377.JPG"
-                            }
-                        ]
-                    },
-                    {
-                        title: "Afternoon",
-                        blocks: [
-                            {
-                                type: "text",
-                                content: "A lot of people were in the Lounge car with wines or beers they got from the bar and chatting and greeting. I felt a little out of place since we were the only Asians and I was by far the youngest (I think the youngest I saw were maybe mid 30s?). I’m not fully sure but the train cars were separated into maybe 4 sections: Platinum, Gold Premium, Gold Twin, Gold Single. I think the Gold Twin carriages were K, J, I, H (At least those were the carriages that we shared the same Lounge car and Dining car with). So the people we mingled mostly with are from this section. I wonder if it was different if I had been with Gold Single where all solo travellers gather."
-                            },
-                            {
-                                type: "text",
-                                content: "The train was too long that it was separated into two platforms: the head cars in Platform 1 (including our car K), and the tail cars in Platform 2. As ours were in Platform 1, our side of the train moved out of the platform and reversed into Platform 2 to connect the whole train. It was a unique way of doing it but I guess it’s better than having people walk a single long platform. "
-                            },
-                            {
-                                type: "text",
-                                content: "I’ve never been to the north side of Adelaide so it was nice to see the scenary. It was pretty much just suburbs and then farms and small towns."
-                            },
-                            {
-                                type: "text",
-                                content: "Our lunch was at 13:30 and it was on the dining car called Queen Adelaide Restaurant. We sat on the window side and shared the table with an elderly couple from Perth. I wasn’t aware that we were supposed to share a table… I was freaking out and nervous that I couldn’t fully enjoy the meal. I had a glass of moscato, pumpkin bread, grilled chicken breast & quinoa salad with pistachio pesto, and chocolate & mandarin delice. The main was very filling and I quite liked the pistachio pesto. The dessert looked luxurious with cube shaped chocolate mouse with mandarin mouse in the middle."
-                            },
-                            {
-                                type: "img",
-                                dir: "imgH",
-                                src: "src/img/DSCF1381.JPG"
-                            },
-                            {
-                                type: "img",
-                                dir: "imgH",
-                                src: "src/img/DSCF1382.JPG"
-                            },
-                            {
-                                type: "text",
-                                content: "After lunch, I was exhausted from socialising and just chilled in our little cabin. Also, I was feeling a little panicky since I was stuck in a confined small space and was on the edge of getting a motion sickness…"
-                            },     
-                            {
-                                type: "img",
-                                dir: "imgH",
-                                src: "src/img/IMG_4761_edit.jpeg"
-                            },
-                        ]
-                    },
-                    {
-                        title: "Evening",
-                        blocks: [
-                            {
-                                type: "text",
-                                content: "We headed to the Queen Adelaide Restaurant at 19:15 for dinner. This time we sat on the corridor side and shared the table with an elderly couple from the Netherlands. I got a moscato again, kangaroo meat with beetroot, steak for main, and eton mess.The kangaroo meat was a lot tender than I expected."
-                            },
-                            {
-                                type: "img",
-                                dir: "imgV3",
-                                src: "src/img/IMG_4763.jpeg"
-                            },
-                            {
-                                type: "img",
-                                dir: "imgV3",
-                                src: "src/img/IMG_4765.jpeg"
-                            },
-                            {
-                                type: "img",
-                                dir: "imgV3",
-                                src: "src/img/IMG_4766.jpeg"
-                            },
-                            {
-                                type: "text",
-                                content: "After dinner, we headed back to our cabin, where it was turned into bunk beds."
-                            },
-                            {
-                                type: "text",
-                                content: "There were lightnings outside and it was fun watching that from our space. I even succeeded in getting a photo of it! We were also able to see the stars too. That pretty much concluded the day, although it took me a while to fall asleep with the rough train motion."
-                            },
-                            {
-                                type: "img",
-                                dir: "imgH",
-                                src: "src/img/DSCF1387_edit.JPG"
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    }
-]
+// const trips = [
+//     {
+//         id: 1,
+//         title: "The Ghan",
+//         description: "First day of The Ghan journey. Boarded the train in Adelaide and headed non-stop to Marla.", // Lots of amazing views, delicious food, and free wines to enjoy the ride.Ending the day in a cosy cabin for a sleep as thunder rolled outside.",
+//         city: "Adelaide",
+//         country: "Australia",
+//         year: 2025,
+//         month: 11,
+//         date: 23,
+//         hero: "src/img/DSCF1375.JPG",
+//         sections: [
+//             {
+//                 section: "Information",
+//                 sectionType: "info",
+//                 subsections: [
+//                     {
+//                         title: "Schedule of the Day",
+//                         blocks: [
+//                             {
+//                                 type: "table",
+//                                 headers: ["Time", "Activity"],
+//                                 rows: [
+//                                     ["10:00", "Arrive at Adelaide Parklands Terminal"],
+//                                     ["11:30", "Board train"],
+//                                     ["12:15", "Departure"],
+//                                     ["13:30", "Lunch"],
+//                                     ["19:15", "Dinner"]
+//                                 ]
+//                             }
+//                         ]
+//                     }
+//                 ]
+//             },
+//             {
+//                 section: "The Day",
+//                 sectionType: "content",
+//                 subsections: [
+//                     {
+//                         title: "Morning",
+//                         blocks: [
+//                             {
+//                                 type: "text",
+//                                 content: "We left Tonsley at around 9:30 so that we can reach Adelaide Parklands Terminal 2 hours before departure, just as we were instructed on the travel document. When we got there, a lot of people were queuing up for check in and even more people were chilling in the lounge. Once we checked in, we got a welcome drink (tea) with a couple of muffins and relaxed for a bit."
+//                             },
+//                             {
+//                                 type: "img",
+//                                 dir: "imgH",
+//                                 src: "src/img/IMG_4827.jpeg",
+//                             },
+//                             {
+//                                 type: "text",
+//                                 content: "At 11:30, we headed to our car K and got on board to our room No.2. It was very compact but cute and we had our individual bathroom."
+//                             },
+//                             {
+//                                 type: "img",
+//                                 dir: "imgV3",
+//                                 src: "src/img/IMG_4803.jpeg"
+//                             },
+//                             {
+//                                 type: "img",
+//                                 dir: "imgV3",
+//                                 src: "src/img/IMG_4801.jpeg"
+//                             },
+//                             {
+//                                 type: "img",
+//                                 dir: "imgV3",
+//                                 src: "src/img/IMG_4799.jpeg"
+//                             },
+//                             {
+//                                 type: "text",
+//                                 content: "The Lounge car was full of sofas and small tables with a bar at the end. We sat in the lounge and waited for the departure."
+//                             },
+//                             {
+//                                 type: "img",
+//                                 dir: "imgH",
+//                                 src: "src/img/DSCF1377.JPG"
+//                             }
+//                         ]
+//                     },
+//                     {
+//                         title: "Afternoon",
+//                         blocks: [
+//                             {
+//                                 type: "text",
+//                                 content: "A lot of people were in the Lounge car with wines or beers they got from the bar and chatting and greeting. I felt a little out of place since we were the only Asians and I was by far the youngest (I think the youngest I saw were maybe mid 30s?). I’m not fully sure but the train cars were separated into maybe 4 sections: Platinum, Gold Premium, Gold Twin, Gold Single. I think the Gold Twin carriages were K, J, I, H (At least those were the carriages that we shared the same Lounge car and Dining car with). So the people we mingled mostly with are from this section. I wonder if it was different if I had been with Gold Single where all solo travellers gather."
+//                             },
+//                             {
+//                                 type: "text",
+//                                 content: "The train was too long that it was separated into two platforms: the head cars in Platform 1 (including our car K), and the tail cars in Platform 2. As ours were in Platform 1, our side of the train moved out of the platform and reversed into Platform 2 to connect the whole train. It was a unique way of doing it but I guess it’s better than having people walk a single long platform. "
+//                             },
+//                             {
+//                                 type: "text",
+//                                 content: "I’ve never been to the north side of Adelaide so it was nice to see the scenary. It was pretty much just suburbs and then farms and small towns."
+//                             },
+//                             {
+//                                 type: "text",
+//                                 content: "Our lunch was at 13:30 and it was on the dining car called Queen Adelaide Restaurant. We sat on the window side and shared the table with an elderly couple from Perth. I wasn’t aware that we were supposed to share a table… I was freaking out and nervous that I couldn’t fully enjoy the meal. I had a glass of moscato, pumpkin bread, grilled chicken breast & quinoa salad with pistachio pesto, and chocolate & mandarin delice. The main was very filling and I quite liked the pistachio pesto. The dessert looked luxurious with cube shaped chocolate mouse with mandarin mouse in the middle."
+//                             },
+//                             {
+//                                 type: "img",
+//                                 dir: "imgH",
+//                                 src: "src/img/DSCF1381.JPG"
+//                             },
+//                             {
+//                                 type: "img",
+//                                 dir: "imgH",
+//                                 src: "src/img/DSCF1382.JPG"
+//                             },
+//                             {
+//                                 type: "text",
+//                                 content: "After lunch, I was exhausted from socialising and just chilled in our little cabin. Also, I was feeling a little panicky since I was stuck in a confined small space and was on the edge of getting a motion sickness…"
+//                             },     
+//                             {
+//                                 type: "img",
+//                                 dir: "imgH",
+//                                 src: "src/img/IMG_4761_edit.jpeg"
+//                             },
+//                         ]
+//                     },
+//                     {
+//                         title: "Evening",
+//                         blocks: [
+//                             {
+//                                 type: "text",
+//                                 content: "We headed to the Queen Adelaide Restaurant at 19:15 for dinner. This time we sat on the corridor side and shared the table with an elderly couple from the Netherlands. I got a moscato again, kangaroo meat with beetroot, steak for main, and eton mess.The kangaroo meat was a lot tender than I expected."
+//                             },
+//                             {
+//                                 type: "img",
+//                                 dir: "imgV3",
+//                                 src: "src/img/IMG_4763.jpeg"
+//                             },
+//                             {
+//                                 type: "img",
+//                                 dir: "imgV3",
+//                                 src: "src/img/IMG_4765.jpeg"
+//                             },
+//                             {
+//                                 type: "img",
+//                                 dir: "imgV3",
+//                                 src: "src/img/IMG_4766.jpeg"
+//                             },
+//                             {
+//                                 type: "text",
+//                                 content: "After dinner, we headed back to our cabin, where it was turned into bunk beds."
+//                             },
+//                             {
+//                                 type: "text",
+//                                 content: "There were lightnings outside and it was fun watching that from our space. I even succeeded in getting a photo of it! We were also able to see the stars too. That pretty much concluded the day, although it took me a while to fall asleep with the rough train motion."
+//                             },
+//                             {
+//                                 type: "img",
+//                                 dir: "imgH",
+//                                 src: "src/img/DSCF1387_edit.JPG"
+//                             }
+//                         ]
+//                     }
+//                 ]
+//             }
+//         ]
+//     }
+// ]
 
 // Create HTML
 const htmlRenderer = (block, blockIdx) => {
@@ -201,25 +202,30 @@ const htmlRenderer = (block, blockIdx) => {
 
 // JSX
 function Blog() {
+    const { id } = useParams();
+    const data = mockData.find(d => d.id === parseInt(id));
+    if (!data) return <p>Blog not found...</p>
+    console.log(data);
+
     return (
         <article className="blog">
             <header>
                 <div className="title">
                     <div className='mainTitle'>
-                        <h1>{trips[0].title}</h1>
-                        <p>{trips[0].description}</p>
+                        <h1>{data.title}</h1>
+                        <p>{data.description}</p>
                     </div>
                     <div className='dateLocation'>
-                        <p>{`${trips[0].city}, ${trips[0].country}`}</p>
-                        <p>{`${trips[0].year}/${trips[0].month}/${trips[0].date}`}</p>
+                        <p>{`${data.city}, ${data.country}`}</p>
+                        <p>{`${data.year}/${data.month}/${data.date}`}</p>
                     </div>
                 </div>
-                <img className='heroImg' src={trips[0].hero} alt="" />
+                <img className='heroImg' src={data.hero} alt="" />
             </header>
 
             <main>
                 
-                {trips[0].sections.map((section, idx) => {
+                {data.sections.map((section, idx) => {
                     // left side info panel
                     if (section.sectionType == "info") {
                         return (
