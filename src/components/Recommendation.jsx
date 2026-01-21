@@ -12,7 +12,7 @@ const blogCardMaker = (blog, idx, type) => {
     return (
         <div className="card" key={idx}>
             <a href={`/blog/${blog.id}`}>
-                <img src={blog.hero} alt="" />
+                <img src={blog.hero} alt="" loading="lazy" />
                 <div className="cardInfo">
                     <h2>{blog.title}{blog.day > 0 ? `: Day ${blog.day}` : null}</h2>
                     <p>{blog.city}, {blog.country}</p>
