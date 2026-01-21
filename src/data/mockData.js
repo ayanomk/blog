@@ -13,7 +13,7 @@ export const mockData = [
         year: 2025,
         month: 11,
         date: 23,
-        hero: "/img/DSCF1375.JPG",
+        hero: "/img/DSCF1375.webp",
         sections: [
             {
                 section: "Information",
@@ -51,7 +51,7 @@ export const mockData = [
                             {
                                 type: "img",
                                 dir: "imgH",
-                                src: "/img/IMG_4827.jpeg",
+                                src: "/img/IMG_4827.webp",
                             },
                             {
                                 type: "text",
@@ -60,17 +60,17 @@ export const mockData = [
                             {
                                 type: "img",
                                 dir: "imgV3",
-                                src: "/img/IMG_4803.jpeg"
+                                src: "/img/IMG_4803.webp"
                             },
                             {
                                 type: "img",
                                 dir: "imgV3",
-                                src: "/img/IMG_4801.jpeg"
+                                src: "/img/IMG_4801.webp"
                             },
                             {
                                 type: "img",
                                 dir: "imgV3",
-                                src: "/img/IMG_4799.jpeg"
+                                src: "/img/IMG_4799.webp"
                             },
                             {
                                 type: "text",
@@ -79,7 +79,7 @@ export const mockData = [
                             {
                                 type: "img",
                                 dir: "imgH",
-                                src: "/img/DSCF1377.JPG"
+                                src: "/img/DSCF1377.webp"
                             }
                         ]
                     },
@@ -105,12 +105,12 @@ export const mockData = [
                             {
                                 type: "img",
                                 dir: "imgH",
-                                src: "/img/DSCF1381.JPG"
+                                src: "/img/DSCF1381.webp"
                             },
                             {
                                 type: "img",
                                 dir: "imgH",
-                                src: "/img/DSCF1382.JPG"
+                                src: "/img/DSCF1382.webp"
                             },
                             {
                                 type: "text",
@@ -119,7 +119,7 @@ export const mockData = [
                             {
                                 type: "img",
                                 dir: "imgH",
-                                src: "/img/IMG_4761_edit.jpeg"
+                                src: "/img/IMG_4761_edit.webp"
                             },
                         ]
                     },
@@ -133,17 +133,17 @@ export const mockData = [
                             {
                                 type: "img",
                                 dir: "imgV3",
-                                src: "/img/IMG_4763.jpeg"
+                                src: "/img/IMG_4763.webp"
                             },
                             {
                                 type: "img",
                                 dir: "imgV3",
-                                src: "/img/IMG_4765.jpeg"
+                                src: "/img/IMG_4765.webp"
                             },
                             {
                                 type: "img",
                                 dir: "imgV3",
-                                src: "/img/IMG_4766.jpeg"
+                                src: "/img/IMG_4766.webp"
                             },
                             {
                                 type: "text",
@@ -156,7 +156,7 @@ export const mockData = [
                             {
                                 type: "img",
                                 dir: "imgH",
-                                src: "/img/DSCF1387_edit.JPG"
+                                src: "/img/DSCF1387_edit.webp"
                             }
                         ]
                     }
@@ -178,7 +178,7 @@ export const mockData = [
         year: 2025,
         month: 11,
         date: 24,
-        hero: "/img/DSCF1416.JPG",
+        hero: "/img/DSCF1416.webp",
         sections: [
             {
                 section: "Information",
@@ -221,7 +221,7 @@ export const mockData = [
                             {
                                 type: "img",
                                 dir: "imgH",
-                                src: "/img/DSCF1401.JPG"
+                                src: "/img/DSCF1401.webp"
                             },
                             {
                                 type: "text",
@@ -230,7 +230,7 @@ export const mockData = [
                             {
                                 type: "img",
                                 dir: "imgH",
-                                src: "/img/DSCF1449.JPG"
+                                src: "/img/DSCF1449.webp"
                             },
                             {
                                 type: "text",
@@ -239,7 +239,7 @@ export const mockData = [
                             {
                                 type: "img",
                                 dir: "imgH",
-                                src: "/img/DSCF1431.JPG"
+                                src: "/img/DSCF1431.webp"
                             },
                             {
                                 type: "text",
@@ -248,7 +248,7 @@ export const mockData = [
                             {
                                 type: "img",
                                 dir: "imgH",
-                                src: "/img/DSCF1454.JPG"
+                                src: "/img/DSCF1454.webp"
                             },
                             {
                                 type: "text",
@@ -257,7 +257,7 @@ export const mockData = [
                             {
                                 type: "img",
                                 dir: "imgH",
-                                src: "/img/IMG_4768.jpeg"
+                                src: "/img/IMG_4768.webp"
                             },
                             {
                                 type: "text",
@@ -270,12 +270,12 @@ export const mockData = [
                             {
                                 type: "img",
                                 dir: "imgV2",
-                                src: "/img/IMG_4771.jpeg"
+                                src: "/img/IMG_4771.webp"
                             },
                             {
                                 type: "img",
                                 dir: "imgV2",
-                                src: "/img/IMG_4772.jpeg"
+                                src: "/img/IMG_4772.webp"
                             }
                         ]
                     },
@@ -285,7 +285,7 @@ export const mockData = [
                             {
                                 type: "img",
                                 dir: "imgH",
-                                src: "/img/DSCF1490.JPG"
+                                src: "/img/DSCF1490.webp"
                             },
                             {
                                 type: "text",
@@ -298,17 +298,17 @@ export const mockData = [
                             {
                                 type: "img",
                                 dir: "imgV2",
-                                src: "/img/DSCF1475.JPG"
+                                src: "/img/DSCF1475.webp"
                             },
                             {
                                 type: "img",
                                 dir: "imgV2",
-                                src: "/img/DSCF1480.JPG"
+                                src: "/img/DSCF1480.webp"
                             },
                             {
                                 type: "img",
                                 dir: "imgH",
-                                src: "/img/DSCF1457.JPG"
+                                src: "/img/DSCF1457.webp"
                             },
                             {
                                 type: "text",
@@ -317,7 +317,7 @@ export const mockData = [
                             {
                                 type: "img",
                                 dir: "imgH",
-                                src: "/img/IMG_4775.jpeg"
+                                src: "/img/IMG_4775.webp"
                             },
                             {
                                 type: "text",
@@ -348,17 +348,17 @@ export const mockData = [
                             {
                                 type: "img",
                                 dir: "imgV3",
-                                src: "/img/IMG_4780.jpeg"
+                                src: "/img/IMG_4780.webp"
                             },
                             {
                                 type: "img",
                                 dir: "imgV3",
-                                src: "/img/IMG_4781.jpeg"
+                                src: "/img/IMG_4781.webp"
                             },
                             {
                                 type: "img",
                                 dir: "imgV3",
-                                src: "/img/IMG_4782.jpeg"
+                                src: "/img/IMG_4782.webp"
                             },
                             {
                                 type: "text",
@@ -384,7 +384,7 @@ export const mockData = [
         year: 2025,
         month: 11,
         date: 25,
-        hero: "/img/DSCF1509.JPG",
+        hero: "/img/DSCF1509.webp",
         sections: [
             {
                 section: "Information",
@@ -425,17 +425,17 @@ export const mockData = [
                             {
                                 type: "img",
                                 dir: "imgV3",
-                                src: "/img/IMG_4788.jpeg"
+                                src: "/img/IMG_4788.webp"
                             },
                             {
                                 type: "img",
                                 dir: "imgV3",
-                                src: "/img/IMG_4790.jpeg"
+                                src: "/img/IMG_4790.webp"
                             },
                             {
                                 type: "img",
                                 dir: "imgV3",
-                                src: "/img/IMG_4791.jpeg"
+                                src: "/img/IMG_4791.webp"
                             },
                             {
                                 type: "text",
@@ -448,7 +448,7 @@ export const mockData = [
                             {
                                 type: "img",
                                 dir: "imgH",
-                                src: "/img/IMG_4792.jpeg"
+                                src: "/img/IMG_4792.webp"
                             },
                             {
                                 type: "text",
@@ -457,7 +457,7 @@ export const mockData = [
                             {
                                 type: "img",
                                 dir: "imgH",
-                                src: "/img/DSCF1533.JPG"
+                                src: "/img/DSCF1533.webp"
                             },
                             {
                                 type: "text",
@@ -466,12 +466,12 @@ export const mockData = [
                             {
                                 type: "img",
                                 dir: "imgH",
-                                src: "/img/DSCF1529.JPG"
+                                src: "/img/DSCF1529.webp"
                             },
                             {
                                 type: "img",
                                 dir: "imgH",
-                                src: "/img/DSCF1545.JPG"
+                                src: "/img/DSCF1545.webp"
                             },
                             {
                                 type: "text",
@@ -489,12 +489,12 @@ export const mockData = [
                             {
                                 type: "img",
                                 dir: "imgV2",
-                                src: "/img/IMG_4796.jpeg"
+                                src: "/img/IMG_4796.webp"
                             },
                             {
                                 type: "img",
                                 dir: "imgV2",
-                                src: "/img/IMG_4798.jpeg"
+                                src: "/img/IMG_4798.webp"
                             },
                             {
                                 type: "text",
@@ -511,7 +511,7 @@ export const mockData = [
                             {
                                 type: "img",
                                 dir: "imgH",
-                                src: "/img/IMG_4804.jpeg"
+                                src: "/img/IMG_4804.webp"
                             }
                         ]
                     },
@@ -541,7 +541,7 @@ export const mockData = [
         year: 2025,
         month: 12,
         date: 21,
-        hero: "/img/DSCF1726.JPG",
+        hero: "/img/DSCF1726.webp",
         sections: [
             {
                 section: "Information",
@@ -582,7 +582,7 @@ export const mockData = [
                             {
                                 type: "img",
                                 dir: "imgH",
-                                src: "/img/IMG_5017.jpeg"
+                                src: "/img/IMG_5017.webp"
                             },
                         ]
                     },
@@ -600,7 +600,7 @@ export const mockData = [
                             {
                                 type: "img",
                                 dir: "imgH",
-                                src: "/img/IMG_5016.jpeg"
+                                src: "/img/IMG_5016.webp"
                             },
                             {
                                 type: "text",
@@ -609,7 +609,7 @@ export const mockData = [
                             {
                                 type: "img",
                                 dir: "imgH",
-                                src: "/img/IMG_5012.jpeg"
+                                src: "/img/IMG_5012.webp"
                             },
                             {
                                 type: "text",
@@ -618,7 +618,7 @@ export const mockData = [
                             {
                                 type: "img",
                                 dir: "imgH",
-                                src: "/img/IMG_5013.jpeg"
+                                src: "/img/IMG_5013.webp"
                             }
                         ]
                     },
@@ -632,7 +632,7 @@ export const mockData = [
                             {
                                 type: "img",
                                 dir: "imgH",
-                                src: "/img/IMG_5024.jpeg"
+                                src: "/img/IMG_5024.webp"
                             },
                             {
                                 type: "text",
