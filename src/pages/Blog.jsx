@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom"
-// const { id } = useParams();
 import './Blog.css';
 import { mockData } from '../data/mockData.js';
+import Recommendation from '../components/Recommendation.jsx'
 
 // Create HTML
 const htmlRenderer = (block, blockIdx) => {
@@ -41,7 +41,6 @@ function Blog() {
     const { id } = useParams();
     const data = mockData.find(d => d.id === parseInt(id));
     if (!data) return <p>Blog not found...</p>
-    console.log(data);
 
     return (
         <article className="blog">
@@ -97,6 +96,8 @@ function Blog() {
                     }
                 })}
             </main>
+            <Recommendation data={data} type="related" />
+            <Recommendation data={data} type="similar" />
         </article>
     )
 }
