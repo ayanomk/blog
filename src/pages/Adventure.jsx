@@ -15,11 +15,18 @@ const tripRegions = ["Asia", "Oceania", "Europe", "Africa", "North America"];
  * @param {*} setState useState setState to changed stored options
  * @returns HTML checkboxes
  */
-const filterMaker = (filterBy, filterOptions, state, setState) => {
+
+const filterMaker = (filterBy, filterOptions, state, setState, expandState, setExpandState) => {
+
     return <div className="filter">
-        <h4>{filterBy}</h4>
-        {filterOptions.map((option) => (
-            <div className="filterOption" key={option}>
+        <div className="filterOption" onClick={() => {
+            setExpandState(!expandState);
+        }}>
+            <h4>{filterBy}</h4>
+            <button><img src="/icon/arrow-down-01-stroke-rounded.svg" alt="" /></button>
+        </div>
+        {filterOptions.map((option) => expandState && (
+            <div className="filterOptions" key={option}>
                 <label htmlFor={option}>{option}</label>
                 <input type="checkbox" name={option} id={option} value={option} onChange={(e) => {
                     const value = Number(e.target.value);
@@ -50,15 +57,16 @@ function Adventure() {
     });
 
     const [showFilters, setShowFilters] = useState(false);
+    const [yearExpand, setYearExpand] = useState(false);
+    const [regionExpand, setRegionExpand] = useState(false);
     const filterControls = () => (
         <>
-            <h2>Filter</h2>
             <div className="filterAction">
                 <button className='filterActionClear'>Clear All</button>
                 <button className='filterActionApply'>Apply</button>
             </div>
-            {filterMaker("Year", tripYears, yearFilter, setYearFilter)}
-            {filterMaker("Region", tripRegions, regionFilter, setRegionFilter)}
+            {filterMaker("Year", tripYears, yearFilter, setYearFilter, yearExpand, setYearExpand)}
+            {filterMaker("Region", tripRegions, regionFilter, setRegionFilter, regionExpand, setRegionExpand)}
         </>
     )
 

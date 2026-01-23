@@ -123,20 +123,17 @@
         left: 0;
         right: 0;
         margin: 0px 10px;
+        padding-bottom: 20px;
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
         background-color: #eae6e0af;
         box-shadow: 0px 0px 10px #b0aba3;
         backdrop-filter: blur(10px);
-
+        overflow-y: auto;
     }
     .mobileFilterContent {
         width: 100%;
         padding: 0px 40px;
-    }
-    .mobileFilterContent h2 {
-        text-align: center;
-        margin-bottom: 10px;
     }
     .mobileFilter button {
         background-color: transparent;
@@ -149,12 +146,14 @@
     }
     .mobileFilter .filter {
         box-shadow: none;
-        border: 1px solid black;
+        border-bottom: 1px solid black;
         padding: 5px 10px;
         margin-top: 10px;
     }
-    .mobileFilter .filterOption {
-        display: none;
+    .filterOption {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
     .filterAction {
         display: flex;
