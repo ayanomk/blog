@@ -14,7 +14,7 @@ const blogCardMaker = (blog, idx, type) => {
             <a href={`/blog/${blog.id}`}>
                 <img src={blog.hero} alt="" loading="lazy" />
                 <div className="cardInfo">
-                    <h2>{blog.title}{blog.day > 0 ? `: Day ${blog.day}` : null}</h2>
+                    <h3>{blog.title}{blog.day > 0 ? `: Day ${blog.day}` : null}</h3>
                     <p>{blog.city}, {blog.country}</p>
                     <p>{blog.year}/{blog.month}/{blog.date}</p>
                 </div>
@@ -54,7 +54,7 @@ function Recommendation ({data, type}) {
 
         return (
             <div className="recommended">
-                <h1>{blogsHeader}</h1>
+                <h2>{blogsHeader}</h2>
                 <div className="recommendedCards">
                     {blogs.map((blog, idx) => {
                         return blogCardMaker(blog, idx, type);
