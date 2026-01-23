@@ -21,7 +21,9 @@ function Adventure() {
 
     return (
         <div className="adventures">
-            <header>my adventures around the world</header>
+            <header>
+                <h1>my adventures around the world</h1>
+            </header>
 
             <main>
                 <div className="filters">

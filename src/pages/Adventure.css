@@ -6,13 +6,17 @@
 
 .adventures {
     /* navbar padding */
-    padding-top: calc(60px * 1.5);
+    padding-top: calc(60px);
 
-    height: calc(100vh - (60px * 1.5) - 35px );
+    height: calc(100vh - 35px );
     background-color: #f0ede8;
     display: flex;
     align-items: center;
     flex-direction: column;
+}
+.adventures h1 {
+    font-size: 2.5rem;
+    margin: 20px;
 }
 .adventures main {
     width: 100%;
@@ -21,7 +25,7 @@
     justify-content: center;
 }
 .map-wrapper {
-    width: 70vw;
+    width: 75vw;
     display: flex;
 }
 
@@ -60,4 +64,26 @@
     justify-content: start;
     padding-left: 10px;
     padding-top: 5px;
+}
+
+
+/* Screen size */
+@media (max-width: 992px) {
+    .adventures main {
+        flex-direction: column;
+    }
+    .adventures .map-wrapper {
+        height: 100%;
+        width: 90vw;
+        margin: auto;
+    }
+    .filters {
+        display: none;
+    }
+}
+@media (max-width: 500px) {
+    .adventures h1 {
+        font-size: 2.1em;
+        line-height: 1.2;
+    }
 }
