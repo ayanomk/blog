@@ -7,6 +7,24 @@ import { mockData } from '../data/mockData.js';
 const tripYears = [...new Set(mockData.map((t) => t.year))].sort((a, b) => a - b);
 const tripRegions = ["Asia", "Oceania", "Europe", "Africa", "North America"];
 
+const filterMaker = (filterBy, filterOptions, state, setState) => {
+    return <div className="filter">
+        <h4>{filterBy}</h4>
+        {filterOptions.map((option) => (
+            <div className="filterOption" key={option}>
+                <label htmlFor={option}>{option}</label>
+                <input type="checkbox" name={option} id={option} value={option} onChange={(e) => {
+                    const value = Number(e.target.value);
+                    if (state.includes(value)) {
+                        setState(state.filter(y => y !== value));
+                    } else {
+                        setState([...state, value]);
+                    }
+                }} />
+            </div>
+        ))}
+    </div>
+}
 
 function Adventure() {
 
@@ -27,43 +45,14 @@ function Adventure() {
 
             <main>
                 <div className="filters">
-                    <div className="filter">
-                        <h4>Year</h4>
-                        {tripYears.map((year) => (
-                            <div className="filterOption" key={year}>
-                                <label htmlFor={year}>{year}</label>
-                                <input type="checkbox" name={year} id={year} value={year} onChange={(e) => {
-                                    const value = Number(e.target.value);
-                                    if (yearFilter.includes(value)) {
-                                        setYearFilter(yearFilter.filter(y => y !== value));
-                                    } else {
-                                        setYearFilter([...yearFilter, value]);
-                                    }
-                                }} />
-                            </div>
-                        ))}
-                    </div>
-                    <div className="filter">
-                        <h4>Region</h4>
-                        {tripRegions.map((region) => (
-                            <div className="filterOption" key={region}>
-                                <label htmlFor={region}>{region}</label>
-                                <input type="checkbox" name={region} id={region} value={region} onChange={(e) => {
-                                    const value = e.target.value;
-                                    if (regionFilter.includes(region)) {
-                                        setRegionFilter(regionFilter.filter(r => r !== value));
-                                    } else {
-                                        setRegionFilter([...regionFilter, value]);
-                                    }
-                                }} />
-                            </div>
-                        ))}
-                    </div>
+                    <h2>Filter</h2>
+                    {filterMaker("Year", tripYears, yearFilter, setYearFilter)}
+                    {filterMaker("Region", tripRegions, regionFilter, setRegionFilter)}
                 </div>
 
                 <div className='map-wrapper'>
                     <MapContainer
-                        center={[35.68, 139.77]}    // tokyo
+                        center={[27.07, 139.77]}    // tokyo
                         zoom={2}
                         style={{ height: "100%", width: "100%" }}
                     >
