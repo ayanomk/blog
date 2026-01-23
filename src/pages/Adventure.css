@@ -6,7 +6,7 @@
 
 .adventures {
     /* navbar padding */
-    padding-top: calc(60px);
+    padding: calc(60px) 5% 0px;
 
     height: calc(100vh - 35px );
     background-color: #f0ede8;
@@ -16,7 +16,7 @@
 }
 .adventures h1 {
     font-size: 2.5rem;
-    margin: 20px;
+    margin: 20px 0px;
 }
 .adventures main {
     width: 100%;
@@ -25,7 +25,7 @@
     justify-content: center;
 }
 .map-wrapper {
-    width: 75vw;
+    width: 80vw;
     display: flex;
 }
 
@@ -42,14 +42,33 @@
     color: #6b1d2f;
 }
 
+.settings {
+    display: flex;
+    align-items: center;
+}
+.settings button {
+    width: 40px;
+    background-color: transparent;
+    border: none;
+    display: block;
+    height: 40px;
+}
+.settings button:hover {
+    cursor: pointer;
+}
+.settings img {
+    width: 30px;
+}
+
 /* filter */
-.filters {
+.desktopFilter {
     margin-right: 20px;
 }
-.filters label {
+/* .filter label {
     padding-left: 15px;
-}
-.filter {
+    text-align: left;
+} */
+/* .filter {
     display: flex;
     flex-direction: column;
     box-shadow: inset #c6c6c6 2px 2px 15px;
@@ -64,21 +83,95 @@
     justify-content: start;
     padding-left: 10px;
     padding-top: 5px;
+} */
+
+/* hide mobile settings */
+.filterToggle {
+    display: none;
+}
+.mobileFilter {
+    display: none;
 }
 
 
 /* Screen size */
 @media (max-width: 992px) {
+    .adventures h1 {
+        margin-bottom: 0px;
+    }
     .adventures main {
         flex-direction: column;
+        align-items: end;
     }
     .adventures .map-wrapper {
-        height: 100%;
-        width: 90vw;
-        margin: auto;
+        height: 90%;
+        width: 100%;
+        border: 1px solid rgb(205, 205, 205);
     }
-    .filters {
+    .desktopFilter {
         display: none;
+    }
+
+    .mobileFilter {
+        display: flex;
+        flex-direction: column;
+        align-items: end;
+        height: 55vh;
+        position: fixed;
+        z-index: 1000;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: 0px 10px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        background-color: #eae6e0af;
+        box-shadow: 0px 0px 10px #b0aba3;
+        backdrop-filter: blur(10px);
+
+    }
+    .mobileFilterContent {
+        width: 100%;
+        padding: 0px 40px;
+    }
+    .mobileFilterContent h2 {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    .mobileFilter button {
+        background-color: transparent;
+        padding: 2px;
+        margin: 6px;
+        border: none;
+    }
+    .mobileFilter button:hover {
+        cursor: pointer;
+    }
+    .mobileFilter .filter {
+        box-shadow: none;
+        border: 1px solid black;
+        padding: 5px 10px;
+        margin-top: 10px;
+    }
+    .mobileFilter .filterOption {
+        display: none;
+    }
+    .filterAction {
+        display: flex;
+        justify-content: space-between;
+    }
+    .filterAction button {
+        border: 1px solid black;
+        padding: 12px 20px;
+        margin: 5px 0px;
+        width: 48%;
+        font-size: 1em;
+        color: black;
+        border-radius: 10px;
+    }
+    .filterAction .filterActionApply {
+        background-color: black;
+        color: white;
     }
 }
 @media (max-width: 500px) {

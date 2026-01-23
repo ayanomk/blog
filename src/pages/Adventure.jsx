@@ -7,6 +7,14 @@ import { mockData } from '../data/mockData.js';
 const tripYears = [...new Set(mockData.map((t) => t.year))].sort((a, b) => a - b);
 const tripRegions = ["Asia", "Oceania", "Europe", "Africa", "North America"];
 
+/**
+ * 
+ * @param {*} filterBy string of type of filter
+ * @param {*} filterOptions array of filter options to create checkbox
+ * @param {*} state useState state to store checked options
+ * @param {*} setState useState setState to changed stored options
+ * @returns HTML checkboxes
+ */
 const filterMaker = (filterBy, filterOptions, state, setState) => {
     return <div className="filter">
         <h4>{filterBy}</h4>
@@ -26,6 +34,10 @@ const filterMaker = (filterBy, filterOptions, state, setState) => {
     </div>
 }
 
+/**
+ * 
+ * @returns JSX
+ */
 function Adventure() {
 
     // filter markers
@@ -37,6 +49,20 @@ function Adventure() {
         return yearMatch && regionMatch;
     });
 
+    const [showFilters, setShowFilters] = useState(false);
+    const filterControls = () => (
+        <>
+            <h2>Filter</h2>
+            <div className="filterAction">
+                <button className='filterActionClear'>Clear All</button>
+                <button className='filterActionApply'>Apply</button>
+            </div>
+            {filterMaker("Year", tripYears, yearFilter, setYearFilter)}
+            {filterMaker("Region", tripRegions, regionFilter, setRegionFilter)}
+        </>
+    )
+
+    // JSX
     return (
         <div className="adventures">
             <header>
@@ -44,10 +70,20 @@ function Adventure() {
             </header>
 
             <main>
-                <div className="filters">
-                    <h2>Filter</h2>
-                    {filterMaker("Year", tripYears, yearFilter, setYearFilter)}
-                    {filterMaker("Region", tripRegions, regionFilter, setRegionFilter)}
+                <div className="desktopFilter">
+                    {filterControls()}
+                </div>
+
+                <div className="settings">
+                    <button className='filterToggle' onClick={() => {
+                        setShowFilters(!showFilters);
+                    }}>
+                        <img src="/icon/filter-stroke-rounded.svg" alt="" />
+                    </button>
+
+                    <button className="viewToggle">
+                        <img src="/icon/album-02-stroke-rounded.svg" alt="" />
+                    </button>
                 </div>
 
                 <div className='map-wrapper'>
@@ -75,6 +111,17 @@ function Adventure() {
                     ))}
                     </MapContainer>
                 </div>
+
+                {showFilters && (
+                    <div className="mobileFilter">
+                        <button onClick={() => setShowFilters(false)}>
+                            <img src="/icon/cancel-01-stroke-rounded.svg" alt="" />
+                        </button>
+                        <div className="mobileFilterContent">
+                            {filterControls()}
+                        </div>
+                    </div>
+                )}
             </main>
         </div>
     )
