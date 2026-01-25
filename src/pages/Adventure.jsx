@@ -28,7 +28,7 @@ const filterMaker = (filterBy, filterOptions, state, setState, expandState, setE
         {filterOptions.map((option) => expandState && (
             <div className="filterOption" key={option}>
                 <label>{option}
-                    <input type="checkbox" value={option} onChange={(e) => {
+                    <input type="checkbox" value={option} checked={state.includes(option)} onChange={(e) => {
                         const value = Number(e.target.value) ? Number(e.target.value) : e.target.value;
                         if (state.includes(value)) {
                             setState(state.filter(y => y !== value));
