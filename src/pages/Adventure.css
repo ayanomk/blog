@@ -86,10 +86,13 @@
 } */
 
 /* hide mobile settings */
-.filterToggle {
+/* .filterToggle {
+    display: none;
+} */
+.mobileFilter {
     display: none;
 }
-.mobileFilter {
+.filterClose {
     display: none;
 }
 
@@ -113,64 +116,105 @@
     }
 
     .mobileFilter {
-        display: flex;
-        flex-direction: column;
-        align-items: end;
+        display: block;
+        transform: translateY(100%);
         height: 55vh;
         position: fixed;
         z-index: 1000;
         bottom: 0;
         left: 0;
         right: 0;
-        margin: 0px 10px;
-        padding-bottom: 20px;
+        width: 95%;
+        margin: auto;
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
         background-color: #eae6e0af;
         box-shadow: 0px 0px 10px #b0aba3;
         backdrop-filter: blur(10px);
-        overflow-y: auto;
+        transition: all 0.4s;
     }
     .mobileFilterContent {
-        width: 100%;
-        padding: 0px 40px;
-    }
-    .mobileFilter button {
-        background-color: transparent;
-        padding: 2px;
-        margin: 6px;
-        border: none;
-    }
-    .mobileFilter button:hover {
-        cursor: pointer;
-    }
-    .mobileFilter .filter {
-        box-shadow: none;
-        border-bottom: 1px solid black;
-        padding: 5px 10px;
-        margin-top: 10px;
-    }
-    .filterOption {
+        height: 100%;
+        padding: 10px 25px 10px;
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
+    }
+    .filterClose {
+        display: block;
+    }
+    .filterHeader {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .filterTitle {
+        display: flex;
         align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+    .filterAction {
+        width: 100%;
     }
     .filterAction {
         display: flex;
         justify-content: space-between;
     }
+    .mobileFilter button {
+        background-color: transparent;
+        border: none;
+    }
+    .mobileFilter button:hover {
+        cursor: pointer;
+    } 
     .filterAction button {
-        border: 1px solid black;
+        border: 1px solid #b0aba3;
         padding: 12px 20px;
         margin: 5px 0px;
         width: 48%;
         font-size: 1em;
         color: black;
         border-radius: 10px;
+        transition: all 0.3s;
     }
     .filterAction .filterActionApply {
-        background-color: black;
-        color: white;
+        background-color: #b0aba3;
+    }
+    .filterAction button:hover {
+        border: 1px solid black;
+    }
+    .filters {
+        overflow-y: auto;
+        scrollbar-gutter: stable;
+    }
+    .mobileFilter .filter {
+        border-bottom: 1px solid black;
+        padding: 5px 10px;
+        margin-top: 10px;
+    }
+    .filterBy {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    /* DONE */
+    .filterOption {
+        padding: 2px 10px;
+        line-height: 2;
+        margin: 5px 0px;
+    }
+    .filterOption label {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+    }
+    .filterOption input {
+        accent-color: #6b1d2f;
+    }
+
+    .openFilter {
+        transform: translateY(0);
     }
 }
 @media (max-width: 500px) {

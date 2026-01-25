@@ -19,23 +19,24 @@ const tripRegions = ["Asia", "Oceania", "Europe", "Africa", "North America"];
 const filterMaker = (filterBy, filterOptions, state, setState, expandState, setExpandState) => {
 
     return <div className="filter">
-        <div className="filterOption" onClick={() => {
+        <div className="filterBy" onClick={() => {
             setExpandState(!expandState);
         }}>
             <h4>{filterBy}</h4>
             <button><img src="/icon/arrow-down-01-stroke-rounded.svg" alt="" /></button>
         </div>
         {filterOptions.map((option) => expandState && (
-            <div className="filterOptions" key={option}>
-                <label htmlFor={option}>{option}</label>
-                <input type="checkbox" name={option} id={option} value={option} onChange={(e) => {
-                    const value = Number(e.target.value);
-                    if (state.includes(value)) {
-                        setState(state.filter(y => y !== value));
-                    } else {
-                        setState([...state, value]);
-                    }
-                }} />
+            <div className="filterOption" key={option}>
+                <label>{option}
+                    <input type="checkbox" value={option} onChange={(e) => {
+                        const value = Number(e.target.value);
+                        if (state.includes(value)) {
+                            setState(state.filter(y => y !== value));
+                        } else {
+                            setState([...state, value]);
+                        }
+                    }} />
+                </label>
             </div>
         ))}
     </div>
@@ -61,12 +62,22 @@ function Adventure() {
     const [regionExpand, setRegionExpand] = useState(false);
     const filterControls = () => (
         <>
-            <div className="filterAction">
-                <button className='filterActionClear'>Clear All</button>
-                <button className='filterActionApply'>Apply</button>
+            <div className="filterHeader">
+                <div className="filterTitle">
+                    <h2>Filter</h2>
+                    <button className='filterClose' onClick={() => setShowFilters(false)}>
+                        <img src="/icon/cancel-01-stroke-rounded.svg" alt="" />
+                    </button>
+                </div>
+                <div className="filterAction">
+                    <button className='filterActionClear'>Clear All</button>
+                    <button className='filterActionApply'>Apply</button>
+                </div>
             </div>
-            {filterMaker("Year", tripYears, yearFilter, setYearFilter, yearExpand, setYearExpand)}
-            {filterMaker("Region", tripRegions, regionFilter, setRegionFilter, regionExpand, setRegionExpand)}
+            <div className="filters">
+                {filterMaker("Year", tripYears, yearFilter, setYearFilter, yearExpand, setYearExpand)}
+                {filterMaker("Region", tripRegions, regionFilter, setRegionFilter, regionExpand, setRegionExpand)}
+            </div>
         </>
     )
 
@@ -120,16 +131,11 @@ function Adventure() {
                     </MapContainer>
                 </div>
 
-                {showFilters && (
-                    <div className="mobileFilter">
-                        <button onClick={() => setShowFilters(false)}>
-                            <img src="/icon/cancel-01-stroke-rounded.svg" alt="" />
-                        </button>
-                        <div className="mobileFilterContent">
-                            {filterControls()}
-                        </div>
+                <div className={`mobileFilter ${showFilters ? 'openFilter' : ''}`}>
+                    <div className="mobileFilterContent">
+                        {filterControls()}
                     </div>
-                )}
+                </div>
             </main>
         </div>
     )
