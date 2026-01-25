@@ -89,10 +89,6 @@ function Adventure() {
             </header>
 
             <main>
-                <div className="desktopFilter">
-                    {filterControls()}
-                </div>
-
                 <div className="settings">
                     <button className='filterToggle' onClick={() => {
                         setShowFilters(!showFilters);
@@ -103,6 +99,10 @@ function Adventure() {
                     <button className="viewToggle">
                         <img src="/icon/album-02-stroke-rounded.svg" alt="" />
                     </button>
+                </div>
+
+                <div className="desktopFilter">
+                    {filterControls()}
                 </div>
 
                 <div className='map-wrapper'>
