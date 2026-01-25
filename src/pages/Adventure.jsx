@@ -95,6 +95,8 @@ function Adventure() {
                 <div className="settings">
                     <button className='filterToggle' onClick={() => {
                         setShowFilters(!showFilters);
+                        setYearExpand(false);
+                        setRegionExpand(false);
                     }}>
                         <img src="/icon/filter-stroke-rounded.svg" alt="" />
                     </button>
