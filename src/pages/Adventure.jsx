@@ -1,6 +1,5 @@
 import './Adventure.css';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import "leaflet/dist/leaflet.css";
+import Map from '../components/Map.jsx';
 import { useState } from 'react';
 import { mockData } from '../data/mockData.js';
 
@@ -110,31 +109,7 @@ function Adventure() {
                     {filterControls()}
                 </div>
 
-                <div className='map-wrapper'>
-                    <MapContainer
-                        center={[27.07, 139.77]}    // tokyo
-                        zoom={2}
-                        style={{ height: "100%", width: "100%" }}
-                    >
-                        <TileLayer
-                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                            attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'/>
-
-                    {/* markers */}
-                    {filteredTrips.map(trip => (
-                        <Marker key = {trip.id} position={[trip.lat, trip.lng]}>
-                            <Popup>
-                                <div className="markerPopup">
-                                    <a href={`/blog/${trip.id}`}>
-                                        <h3>{trip.title}</h3>
-                                    </a>
-                                        <p>{trip.city}</p>
-                                </div>
-                            </Popup>
-                        </Marker>
-                    ))}
-                    </MapContainer>
-                </div>
+                <Map trips={filteredTrips} />
 
                 <div className={`mobileFilter ${showFilters ? 'openFilter' : ''}`}>
                     <div className="mobileFilterContent">
