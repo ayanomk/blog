@@ -22,8 +22,8 @@
 .heroImg {
     width: 100%;
     max-height: 600px;
+    min-height: 250px;;
     aspect-ratio: 16 / 9;
-    /* height: 100%; */
     object-fit: cover;
     /* FIXME! change later for flexibility */
     object-position: 0 80%;
@@ -39,6 +39,8 @@
 }
 .dateLocation {
     text-align: right;
+    font-size: 0.9em;
+    color: #3e3e3e;
 }
 .title h1 {
     font-size: 4em;
@@ -71,14 +73,13 @@
 .blog main section .subsection h3 {
     font-size: 1.7em;
     margin-bottom: 15px;
-    position: relative;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
 }
 .blog main section .subsection h3::after {
     content: "";
-    position: absolute;
-    top: 70%;
-    width: 80%;
-    margin-left: 1%;
+    flex: 1;
     border-bottom: 1px solid black;
 }
 .blog main section .subsection p {
@@ -137,10 +138,12 @@
         width: 100%;
         margin-bottom: 10px;
     }
-    .dateLocation {
-        display: flex;
+    .blog main section .subsection p {
+        margin-bottom: 10px;
+        font-size: 1.1em;
+        line-height: 2;
     }
-    .dateLocation p:first-child {
-        margin: 0 10px;
+    .blog main section .subsection {
+        margin-bottom: 40px;
     }
 }

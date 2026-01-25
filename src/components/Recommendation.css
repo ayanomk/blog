@@ -1,6 +1,12 @@
 .recommended {
     padding-bottom: 50px;
 }
+.recommended h2 {
+    font-size: 2.5em;
+}
+.recommended h3 {
+    font-size: 1.6em;
+}
 .recommended .recommendedCards {
     display: flex;
 }
