@@ -29,7 +29,7 @@ const filterMaker = (filterBy, filterOptions, state, setState, expandState, setE
             <div className="filterOption" key={option}>
                 <label>{option}
                     <input type="checkbox" value={option} onChange={(e) => {
-                        const value = Number(e.target.value);
+                        const value = Number(e.target.value) ? Number(e.target.value) : e.target.value;
                         if (state.includes(value)) {
                             setState(state.filter(y => y !== value));
                         } else {
