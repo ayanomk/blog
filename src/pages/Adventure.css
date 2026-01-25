@@ -64,9 +64,6 @@
     display: block;
     height: 40px;
 }
-.settings button:hover {
-    cursor: pointer;
-}
 .settings img {
     width: 30px;
 }
@@ -98,14 +95,8 @@
     justify-content: space-between;
     margin-bottom: 10px;
 }
-.filterAction {
-    width: 100%;
-}
-.filterAction {
-    display: flex;
-    flex-direction: column;
-}
 .filterAction button {
+    width: 100%;
     border: 1px solid #b0aba3;
     padding: 12px;
     margin: 5px 0px;
@@ -114,11 +105,8 @@
     border-radius: 10px;
     transition: all 0.3s;
 }
-.filterAction .filterActionApply {
-    background-color: #b0aba3;
-}
 .filterAction button:hover {
-    border: 1px solid black;
+    background-color: #eae6de;
 }
 .filters {
     overflow-y: auto;
@@ -200,16 +188,6 @@
     }
     .filterClose {
         display: block;
-    }
-    .filterAction {
-        flex-direction: row;
-        justify-content: space-between;
-    }
-    .filterAction button {
-        width: 48%;
-    }
-    .filterAction {
-        width: 100%;
     }
     .openFilter {
         transform: translateY(0);

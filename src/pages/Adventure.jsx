@@ -70,8 +70,11 @@ function Adventure() {
                     </button>
                 </div>
                 <div className="filterAction">
-                    <button className='filterActionClear'>Clear All</button>
-                    <button className='filterActionApply'>Apply</button>
+                    <button className='filterActionClear' onClick={(e) => {
+                        setYearFilter([]);
+                        setRegionFilter([]);
+                    }}>Clear All</button>
+                    {/* <button className='filterActionApply'>Apply</button> */}
                 </div>
             </div>
             <div className="filters">
