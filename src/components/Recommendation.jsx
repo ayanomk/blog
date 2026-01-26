@@ -29,7 +29,6 @@ const blogCardMaker = (blog, idx, type) => {
  * @returns html group of blog link cards with header
  */
 function Recommendation ({data, type}) {
-    console.log(type);
     // find recommended blogs 
     let blogs = [];
     if (type === "map") blogs = data;

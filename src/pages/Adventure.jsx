@@ -84,7 +84,13 @@ function Adventure() {
         </>
     )
 
-    const oceania = filteredTrips.filter((t) => t.region == "Oceania");
+    // filter by region to display cards
+    const regionFiltered = [];
+    regionFiltered.push(filteredTrips.filter((t) => t.region == "Asia"));
+    regionFiltered.push(filteredTrips.filter((t) => t.region == "Oceania"));
+    regionFiltered.push(filteredTrips.filter((t) => t.region == "Europe"));
+    regionFiltered.push(filteredTrips.filter((t) => t.region == "Africa"));
+    regionFiltered.push(filteredTrips.filter((t) => t.region == "North America"));
 
     // JSX
     return (
@@ -114,7 +120,11 @@ function Adventure() {
 
                 <div className="mapCard">
                     {/* <Map trips={filteredTrips} /> */}
-                    <Recommendation data={oceania} type={"map"} />
+                    <div className="regionalCards">
+                        {regionFiltered.map((region, idx) => {
+                            return <Recommendation data={region} type={"map"} key={idx} />
+                        })}
+                    </div>
                 </div>
 
                 <div className={`mobileFilter ${showFilters ? 'openFilter' : ''}`}>
