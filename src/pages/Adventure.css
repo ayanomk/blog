@@ -14,6 +14,7 @@
     align-items: center;
     flex-direction: column;
     overflow-y: auto;
+    scrollbar-gutter: stable;
 }
 .adventures h1 {
     font-size: 2.5rem;
@@ -32,24 +33,10 @@
     display: flex;
     flex-wrap: wrap;
 }
-.map-wrapper {
+.adventures .mapCard {
     width: 85%;
     height: calc(100% - 40px);
-    display: flex;
     flex: 1;
-}
-
-.leaflet-popup-content .markerPopup p {
-    margin: 0px;
-}
-.leaflet-popup-content .markerPopup a {
-    text-decoration: none;
-    color: #000;
-    transition: all 0.2s;
-}
-.leaflet-popup-content .markerPopup a:hover {
-    text-decoration: none;
-    color: #6b1d2f;
 }
 
 .settings {
@@ -149,10 +136,8 @@
         flex-direction: column;
         align-items: end;
     }
-    .adventures .map-wrapper {
-        height: 90%;
+    .adventures .mapCard {
         width: 100%;
-        border: 1px solid rgb(205, 205, 205);
     }
     .desktopFilter {
         display: none;

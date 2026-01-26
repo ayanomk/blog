@@ -1,6 +1,6 @@
 import './Adventure.css';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import "leaflet/dist/leaflet.css";
+import Map from '../components/Map.jsx';
+import Recommendation from '../components/Recommendation.jsx';
 import { useState } from 'react';
 import { mockData } from '../data/mockData.js';
 
@@ -84,6 +84,17 @@ function Adventure() {
         </>
     )
 
+    // filter by region to display cards
+    const regionFiltered = [];
+    regionFiltered.push(filteredTrips.filter((t) => t.region == "Asia"));
+    regionFiltered.push(filteredTrips.filter((t) => t.region == "Oceania"));
+    regionFiltered.push(filteredTrips.filter((t) => t.region == "Europe"));
+    regionFiltered.push(filteredTrips.filter((t) => t.region == "Africa"));
+    regionFiltered.push(filteredTrips.filter((t) => t.region == "North America"));
+
+    // display option: map or card (true = map, false = card)
+    const [viewState, setViewState] = useState(true);
+
     // JSX
     return (
         <div className="adventures">
@@ -101,8 +112,8 @@ function Adventure() {
                         <img src="/icon/filter-stroke-rounded.svg" alt="" />
                     </button>
 
-                    <button className="viewToggle">
-                        <img src="/icon/album-02-stroke-rounded.svg" alt="" />
+                    <button className="viewToggle" onClick={() => setViewState(!viewState)}>
+                        <img src={viewState ? "/icon/album-02-stroke-rounded.svg" : "/icon/maps-location-01-stroke-rounded.svg"} alt="" />
                     </button>
                 </div>
 
@@ -110,30 +121,13 @@ function Adventure() {
                     {filterControls()}
                 </div>
 
-                <div className='map-wrapper'>
-                    <MapContainer
-                        center={[27.07, 139.77]}    // tokyo
-                        zoom={2}
-                        style={{ height: "100%", width: "100%" }}
-                    >
-                        <TileLayer
-                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                            attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'/>
-
-                    {/* markers */}
-                    {filteredTrips.map(trip => (
-                        <Marker key = {trip.id} position={[trip.lat, trip.lng]}>
-                            <Popup>
-                                <div className="markerPopup">
-                                    <a href={`/blog/${trip.id}`}>
-                                        <h3>{trip.title}</h3>
-                                    </a>
-                                        <p>{trip.city}</p>
-                                </div>
-                            </Popup>
-                        </Marker>
-                    ))}
-                    </MapContainer>
+                <div className="mapCard" style={{display: viewState ? 'block' : 'none'}}>
+                    <Map trips={filteredTrips} />
+                </div>
+                <div className="mapCard" style={{display: viewState ? 'none' : 'block'}}>
+                    {regionFiltered.map((region, idx) => {
+                        return <Recommendation data={region} type={"map"} key={idx} />
+                    })}
                 </div>
 
                 <div className={`mobileFilter ${showFilters ? 'openFilter' : ''}`}>

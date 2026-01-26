@@ -30,14 +30,17 @@ const blogCardMaker = (blog, idx, type) => {
  */
 function Recommendation ({data, type}) {
     // find recommended blogs 
-    const blogs = [];
-    mockData.map((d) => {
-        if (type === "related" && d.tripId === data.tripId && d.id !== data.id) {
-            blogs.push(d)
-        } else if (type === "similar" && d.country === data.country && d.id !== data.id && d.tripId !== data.tripId) {
-            blogs.push(d)
-        };
-    });
+    let blogs = [];
+    if (type === "map") blogs = data;
+    else {
+        mockData.map((d) => {
+            if (type === "related" && d.tripId === data.tripId && d.id !== data.id) {
+                blogs.push(d)
+            } else if (type === "similar" && d.country === data.country && d.id !== data.id && d.tripId !== data.tripId) {
+                blogs.push(d)
+            };
+        });
+    }
 
     // display recommendation if found
     if (blogs.length) {
@@ -48,6 +51,9 @@ function Recommendation ({data, type}) {
                 break;
             case "similar":
                 blogsHeader = `More travel blogs in ${data.country}`;
+                break;
+            case "map":
+                blogsHeader = blogs[0].region;
             default:
                 break;
         }
