@@ -10,10 +10,9 @@ nav {
     z-index: 1;
 }
 nav a {
+    font-size: 1.1rem;
     margin: 1%;
     padding: 10px;
-    text-decoration: none;
-    color: black;
     position: relative;
     transition: all 0.3s;
 }

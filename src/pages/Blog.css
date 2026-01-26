@@ -1,25 +1,29 @@
-/* All */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 .blog {
     /* navbar padding & footer padding?*/
     padding: calc(60px * 1.1) 8% 0px;
 
     background-color: #f0ede8;
 }
+.blog h1 {
+    font-size: 4rem;
+}
+.blog h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+.blog h3 {
+    font-size: 1.5rem;
+}
 .blog header {
-    margin-bottom: 80px;
+    margin-bottom: 70px;
 }
 .blog main {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
-.heroImg {
+/* HEADER */
+.blog .heroImg {
     width: 100%;
     max-height: 600px;
     min-height: 250px;;
@@ -28,30 +32,28 @@
     /* FIXME! change later for flexibility */
     object-position: 0 80%;
 }
-.title {
+.blog .title {
     display: flex;
     align-items: end;
     justify-content: space-between;
     margin-bottom: 5px;
 }
-.mainTitle {
+.blog .mainTitle {
     width: 75%;
 }
-.dateLocation {
+.blog .mainTitle p {
+    font-size: 1.1em;
+}
+.blog .dateLocation {
     text-align: right;
     font-size: 0.9em;
     color: #3e3e3e;
 }
-.title h1 {
-    font-size: 4em;
-}
-.title p {
-    font-size: 1.1em;
-}
-.info {
+/* MAIN */
+.blog .info {
     width: 25%;
 }
-.content {
+.blog .content {
     width: 70%;
 }
 .blog .asideSub {
@@ -63,15 +65,11 @@
 .blog main section, main aside {
     margin-bottom: 40px;
 }
-.blog main h2 {
-    margin-bottom: 15px;
-    font-size: 2.5em;
-}
+
 .blog main section .subsection {
-    margin-bottom: 70px;
+    margin-bottom: 60px;
 }
 .blog main section .subsection h3 {
-    font-size: 1.7em;
     margin-bottom: 15px;
     display: flex;
     align-items: baseline;
@@ -92,7 +90,6 @@
     border-collapse: collapse;
     width: 100%;
     margin: auto;
-    /* box-shadow: #454545 1px 1px 3px; */
 }
 .blog main table th {
     background-color: #454545;
@@ -125,26 +122,25 @@
     .blog main {
         flex-direction: column;
     }
-    .info {
+    .blog header {
+        margin-bottom: 60px;
+    }
+    .blog .info {
         width: 100%;
     }
-    .content {
+    .blog .content {
         width: 100%;
     }
-    .title {
+    .blog .title {
         flex-direction: column;
     }
-    .title h1 {
+    .blog h1 {
         font-size: 3em;
+        margin-bottom: 15px;
     }
-    .mainTitle {
+    .blog .mainTitle {
         width: 100%;
         margin-bottom: 10px;
-    }
-    .blog main section .subsection p {
-        margin-bottom: 10px;
-        font-size: 1.1em;
-        line-height: 2;
     }
     .blog main section .subsection {
         margin-bottom: 40px;

@@ -1,18 +1,12 @@
-/* All */
-* {
-    margin: 0;
-    padding: 0;
-}
-
 /* Home.css */
 .home {
     background-color: #f0ede8;
-    height: 100vh;
+    height: calc(100vh - 35px);
     display: flex;
     align-items: center;
 }
-.home-text {
-    font-size: 30px;
+.home h1 {
+    font-size: 2rem;
     color: #6b1d2f;
     padding: 20px;
 }

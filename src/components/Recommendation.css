@@ -1,12 +1,6 @@
 .recommended {
     padding-bottom: 50px;
 }
-.recommended h2 {
-    font-size: 2.5em;
-}
-.recommended h3 {
-    font-size: 1.6em;
-}
 .recommended .recommendedCards {
     display: flex;
     flex-wrap: wrap;
@@ -22,10 +16,6 @@
 }
 .recommended .cardInfo {
     padding: 5px 20px 15px;
-}
-.recommended a {
-    text-decoration: none;
-    color: black;
 }
 .recommended .card:hover {
     background-color: #f3f1ed;
