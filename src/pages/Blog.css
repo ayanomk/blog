@@ -134,6 +134,9 @@
     .title {
         flex-direction: column;
     }
+    .title h1 {
+        font-size: 3em;
+    }
     .mainTitle {
         width: 100%;
         margin-bottom: 10px;

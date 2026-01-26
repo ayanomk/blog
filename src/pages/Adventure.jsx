@@ -1,5 +1,6 @@
 import './Adventure.css';
 import Map from '../components/Map.jsx';
+import Recommendation from '../components/Recommendation.jsx';
 import { useState } from 'react';
 import { mockData } from '../data/mockData.js';
 
@@ -83,6 +84,8 @@ function Adventure() {
         </>
     )
 
+    const oceania = filteredTrips.filter((t) => t.region == "Oceania");
+
     // JSX
     return (
         <div className="adventures">
@@ -109,7 +112,10 @@ function Adventure() {
                     {filterControls()}
                 </div>
 
-                <Map trips={filteredTrips} />
+                <div className="mapCard">
+                    {/* <Map trips={filteredTrips} /> */}
+                    <Recommendation data={oceania} type={"map"} />
+                </div>
 
                 <div className={`mobileFilter ${showFilters ? 'openFilter' : ''}`}>
                     <div className="mobileFilterContent">

@@ -9,6 +9,7 @@
 }
 .recommended .recommendedCards {
     display: flex;
+    flex-wrap: wrap;
 }
 .recommended .card {
     margin: 2% 1%;
@@ -16,7 +17,7 @@
     background-color: #eae6e0;
     border-radius: 10px;
     transition: all 0.3s;
-    width: 25%;
+    width: 23%;
     min-width: 250px;
 }
 .recommended .cardInfo {
@@ -40,17 +41,18 @@
 
 
 /* Screen size */
-@media (max-width: 992px) {
+@media (max-width: 1430px) {
     .recommended .card {
-        width: 50%;
-        min-width: none;
+        width: 31%;
+    }
+}
+@media (max-width: 1110px) {
+    .recommended .card {
+        width: 48%;
     }
 }
 @media (max-width: 600px) {
-    .recommended .recommendedCards {
-        flex-direction: column;
-    }
     .recommended .card {
-        width: 100%;
+        width: 98%;
     }
 }
