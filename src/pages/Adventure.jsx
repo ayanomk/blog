@@ -92,6 +92,9 @@ function Adventure() {
     regionFiltered.push(filteredTrips.filter((t) => t.region == "Africa"));
     regionFiltered.push(filteredTrips.filter((t) => t.region == "North America"));
 
+    // display option: map or card (true = map, false = card)
+    const [viewState, setViewState] = useState(true);
+
     // JSX
     return (
         <div className="adventures">
@@ -109,8 +112,8 @@ function Adventure() {
                         <img src="/icon/filter-stroke-rounded.svg" alt="" />
                     </button>
 
-                    <button className="viewToggle">
-                        <img src="/icon/album-02-stroke-rounded.svg" alt="" />
+                    <button className="viewToggle" onClick={() => setViewState(!viewState)}>
+                        <img src={viewState ? "/icon/album-02-stroke-rounded.svg" : "/icon/maps-location-01-stroke-rounded.svg"} alt="" />
                     </button>
                 </div>
 
@@ -118,13 +121,13 @@ function Adventure() {
                     {filterControls()}
                 </div>
 
-                <div className="mapCard">
-                    {/* <Map trips={filteredTrips} /> */}
-                    <div className="regionalCards">
-                        {regionFiltered.map((region, idx) => {
-                            return <Recommendation data={region} type={"map"} key={idx} />
-                        })}
-                    </div>
+                <div className="mapCard" style={{display: viewState ? 'block' : 'none'}}>
+                    <Map trips={filteredTrips} />
+                </div>
+                <div className="mapCard" style={{display: viewState ? 'none' : 'block'}}>
+                    {regionFiltered.map((region, idx) => {
+                        return <Recommendation data={region} type={"map"} key={idx} />
+                    })}
                 </div>
 
                 <div className={`mobileFilter ${showFilters ? 'openFilter' : ''}`}>
