@@ -25,9 +25,9 @@ function Map({trips}) {
                     <Popup>
                         <div className="markerPopup">
                             <a href={`/blog/${trip.id}`}>
-                                <h3>{trip.title}</h3>
-                            </a>
+                                <h4>{trip.title}</h4>
                                 <p>{trip.city}</p>
+                            </a>
                         </div>
                     </Popup>
                 </Marker>

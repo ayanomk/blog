@@ -10,6 +10,9 @@
     overflow-y: auto;
     scrollbar-gutter: stable;
 }
+.adventures header {
+    text-align: center;
+}
 .adventures main {
     display: flex;
     flex-wrap: wrap;

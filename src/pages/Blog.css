@@ -5,10 +5,12 @@
     background-color: #f0ede8;
 }
 .blog h1 {
-    font-size: 4rem;
+    font-size: 4.5rem;
+    font-family: "IM_Fell_French_Canon_SC", serif;
+    letter-spacing: 0.03em; 
 }
 .blog h2 {
-    font-size: 2rem;
+    font-size: 2.5rem;
     margin-bottom: 15px;
 }
 .blog h3 {
@@ -136,7 +138,8 @@
     }
     .blog h1 {
         font-size: 3em;
-        margin-bottom: 15px;
+        margin: 15px auto;
+        line-height: 1.1;
     }
     .blog .mainTitle {
         width: 100%;
