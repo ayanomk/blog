@@ -14,7 +14,7 @@ function Navbar() {
                 <Logo />
             </NavLink>
 
-            <div className="nav-items">
+            <div className={`nav-items ${hamburgerOpen ? "open" : ""}`}>
                 <NavLink to="/adventures" className={({ isActive }) => isActive ? "active" : ""}>Adventures</NavLink>
                 <NavLink to="/aboutme" className={({ isActive }) => isActive ? "active" : ""}>About me</NavLink>
             </div>
