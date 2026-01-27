@@ -1,6 +1,7 @@
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import "leaflet/dist/leaflet.css";
 import './Map.css';
+import { Link } from 'react-router-dom';
 
 /**
  * 
@@ -24,10 +25,10 @@ function Map({trips}) {
                 <Marker key = {trip.id} position={[trip.lat, trip.lng]}>
                     <Popup>
                         <div className="markerPopup">
-                            <a href={`/blog/${trip.id}`}>
+                            <Link to={`/blog/${trip.id}`}>
                                 <h4>{trip.title}</h4>
                                 <p>{trip.city}</p>
-                            </a>
+                            </Link>
                         </div>
                     </Popup>
                 </Marker>
