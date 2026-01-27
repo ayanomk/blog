@@ -10,13 +10,13 @@ function Navbar() {
 
     return (
         <nav>
-            <NavLink to="/" className="logo">
+            <NavLink to="/" className="logo" onClick={() => setHamburgerOpen(false)}>
                 <Logo />
             </NavLink>
 
             <div className={`nav-items ${hamburgerOpen ? "open" : ""}`}>
-                <NavLink to="/adventures" className={({ isActive }) => isActive ? "active" : ""}>Adventures</NavLink>
-                <NavLink to="/aboutme" className={({ isActive }) => isActive ? "active" : ""}>About me</NavLink>
+                <NavLink to="/adventures" className={({ isActive }) => isActive ? "active" : ""} onClick={() => setHamburgerOpen(false)}>Adventures</NavLink>
+                <NavLink to="/aboutme" className={({ isActive }) => isActive ? "active" : ""} onClick={() => setHamburgerOpen(false)}>About me</NavLink>
             </div>
 
             {/* hamburger */}
