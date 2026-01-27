@@ -5,6 +5,7 @@ import Blog from './pages/Blog';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 
+import "./App.css";
 import "leaflet/dist/leaflet.css";
 
 function App() {

@@ -1,9 +1,3 @@
-/* All */
-* {
-    margin: 0;
-    padding: 0;
-}
-
 .adventures {
     /* navbar padding */
     padding: calc(60px) 5% 0px;
@@ -16,20 +10,10 @@
     overflow-y: auto;
     scrollbar-gutter: stable;
 }
-.adventures h1 {
-    font-size: 2.5rem;
-    margin: 20px 0px;
+.adventures header {
+    text-align: center;
 }
-.adventures button {
-    background-color: transparent;
-    border: none;
-}
-.adventures button:hover {
-    cursor: pointer;
-} 
 .adventures main {
-    width: 100%;
-    height: 100%;
     display: flex;
     flex-wrap: wrap;
 }
@@ -39,99 +23,94 @@
     flex: 1;
 }
 
-.settings {
+.adventures .settings {
     display: flex;
     align-items: center;
     justify-content: right;
     width: 100%;
     height: 40px;
 }
-.settings button {
+.adventures .settings button {
     width: 40px;
-    display: block;
     height: 40px;
 }
-.settings img {
+.adventures .settings img {
     width: 30px;
 }
 
 /* filter */
-.desktopFilter {
+.adventures .desktopFilter {
     width: 14%;
     min-width: 200px;
     padding-right: 20px;
 }
-.mobileFilter {
+.adventures .mobileFilter {
     display: none;
 }
-.filterClose {
+.adventures .filterClose {
     display: none;
 }
-.settings .filterToggle {
+.adventures .filterToggle {
     display: none;
 }
-.filterHeader {
+.adventures .filterHeader {
     display: flex;
     flex-direction: column;
     width: 100%;
     margin-bottom: 10px;
 }
-.filterTitle {
+.adventures .filterTitle {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 10px;
 }
-.filterAction button {
+.adventures .filterAction button {
     width: 100%;
     border: 1px solid #b0aba3;
     padding: 12px;
     margin: 5px 0px;
     font-size: 1em;
-    color: black;
     border-radius: 10px;
     transition: all 0.3s;
 }
-.filterAction button:hover {
+.adventures .filterAction button:hover {
     background-color: #eae6de;
 }
-.filters {
+.adventures .filters {
     overflow-y: auto;
     scrollbar-gutter: stable;
 }
-.filter {
+.adventures .filter {
     border-bottom: 1px solid black;
     padding: 5px 10px;
     margin-top: 10px;
 }
-.filterBy {
+.adventures .filterBy {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-.filterOption {
+.adventures .filterOption {
     padding: 2px 10px;
     line-height: 2;
     margin: 5px 0px;
 }
-.filterOption label {
+.adventures .filterOption label {
     display: flex;
     width: 100%;
     justify-content: space-between;
 }
-.filterOption input {
+.adventures .filterOption input {
     accent-color: #6b1d2f;
 }
-.filterOption label:hover {
+.adventures .filterOption label:hover {
     cursor: pointer;
 }
 
 
 /* Screen size */
 @media (max-width: 992px) {
-    .adventures h1 {
-        margin-bottom: 0px;
-    }
     .adventures main {
         flex-direction: column;
         align-items: end;
@@ -139,15 +118,15 @@
     .adventures .mapCard {
         width: 100%;
     }
-    .desktopFilter {
+    .adventures .desktopFilter {
         display: none;
     }
-    .settings .filterToggle {
+    .adventures .filterToggle {
         display: block;
     }
 
     /* FILTER */
-    .mobileFilter {
+    .adventures .mobileFilter {
         display: block;
         transform: translateY(100%);
         height: 55vh;
@@ -165,22 +144,16 @@
         backdrop-filter: blur(10px);
         transition: all 0.4s;
     }
-    .mobileFilterContent {
+    .adventures .mobileFilterContent {
         height: 100%;
         padding: 10px 25px 10px;
         display: flex;
         flex-direction: column;
     }
-    .filterClose {
+    .adventures .filterClose {
         display: block;
     }
-    .openFilter {
+    .adventures .openFilter {
         transform: translateY(0);
-    }
-}
-@media (max-width: 500px) {
-    .adventures h1 {
-        font-size: 2.1em;
-        line-height: 1.2;
     }
 }

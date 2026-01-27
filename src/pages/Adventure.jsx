@@ -64,7 +64,7 @@ function Adventure() {
         <>
             <div className="filterHeader">
                 <div className="filterTitle">
-                    <h2>Filter</h2>
+                    <h3>Filter</h3>
                     <button className='filterClose' onClick={() => setShowFilters(false)}>
                         <img src="/icon/cancel-01-stroke-rounded.svg" alt="" />
                     </button>

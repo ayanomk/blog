@@ -326,7 +326,7 @@ export const mockData = [
                             {
                                 type: "img",
                                 dir: "imgV3",
-                                src: "/img/skin_name.png"
+                                src: "/img/skin_name.webp"
                             },
                             {
                                 type: "text",
