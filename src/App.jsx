@@ -4,6 +4,7 @@ import Adventure from './pages/Adventure';
 import Blog from './pages/Blog';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 
 import "./App.css";
 import "leaflet/dist/leaflet.css";
@@ -12,6 +13,8 @@ function App() {
   return (
     <>
       <Navbar />
+
+      <ScrollToTop />
 
       <Routes>
         <Route path="/" element={<Home />} />

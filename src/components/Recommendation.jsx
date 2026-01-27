@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { mockData } from '../data/mockData.js';
 import './Recommendation.css';
 
@@ -11,14 +12,14 @@ import './Recommendation.css';
 const blogCardMaker = (blog, idx, type) => {
     return (
         <div className="card" key={idx}>
-            <a href={`/blog/${blog.id}`}>
+            <Link to={`/blog/${blog.id}`}>
                 <img src={blog.hero} alt="" loading="lazy" />
                 <div className="cardInfo">
                     <h3>{blog.title}{blog.day > 0 ? `: Day ${blog.day}` : null}</h3>
                     <p>{blog.city}, {blog.country}</p>
                     <p>{blog.year}/{blog.month}/{blog.date}</p>
                 </div>
-            </a>
+            </Link>
         </div>
     )
 }
