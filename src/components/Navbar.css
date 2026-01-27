@@ -37,3 +37,9 @@ nav .nav-items a::after {
 nav .nav-items a:hover::after {
     width: 100%;
 }
+nav .active {
+    color: #6b1d2f;
+}
+nav .nav-items a.active::after {
+    width: 100%;
+}
