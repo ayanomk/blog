@@ -3,24 +3,28 @@ nav {
     height: 60px;
     width: 100%;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: right;
     background-color: #eae6e0;
     box-shadow: 0 0 5px #b0aba3;
     z-index: 1;
+    padding: 3px 15px;
 }
-nav a {
-    font-size: 1.1rem;
-    margin: 1%;
+nav .logo {
+    height: 100%;
+    padding-left: 10px;
+}
+nav .nav-items a {
+    margin: 0px 10px;
     padding: 10px;
     position: relative;
     transition: all 0.3s;
 }
-nav a:hover {
+nav .nav-items a:hover {
     color: #6b1d2f;
 }
 
-nav a::after {
+nav .nav-items a::after {
     content: "";
     position: absolute;
     left: 0;
@@ -30,6 +34,12 @@ nav a::after {
     background: #6b1d2f;
     transition: width 0.3s;
 }
-nav a:hover::after {
+nav .nav-items a:hover::after {
+    width: 100%;
+}
+nav .active {
+    color: #6b1d2f;
+}
+nav .nav-items a.active::after {
     width: 100%;
 }
