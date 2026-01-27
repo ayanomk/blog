@@ -60,7 +60,7 @@
 // test2-logo
 function Logo() {
     return (
-        <svg width="100%" height="100%" viewBox="0 0 32 11" style={{fillRule:"evenodd", clipRule:"evenodd", strokeLinejoin:"round", strokeMiterlimit:"2"}}>
+        <svg width="auto" height="100%" viewBox="0 0 32 11" style={{fillRule:"evenodd", clipRule:"evenodd", strokeLinejoin:"round", strokeMiterlimit:"2"}}>
             <g transform="matrix(1,0,0,1,-32.047,-35.9556)">
                 <g transform="matrix(1,0,0,1,7.74675,11.3481)">
                     <g transform="matrix(0.99735,0,0,0.99735,-0.533367,2.31731)">
