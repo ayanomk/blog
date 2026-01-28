@@ -9,19 +9,46 @@ app.use(express.json());
 
 // GET all posts
 app.get("/api/blogs", (req, res) => {
-    res.json(posts);
+    // fail
+    if (!posts) return notFoundError(res, "No blogs found");
+    //success
+    return success(res, "All blogs fetched successfully", posts);
 });
 
 // GET single post by id
 app.get("/api/blogs/:id", (req, res) => {
     // FIXME! == or ===
     const post = posts.find(p => p.id == req.params.id);
-    if (!post) {
-        return res.status(404).json({ error: "Blog not found" });
-    }
-    res.json(post);
+    // fail
+    if (!post) return notFoundError(res, `Blog ID: ${req.params.id} not found`);
+    // success
+    return success(res, `Blog ID: ${req.params.id} fetched successfully`, post);
 })
 
 app.listen(3000, () => {
     console.log("Backend running on http://localhost:3000");
 })
+
+
+// response helpers
+const success = (res, message, data, code = 200) => {
+    res.status(code).json({
+        status: "success",
+        message,
+        data
+    })
+};
+const notFoundError = (res, message, code = 404) => {
+    res.status(code).json({
+        status: "error",
+        message,
+        data: null
+    })
+};
+const badRequestError = (res, message, code = 400) => {
+    res.status(code).json({
+        status: "error",
+        message,
+        data: null
+    })
+};
