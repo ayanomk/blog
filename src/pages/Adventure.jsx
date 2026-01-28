@@ -48,7 +48,9 @@ function Adventure() {
     useEffect(() => {
         fetch("http://localhost:3000/api/blogs")
             .then(res => res.json())
-            .then(data => setAllBlogs(data));
+            .then(result => {
+                if (result.status == "success") setAllBlogs(result.data);
+            });
     }, []);
 
     // filter option lists

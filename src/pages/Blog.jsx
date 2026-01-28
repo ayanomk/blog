@@ -44,7 +44,9 @@ function Blog() {
     useEffect(() => {
         fetch(`http://localhost:3000/api/blogs/${id}`)
             .then(res => res.json())
-            .then(data => setBlogData(data));
+            .then(result => {
+                if (result.status == "success") setBlogData(result.data);
+            });
     }, [id])
     // FIXME! how to handle error case?
     if (!blogData) return <p>Blog not found...</p>
