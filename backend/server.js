@@ -14,7 +14,8 @@ app.get("/api/blogs", (req, res) => {
 
 // GET single post by id
 app.get("/api/blogs/:id", (req, res) => {
-    const post = posts.find(p => p.id === req.params.id);
+    // FIXME! == or ===
+    const post = posts.find(p => p.id == req.params.id);
     if (!post) {
         return res.status(404).json({ error: "Blog not found" });
     }
