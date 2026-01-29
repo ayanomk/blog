@@ -2,28 +2,53 @@ const express = require("express");
 const cors = require("cors");
 const posts = require("./data/mockData.json");
 
+const { errorHandler } = require("./middleware/errorHandler");
+
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
 // GET all posts
-app.get("/api/blogs", (req, res) => {
-    // fail
-    if (!posts) return notFoundError(res, "No blogs found");
-    //success
-    return success(res, "All blogs fetched successfully", posts);
+app.get("/api/blogs", async (req, res, next) => {
+    try {
+        // FIXME! switch after connecting to db
+        // const data = await posts.findAll();
+        const data = posts;
+        // fail
+        if (!data) {
+            const err = new Error("No blogs found");
+            err.status = 404;
+            throw err;
+        }
+        //success
+        success(res, `All blog fetched successfully`, data);
+    } catch (err) {
+        next(err);
+    }
 });
 
 // GET single post by id
-app.get("/api/blogs/:id", (req, res) => {
-    // FIXME! == or ===
-    const post = posts.find(p => p.id == req.params.id);
-    // fail
-    if (!post) return notFoundError(res, `Blog ID: ${req.params.id} not found`);
-    // success
-    return success(res, `Blog ID: ${req.params.id} fetched successfully`, post);
+app.get("/api/blogs/:id", async (req, res, next) => {
+    try {
+        // FIXME! switch after connecting to db
+        // const data = await posts.findById(req.params.id);
+        const data = posts.find(p => p.id == req.params.id);
+        // fail
+        if (!data) {
+            const err = new Error(`Blog ID: ${req.params.id} not found`);
+            err.status = 404;
+            throw err;
+        }
+        //success
+        success(res, `Blog ID: ${req.params.id} fetched successfully`, data);
+    } catch (err) {
+        next(err);
+    }
 })
+
+// ERROR
+app.use(errorHandler);
 
 app.listen(3000, () => {
     console.log("Backend running on http://localhost:3000");
@@ -36,19 +61,5 @@ const success = (res, message, data, code = 200) => {
         status: "success",
         message,
         data
-    })
-};
-const notFoundError = (res, message, code = 404) => {
-    res.status(code).json({
-        status: "error",
-        message,
-        data: null
-    })
-};
-const badRequestError = (res, message, code = 400) => {
-    res.status(code).json({
-        status: "error",
-        message,
-        data: null
     })
 };
