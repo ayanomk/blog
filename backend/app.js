@@ -5,6 +5,7 @@ const posts = require("./data/mockData.json");
 const { errorHandler } = require("./middleware/errorHandler.js");
 const { asyncWrapper } = require("./utils/asyncWrapper.js");
 const { response } = require("./utils/response.js");
+const AppError = require("./utils/AppError.js");
 
 const app = express();
 
@@ -17,11 +18,7 @@ app.get("/api/blogs", asyncWrapper(async (req, res) => {
     // const data = await posts.findAll();
     const data = posts;
     // fail
-    if (!data || data.length === 0) {
-        const err = new Error("No blogs found");
-        err.status = 404;
-        throw err;
-    }
+    if (!data || data.length === 0) throw new AppError("No blogs found", 404);
     // success
     response(res, 200, 'success', `All blog fetched successfully`, data);
 }));
@@ -32,11 +29,7 @@ app.get("/api/blogs/:id", asyncWrapper(async (req, res) => {
     // const data = await posts.findById(req.params.id);
     const data = posts.find(p => p.id == req.params.id);
     // fail
-    if (!data) {
-        const err = new Error(`Blog ID: ${req.params.id} not found`);
-        err.status = 404;
-        throw err;
-    }
+    if (!data) throw new AppError(`Blog ID: ${req.params.id} not found`, 404);
     //success
     response(res, 200, 'success', `Blog ID: ${req.params.id} fetched successfully`, data);
 }))

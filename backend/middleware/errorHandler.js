@@ -5,7 +5,7 @@ const errorHandler = (err, req, res, next) => {
 
     const code = err.statusCode || 500;
     
-    response(res, code, 'error', err.message || "Internal server error", null);
+    response(res, code, 'error', err.message || "Internal server error", err.data || null);
 };
 
 module.exports = { errorHandler };
