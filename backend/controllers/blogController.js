@@ -1,5 +1,5 @@
 const AppError = require("../utils/AppError");
-const { response } = require("../utils/response.js");
+const { successResponse } = require("../utils/response.js");
 
 const posts = require("../data/mockData.json");
 
@@ -15,7 +15,7 @@ const getAllBlogs = async (req, res) => {
     // fail
     if (!data || data.length === 0) throw new AppError("No blogs found", 404);
     // success
-    response(res, 200, 'success', `All blog fetched successfully`, data);
+    successResponse(res, `All blog fetched successfully`, data);
 };
 
 const getBlogById = async (req, res) => {
@@ -27,7 +27,7 @@ const getBlogById = async (req, res) => {
     // fail
     if (!data) throw new AppError(`Blog ID: ${id} not found`, 404);
     // success
-    response(res, 200, 'success', `Blog ID: ${id} fetched successfully`, data);
+    successResponse(res, `Blog ID: ${id} fetched successfully`, data);
 };
 
 module.exports = {

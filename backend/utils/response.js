@@ -1,10 +1,18 @@
 // response helpers
-const response = (res, code, status, message, data) => {
-    res.status(code).json({
-        status,
+const successResponse = (res, message, data) => {
+    res.status(200).json({
+        status: 'success',
         message,
         data
     })
 };
 
-module.exports = { response };
+const failResponse = (res, code = 500, message, data = null) => {
+    res.status(code).json({
+        status: 'fail',
+        message,
+        data
+    })
+};
+
+module.exports = { successResponse, failResponse };

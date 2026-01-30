@@ -1,11 +1,11 @@
-const { response } = require("../utils/response.js");
+const { failResponse } = require("../utils/response.js");
 
 const errorHandler = (err, req, res, next) => {
     console.error(err);
 
     const code = err.statusCode || 500;
     
-    response(res, code, 'error', err.message || "Internal server error", err.data || null);
+    failResponse(res, code, err.message || "Internal server error", err.data);
 };
 
 module.exports = { errorHandler };
