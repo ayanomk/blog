@@ -1,28 +1,33 @@
 const AppError = require("../utils/AppError");
+const { response } = require("../utils/response.js");
+
 const posts = require("../data/posts");
 
 /**
  * GET
  * @returns blog data
  */
-const getAllBlogs = async () => {
+const getAllBlogs = async (req, res) => {
     // FIXME! switch after connecting to db
     // const data = await posts.findAll();
     const data = posts;
 
+    // fail
     if (!data || data.length === 0) throw new AppError("No blogs found", 404);
-
-    return data;
+    // success
+    response(res, 200, 'success', `All blog fetched successfully`, allBlogs);
 };
 
-const getBlogById = async (id) => {
+const getBlogById = async (req, res) => {
+    const id = req.params.id;
     // FIXME! switch after connecting to db
     // const data = await posts.findById(id);
     const data = posts.find(p => p.id === Number(id));
 
+    // fail
     if (!data) throw new AppError(`Blog ID: ${id} not found`, 404);
-
-    return data;
+    // success
+    response(res, 200, 'success', `Blog ID: ${id} fetched successfully`, data);
 };
 
 module.exports = {
