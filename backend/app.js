@@ -4,6 +4,7 @@ const posts = require("./data/mockData.json");
 
 const { errorHandler } = require("./middleware/errorHandler.js");
 const { asyncWrapper } = require("./utils/asyncWrapper.js");
+const { response } = require("./utils/response.js");
 
 const app = express();
 
@@ -22,7 +23,7 @@ app.get("/api/blogs", asyncWrapper(async (req, res) => {
         throw err;
     }
     // success
-    success(res, `All blog fetched successfully`, data);
+    response(res, 200, 'success', `All blog fetched successfully`, data);
 }));
 
 // GET single post by id
@@ -37,7 +38,7 @@ app.get("/api/blogs/:id", asyncWrapper(async (req, res) => {
         throw err;
     }
     //success
-    success(res, `Blog ID: ${req.params.id} fetched successfully`, data);
+    response(res, 200, 'success', `Blog ID: ${req.params.id} fetched successfully`, data);
 }))
 
 // ERROR
@@ -46,13 +47,3 @@ app.use(errorHandler);
 app.listen(3000, () => {
     console.log("Backend running on http://localhost:3000");
 })
-
-
-// response helpers
-const success = (res, message, data, code = 200) => {
-    res.status(code).json({
-        status: "success",
-        message,
-        data
-    })
-};
