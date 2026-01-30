@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom"
+import { useEffect, useState } from 'react';
 import './Blog.css';
-import { mockData } from '../data/mockData.js';
 import Recommendation from '../components/Recommendation.jsx'
 
 // Create HTML
@@ -38,29 +38,38 @@ const htmlRenderer = (block, blockIdx) => {
 
 // JSX
 function Blog() {
+    // get id and blog data for that id
     const { id } = useParams();
-    const data = mockData.find(d => d.id === parseInt(id));
-    if (!data) return <p>Blog not found...</p>
+    const [blogData, setBlogData] = useState();
+    useEffect(() => {
+        fetch(`http://localhost:3000/api/blogs/${id}`)
+            .then(res => res.json())
+            .then(result => {
+                if (result.status == "success") setBlogData(result.data);
+            });
+    }, [id])
+    // FIXME! how to handle error case?
+    if (!blogData) return <p>Blog not found...</p>
 
     return (
         <article className="blog">
             <header>
                 <div className="title">
                     <div className='mainTitle'>
-                        <h1>{data.title}</h1>
-                        <p>{data.description}</p>
+                        <h1>{blogData.title}</h1>
+                        <p>{blogData.description}</p>
                     </div>
                     <div className='dateLocation'>
-                        <p>{`${data.city}, ${data.country}`}</p>
-                        <p>{`${data.year}/${data.month}/${data.date}`}</p>
+                        <p>{`${blogData.city}, ${blogData.country}`}</p>
+                        <p>{`${blogData.year}/${blogData.month}/${blogData.date}`}</p>
                     </div>
                 </div>
-                <img className='heroImg' src={data.hero} alt="" loading="lazy" />
+                <img className='heroImg' src={blogData.hero} alt="" loading="lazy" />
             </header>
 
             <main>
                 
-                {data.sections.map((section, idx) => {
+                {blogData.sections.map((section, idx) => {
                     // left side info panel
                     if (section.sectionType == "info") {
                         return (
@@ -96,8 +105,8 @@ function Blog() {
                     }
                 })}
             </main>
-            <Recommendation data={data} type="related" />
-            <Recommendation data={data} type="similar" />
+            <Recommendation blog={blogData} type="related" />
+            <Recommendation blog={blogData} type="similar" />
         </article>
     )
 }

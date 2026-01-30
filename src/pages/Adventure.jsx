@@ -1,11 +1,7 @@
 import './Adventure.css';
 import Map from '../components/Map.jsx';
 import Recommendation from '../components/Recommendation.jsx';
-import { useState } from 'react';
-import { mockData } from '../data/mockData.js';
-
-const tripYears = [...new Set(mockData.map((t) => t.year))].sort((a, b) => a - b);
-const tripRegions = ["Asia", "Oceania", "Europe", "Africa", "North America"];
+import { useEffect, useState } from 'react';
 
 /**
  * 
@@ -47,16 +43,30 @@ const filterMaker = (filterBy, filterOptions, state, setState, expandState, setE
  * @returns JSX
  */
 function Adventure() {
+    // get all blog data from backend
+    const [allBlogs, setAllBlogs] = useState([]);
+    useEffect(() => {
+        fetch("http://localhost:3000/api/blogs")
+            .then(res => res.json())
+            .then(result => {
+                if (result.status == "success") setAllBlogs(result.data);
+            });
+    }, []);
 
-    // filter markers
+    // filter option lists
+    const tripYears = [...new Set(allBlogs.map((t) => t.year))].sort((a, b) => a - b);
+    const tripRegions = ["Asia", "Oceania", "Europe", "Africa", "North America"];
+
+    // filter out blogs
     const [yearFilter, setYearFilter] = useState([]);
     const [regionFilter, setRegionFilter] = useState([]);
-    const filteredTrips = mockData.filter( trip => {
+    const filteredTrips = allBlogs.filter( trip => {
         const yearMatch = yearFilter.length == 0 || yearFilter.includes(trip.year);
         const regionMatch = regionFilter.length == 0 || regionFilter.includes(trip.region);
         return yearMatch && regionMatch;
     });
 
+    // filter options display
     const [showFilters, setShowFilters] = useState(false);
     const [yearExpand, setYearExpand] = useState(false);
     const [regionExpand, setRegionExpand] = useState(false);
@@ -126,7 +136,7 @@ function Adventure() {
                 </div>
                 <div className="mapCard" style={{display: viewState ? 'none' : 'block'}}>
                     {regionFiltered.map((region, idx) => {
-                        return <Recommendation data={region} type={"map"} key={idx} />
+                        return <Recommendation blog={region} type={"map"} key={idx} />
                     })}
                 </div>
 
