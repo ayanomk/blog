@@ -1,7 +1,7 @@
 const AppError = require("../utils/AppError");
 const { response } = require("../utils/response.js");
 
-const posts = require("../data/posts");
+const posts = require("../data/mockData.json");
 
 /**
  * GET
@@ -15,7 +15,7 @@ const getAllBlogs = async (req, res) => {
     // fail
     if (!data || data.length === 0) throw new AppError("No blogs found", 404);
     // success
-    response(res, 200, 'success', `All blog fetched successfully`, allBlogs);
+    response(res, 200, 'success', `All blog fetched successfully`, data);
 };
 
 const getBlogById = async (req, res) => {
