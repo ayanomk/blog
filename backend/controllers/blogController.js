@@ -4,8 +4,8 @@ const { successResponse } = require("../utils/response.js");
 const posts = require("../data/mockData.json");
 
 /**
- * GET
- * @returns blog data
+ * GET ALL BLOGS
+ * @returns all blogs data
  */
 const getAllBlogs = async (req, res) => {
     // FIXME! switch after connecting to db
@@ -18,6 +18,12 @@ const getAllBlogs = async (req, res) => {
     successResponse(res, `All blog fetched successfully`, data);
 };
 
+/**
+ * GET SINGLE BLOG DATA BY ID
+ * @param {*} req params.id of blog
+ * @param {*} res 
+ * @returns single blog data
+ */
 const getBlogById = async (req, res) => {
     const id = req.params.id;
     // FIXME! switch after connecting to db
