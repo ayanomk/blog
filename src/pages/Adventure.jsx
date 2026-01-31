@@ -2,6 +2,7 @@ import './Adventure.css';
 import Map from '../components/Map.jsx';
 import Recommendation from '../components/Recommendation.jsx';
 import { useEffect, useState } from 'react';
+import { getAllBlogs } from '../services/blogService.js';
 
 /**
  * 
@@ -46,11 +47,11 @@ function Adventure() {
     // get all blog data from backend
     const [allBlogs, setAllBlogs] = useState([]);
     useEffect(() => {
-        fetch("http://localhost:3000/api/blogs")
-            .then(res => res.json())
-            .then(result => {
-                if (result.status == "success") setAllBlogs(result.data);
-            });
+        getAllBlogs()
+            .then((data) => {
+                setAllBlogs(data);
+            })
+            .catch(err => console.log(err));
     }, []);
 
     // filter option lists

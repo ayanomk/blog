@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom"
 import { useEffect, useState } from 'react';
 import './Blog.css';
 import Recommendation from '../components/Recommendation.jsx'
+import { getBlogById } from "../services/blogService.js";
 
 // Create HTML
 const htmlRenderer = (block, blockIdx) => {
@@ -42,11 +43,9 @@ function Blog() {
     const { id } = useParams();
     const [blogData, setBlogData] = useState();
     useEffect(() => {
-        fetch(`http://localhost:3000/api/blogs/${id}`)
-            .then(res => res.json())
-            .then(result => {
-                if (result.status == "success") setBlogData(result.data);
-            });
+        getBlogById(id)
+            .then(setBlogData)
+            .catch(err => console.log(err));
     }, [id])
     // FIXME! how to handle error case?
     if (!blogData) return <p>Blog not found...</p>
