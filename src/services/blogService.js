@@ -1,5 +1,7 @@
+import { API_BASE } from './apiConfig.js';
+
 export const getAllBlogs = async () => {
-    const res = await fetch("http://localhost:3000/api/blogs");
+    const res = await fetch(`${API_BASE}/blogs`);
     const result = await res.json();
 
     if (result.status === "fail") throw result;
@@ -7,7 +9,7 @@ export const getAllBlogs = async () => {
 };
 
 export const getBlogById = async (id) => {
-    const res = await fetch(`http://localhost:3000/api/blogs/${id}`);
+    const res = await fetch(`${API_BASE}/blogs/${id}`);
     const result = await res.json();
 
     if (result.status === "fail") throw result;
