@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom"
 import { useEffect, useState } from 'react';
 import './Blog.css';
 import Recommendation from '../components/Recommendation.jsx'
-import { getBlogById } from "../services/blogService.js";
+import { getBlogById, getBlogsByFilter } from "../services/blogService.js";
 
 // Create HTML
 const htmlRenderer = (block, blockIdx) => {
@@ -41,12 +41,34 @@ const htmlRenderer = (block, blockIdx) => {
 function Blog() {
     // get id and blog data for that id
     const { id } = useParams();
+
+    // get blog data
     const [blogData, setBlogData] = useState();
+    const [relatedBlogData, setRelatedBlogData] = useState();
+    const [similarBlogData, setSimilarBlogData] = useState();
     useEffect(() => {
+        setBlogData(null);
+        setRelatedBlogData([]);
+        setSimilarBlogData([]);
+
         getBlogById(id)
             .then(setBlogData)
             .catch(err => console.log(err));
-    }, [id])
+    }, [id]);
+
+    // get relevant blog data
+    useEffect(() => {
+        if (!blogData) return;
+
+        getBlogsByFilter({ excludeId: id, tripId: blogData.tripId })
+            .then(setRelatedBlogData)
+            .catch(err => console.log(err));
+            
+        getBlogsByFilter({ excludeId: id, excludeTripId: blogData.tripId, country: blogData.country })
+            .then(setSimilarBlogData)
+            .catch(err => console.log(err));
+    }, [blogData])
+        
     // FIXME! how to handle error case?
     if (!blogData) return <p>Blog not found...</p>
 
@@ -104,8 +126,8 @@ function Blog() {
                     }
                 })}
             </main>
-            <Recommendation blog={blogData} type="related" />
-            <Recommendation blog={blogData} type="similar" />
+            <Recommendation blogs={relatedBlogData} type="related" />
+            <Recommendation blogs={similarBlogData} type="similar" />
         </article>
     )
 }
