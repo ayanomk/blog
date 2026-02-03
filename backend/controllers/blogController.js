@@ -36,7 +36,30 @@ const getBlogById = async (req, res) => {
     successResponse(res, `Blog ID: ${id} fetched successfully`, data);
 };
 
+/**
+ * GET FILTERED BLOGS BY QUERY
+ * @param {*} req query
+ * @param {*} res 
+ * @returns filtered (multiple) blog data 
+ */
+const getBlogsByFilter = async (req, res) => {
+    const {excludeId, tripId, country, region} = req.query;
+
+    let data;
+    if (country) {
+        data = posts.filter(p => p.country === country && p.id !== Number(excludeId) && p.tripId !== tripId)
+    } else {
+        data = posts.filter(p => p.tripId === tripId && p.id !== Number(excludeId));
+    };
+
+    // fail
+    if (!data || data.length === 0) throw new AppError("No blogs found", 404);
+    // success
+    successResponse(res, `All blog fetched successfully`, data);
+}
+
 module.exports = {
     getAllBlogs,
-    getBlogById
+    getBlogById,
+    getBlogsByFilter
 };

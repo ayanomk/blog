@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import './Recommendation.css';
 
+import { getBlogsByFilter } from '../services/blogService.js';
+
 /**
  * 
  * @param {*} blog 
@@ -30,33 +32,37 @@ const blogCardMaker = (blog, idx, type) => {
  * @returns html group of blog link cards with header
  */
 function Recommendation ({blog, type}) {
-    // find blogs to display as cards 
-    let recommended = [];
-    // map: all blog posts provided in param (already filtered list)
-    if (type === "map") recommended = blog;
-    else {
-        const [allBlogs, setAllBlogs] = useState([]);
-        useEffect(() => {
-            fetch("http://localhost:3000/api/blogs")
-                .then((res) => res.json())
-                .then(result => {
-                    if (result.status == "success") setAllBlogs(result.data);
-                });
-        }, []);
 
-        allBlogs.map((d) => {
-            // related: same tripId as the currently shown blog post
-            if (type === "related" && d.tripId === blog.tripId && d.id !== blog.id) {
-                recommended.push(d)
-            // similar: same country blog post as the currently shown one
-            } else if (type === "similar" && d.country === blog.country && d.id !== blog.id && d.tripId !== blog.tripId) {
-                recommended.push(d)
-            };
-        });
+    const query = {
+        excludeId: blog.id,
+        tripId: blog.tripId,
+        country: blog.country
+    };
+
+    const [filteredBlogs, setFilteredBlogs] = useState([]);
+
+    if (type === "related") {
+        const { country, ...related } = query;
+        useEffect(() => {
+            getBlogsByFilter(related)
+                .then(setFilteredBlogs);
+        }, [])
+    }
+    if (type === "similar") {
+        useEffect(() => {
+            getBlogsByFilter(query)
+                .then(setFilteredBlogs);
+        }, [])
+    }
+    // map: all blog posts provided in param (already filtered list)
+    if (type === "map") {
+        useEffect(() => {
+            setFilteredBlogs(blog);
+        }, [])
     }
 
     // display recommendation cards if found
-    if (recommended.length) {
+    if (filteredBlogs.length) {
         let blogsHeader;
         switch (type) {
             case "related":
@@ -75,7 +81,7 @@ function Recommendation ({blog, type}) {
             <div className="recommended">
                 <h2>{blogsHeader}</h2>
                 <div className="recommendedCards">
-                    {recommended.map((blog, idx) => {
+                    {filteredBlogs.map((blog, idx) => {
                         return blogCardMaker(blog, idx, type);
                     })}
                 </div>
