@@ -1,15 +1,13 @@
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import './Recommendation.css';
 
 /**
  * 
  * @param {*} blog 
  * @param {*} idx 
- * @param {*} type type of recommendation
  * @returns html blog link card 
  */
-const blogCardMaker = (blog, idx, type) => {
+const blogCardMaker = (blog, idx) => {
     return (
         <div className="card" key={idx}>
             <Link to={`/blog/${blog.id}`}>
@@ -26,47 +24,22 @@ const blogCardMaker = (blog, idx, type) => {
 
 /**
  * 
- * @param {*} param0 blog: blog data,type: type of recommendation
+ * @param {*} param0 blogs: blog data,type: type of recommendation
  * @returns html group of blog link cards with header
  */
-function Recommendation ({blog, type}) {
-    // find blogs to display as cards 
-    let recommended = [];
-    // map: all blog posts provided in param (already filtered list)
-    if (type === "map") recommended = blog;
-    else {
-        const [allBlogs, setAllBlogs] = useState([]);
-        useEffect(() => {
-            fetch("http://localhost:3000/api/blogs")
-                .then((res) => res.json())
-                .then(result => {
-                    if (result.status == "success") setAllBlogs(result.data);
-                });
-        }, []);
-
-        allBlogs.map((d) => {
-            // related: same tripId as the currently shown blog post
-            if (type === "related" && d.tripId === blog.tripId && d.id !== blog.id) {
-                recommended.push(d)
-            // similar: same country blog post as the currently shown one
-            } else if (type === "similar" && d.country === blog.country && d.id !== blog.id && d.tripId !== blog.tripId) {
-                recommended.push(d)
-            };
-        });
-    }
-
+function Recommendation ({blogs = [], type}) {
     // display recommendation cards if found
-    if (recommended.length) {
+    if (blogs.length) {
         let blogsHeader;
         switch (type) {
             case "related":
                 blogsHeader = "Related blogs";
                 break;
             case "similar":
-                blogsHeader = `More travel blogs in ${blog.country}`;
+                blogsHeader = `More travel blogs in ${blogs[0].country}`;
                 break;
             case "map":
-                blogsHeader = recommended[0].region;
+                blogsHeader = blogs[0].region;
             default:
                 break;
         }
@@ -75,8 +48,8 @@ function Recommendation ({blog, type}) {
             <div className="recommended">
                 <h2>{blogsHeader}</h2>
                 <div className="recommendedCards">
-                    {recommended.map((blog, idx) => {
-                        return blogCardMaker(blog, idx, type);
+                    {blogs.map((blog, idx) => {
+                        return blogCardMaker(blog, idx);
                     })}
                 </div>
             </div>

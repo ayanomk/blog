@@ -25,4 +25,26 @@ export const getBlogById = async (id) => {
     return result.data;
 }
 
+/**
+ * GET FILTERED BLOGS BY QUERY
+ * @returns 
+ */
+export const getBlogsByFilter = async (query = {}) => {
+    const queries = new URLSearchParams();
 
+    Object.entries(query).forEach(([key, value]) => {
+        if(Array.isArray(value)) {
+            value.forEach((val) => {
+                queries.append(key, val);
+            });
+        } else if (value !== undefined && value !== null) {
+            queries.append(key, value);
+        }
+    });
+
+    const res = await fetch(`${API_BASE}/blogs/filter?${queries.toString()}`);
+    const result = await res.json();
+
+    if (result.status === "fail") throw result;
+    return result.data;
+}

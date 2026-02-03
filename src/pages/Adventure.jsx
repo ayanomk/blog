@@ -2,7 +2,7 @@ import './Adventure.css';
 import Map from '../components/Map.jsx';
 import Recommendation from '../components/Recommendation.jsx';
 import { useEffect, useState } from 'react';
-import { getAllBlogs } from '../services/blogService.js';
+import { getAllBlogs, getBlogsByFilter } from '../services/blogService.js';
 
 /**
  * 
@@ -48,24 +48,31 @@ function Adventure() {
     const [allBlogs, setAllBlogs] = useState([]);
     useEffect(() => {
         getAllBlogs()
-            .then((data) => {
-                setAllBlogs(data);
-            })
-            .catch(err => console.log(err));
+        .then((data) => {
+            setAllBlogs(data);
+        })
+        .catch(err => console.log(err));
     }, []);
-
+    
     // filter option lists
     const tripYears = [...new Set(allBlogs.map((t) => t.year))].sort((a, b) => a - b);
     const tripRegions = ["Asia", "Oceania", "Europe", "Africa", "North America"];
-
+    
     // filter out blogs
     const [yearFilter, setYearFilter] = useState([]);
     const [regionFilter, setRegionFilter] = useState([]);
-    const filteredTrips = allBlogs.filter( trip => {
-        const yearMatch = yearFilter.length == 0 || yearFilter.includes(trip.year);
-        const regionMatch = regionFilter.length == 0 || regionFilter.includes(trip.region);
-        return yearMatch && regionMatch;
-    });
+    
+    const [filteredBlogs, setFilteredBlogs] = useState([]);
+    useEffect(() => {
+        getBlogsByFilter({ years: yearFilter, regions: regionFilter })
+            .then((data) => {
+                setFilteredBlogs(data);
+            })
+            .catch(err => {
+                console.log(err);
+                setFilteredBlogs([]);
+            });
+    }, [yearFilter, regionFilter]);
 
     // filter options display
     const [showFilters, setShowFilters] = useState(false);
@@ -97,11 +104,11 @@ function Adventure() {
 
     // filter by region to display cards
     const regionFiltered = [];
-    regionFiltered.push(filteredTrips.filter((t) => t.region == "Asia"));
-    regionFiltered.push(filteredTrips.filter((t) => t.region == "Oceania"));
-    regionFiltered.push(filteredTrips.filter((t) => t.region == "Europe"));
-    regionFiltered.push(filteredTrips.filter((t) => t.region == "Africa"));
-    regionFiltered.push(filteredTrips.filter((t) => t.region == "North America"));
+    regionFiltered.push(filteredBlogs.filter((t) => t.region == "Asia"));
+    regionFiltered.push(filteredBlogs.filter((t) => t.region == "Oceania"));
+    regionFiltered.push(filteredBlogs.filter((t) => t.region == "Europe"));
+    regionFiltered.push(filteredBlogs.filter((t) => t.region == "Africa"));
+    regionFiltered.push(filteredBlogs.filter((t) => t.region == "North America"));
 
     // display option: map or card (true = map, false = card)
     const [viewState, setViewState] = useState(true);
@@ -133,11 +140,11 @@ function Adventure() {
                 </div>
 
                 <div className="mapCard" style={{display: viewState ? 'block' : 'none'}}>
-                    <Map trips={filteredTrips} />
+                    <Map trips={filteredBlogs} />
                 </div>
                 <div className="mapCard" style={{display: viewState ? 'none' : 'block'}}>
-                    {regionFiltered.map((region, idx) => {
-                        return <Recommendation blog={region} type={"map"} key={idx} />
+                    {regionFiltered.map((regionBlogs, idx) => {
+                        return <Recommendation blogs={regionBlogs} type={"map"} key={idx} />
                     })}
                 </div>
 
