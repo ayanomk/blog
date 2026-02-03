@@ -30,9 +30,19 @@ export const getBlogById = async (id) => {
  * @returns 
  */
 export const getBlogsByFilter = async (query = {}) => {
-    const queryString = new URLSearchParams(query).toString();
+    const queries = new URLSearchParams();
 
-    const res = await fetch(`${API_BASE}/blogs/filter?${queryString ? queryString : ""}`);
+    Object.entries(query).forEach(([key, value]) => {
+        if(Array.isArray(value)) {
+            value.forEach((val) => {
+                queries.append(key, val);
+            });
+        } else if (value !== undefined && value !== null) {
+            queries.append(key, value);
+        }
+    });
+
+    const res = await fetch(`${API_BASE}/blogs/filter?${queries.toString()}`);
     const result = await res.json();
 
     if (result.status === "fail") throw result;

@@ -43,14 +43,15 @@ const getBlogById = async (req, res) => {
  * @returns filtered (multiple) blog data 
  */
 const getBlogsByFilter = async (req, res) => {
-    const {excludeId, tripId, country, region} = req.query;
-
-    let data;
-    if (country) {
-        data = posts.filter(p => p.country === country && p.id !== Number(excludeId) && p.tripId !== tripId)
-    } else {
-        data = posts.filter(p => p.tripId === tripId && p.id !== Number(excludeId));
-    };
+    const {excludeId, tripId, excludeTripId, country, regions, years} = req.query;
+    
+    let data = posts;
+    if (regions) data = data.filter(p => regions.includes(p.region));
+    if (years) data = data.filter(p => years.includes(p.year));
+    if (excludeId) data = data.filter(p => p.id !== Number(excludeId));
+    if (tripId) data = data.filter(p => p.tripId === tripId);
+    if (excludeTripId) data = data.filter(p => p.tripId !== excludeTripId)
+    if (country) data = data.filter(p => p.country === country );
 
     // fail
     if (!data || data.length === 0) throw new AppError("No blogs found", 404);

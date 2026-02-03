@@ -57,7 +57,8 @@ function Recommendation ({blog, type}) {
     // map: all blog posts provided in param (already filtered list)
     if (type === "map") {
         useEffect(() => {
-            setFilteredBlogs(blog);
+            getBlogsByFilter({ region: "Oceania" })
+                .then(setFilteredBlogs);
         }, [])
     }
 
@@ -72,7 +73,7 @@ function Recommendation ({blog, type}) {
                 blogsHeader = `More travel blogs in ${blog.country}`;
                 break;
             case "map":
-                blogsHeader = recommended[0].region;
+                blogsHeader = filteredBlogs[0].region;
             default:
                 break;
         }
