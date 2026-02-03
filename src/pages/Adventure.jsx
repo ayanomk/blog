@@ -3,41 +3,7 @@ import Map from '../components/Map.jsx';
 import Recommendation from '../components/Recommendation.jsx';
 import { useEffect, useState } from 'react';
 import { getAllBlogs, getBlogsByFilter } from '../services/blogService.js';
-
-/**
- * 
- * @param {*} filterBy string of type of filter
- * @param {*} filterOptions array of filter options to create checkbox
- * @param {*} state useState state to store checked options
- * @param {*} setState useState setState to changed stored options
- * @returns HTML checkboxes
- */
-
-const filterMaker = (filterBy, filterOptions, state, setState, expandState, setExpandState) => {
-
-    return <div className="filter">
-        <div className="filterBy" onClick={() => {
-            setExpandState(!expandState);
-        }}>
-            <h4>{filterBy}</h4>
-            <button><img src="/icon/arrow-down-01-stroke-rounded.svg" alt="" /></button>
-        </div>
-        {filterOptions.map((option) => expandState && (
-            <div className="filterOption" key={option}>
-                <label>{option}
-                    <input type="checkbox" value={option} checked={state.includes(option)} onChange={(e) => {
-                        const value = Number(e.target.value) ? Number(e.target.value) : e.target.value;
-                        if (state.includes(value)) {
-                            setState(state.filter(y => y !== value));
-                        } else {
-                            setState([...state, value]);
-                        }
-                    }} />
-                </label>
-            </div>
-        ))}
-    </div>
-}
+import FilterControls from '../components/Filter.jsx';
 
 /**
  * 
@@ -78,29 +44,25 @@ function Adventure() {
     const [showFilters, setShowFilters] = useState(false);
     const [yearExpand, setYearExpand] = useState(false);
     const [regionExpand, setRegionExpand] = useState(false);
-    const filterControls = () => (
-        <>
-            <div className="filterHeader">
-                <div className="filterTitle">
-                    <h3>Filter</h3>
-                    <button className='filterClose' onClick={() => setShowFilters(false)}>
-                        <img src="/icon/cancel-01-stroke-rounded.svg" alt="" />
-                    </button>
-                </div>
-                <div className="filterAction">
-                    <button className='filterActionClear' onClick={(e) => {
-                        setYearFilter([]);
-                        setRegionFilter([]);
-                    }}>Clear All</button>
-                    {/* <button className='filterActionApply'>Apply</button> */}
-                </div>
-            </div>
-            <div className="filters">
-                {filterMaker("Year", tripYears, yearFilter, setYearFilter, yearExpand, setYearExpand)}
-                {filterMaker("Region", tripRegions, regionFilter, setRegionFilter, regionExpand, setRegionExpand)}
-            </div>
-        </>
-    )
+
+    const filterConfig = [
+        {
+            filterBy: "Year",
+            filterOptions: tripYears,
+            state: yearFilter,
+            setState: setYearFilter,
+            expandState: yearExpand,
+            setExpandState: setYearExpand
+        },
+        {
+            filterBy: "Region",
+            filterOptions: tripRegions,
+            state: regionFilter,
+            setState: setRegionFilter,
+            expandState: regionExpand,
+            setExpandState: setRegionExpand
+        }
+    ];
 
     // filter by region to display cards
     const regionFiltered = [];
@@ -136,7 +98,7 @@ function Adventure() {
                 </div>
 
                 <div className="desktopFilter">
-                    {filterControls()}
+                    {FilterControls(filterConfig, setShowFilters)}
                 </div>
 
                 <div className="mapCard" style={{display: viewState ? 'block' : 'none'}}>
@@ -150,7 +112,7 @@ function Adventure() {
 
                 <div className={`mobileFilter ${showFilters ? 'openFilter' : ''}`}>
                     <div className="mobileFilterContent">
-                        {filterControls()}
+                        {FilterControls(filterConfig, setShowFilters)}
                     </div>
                 </div>
             </main>
