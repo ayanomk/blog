@@ -1,0 +1,68 @@
+.createBlog {
+    /* navbar padding */
+    padding: calc(60px) 8% 0px;
+
+    height: calc(100vh - 35px );
+    background-color: #f0ede8;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    /* overflow-y: auto; */
+    scrollbar-gutter: stable;
+}
+
+.createBlog form {
+    padding: 20px 0px;
+    width: 100%;
+}
+.createBlog input {
+    display: block;
+    padding: 5px 0px;
+    border: none;
+    border-bottom: 1px solid grey;
+    background-color: #f0ede8;
+    width: 100%;
+}
+.createBlog .title {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+.createBlog .mainTitle {
+    width: 75%;
+}
+.createBlog .titleInput {
+    font-size: 4.5rem;
+    text-transform: capitalize;
+    font-family: "IM_Fell_French_Canon_SC", serif;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.createBlog .descripInput {
+    font-size: 1.1em;
+}
+.createBlog .dateLocation {
+    text-align: right;
+    font-size: 0.9em;
+    color: #3e3e3e;
+    width: 18%;
+}
+.createBlog .dateLocation input {
+    text-align: right;
+}
+.createBlog .heroImageInput {
+    width: 25%;
+}
+.createBlog .contentInput {
+    display: flex;
+    justify-content: space-between;
+}
+.createBlog .mainInput {
+    width: 70%;
+    background-color: thistle;
+}
+.createBlog .asideInput {
+    width: 25%;
+    background-color: papayawhip;
+}
