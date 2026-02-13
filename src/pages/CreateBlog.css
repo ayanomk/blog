@@ -67,3 +67,42 @@
     width: 25%;
     background-color: papayawhip;
 }
+
+.createBlog .contentInput {
+    margin-top: 40px;
+}
+/* ASIDE */
+.createBlog .asideInputAdd {
+    text-align: right;
+    position: relative;
+}
+.createBlog .asideInputAdd img {
+    width: 130%;
+    transition: all 0.3s;
+}
+.createBlog .asideInputOptions {
+    display: flex;
+    flex-direction: column;
+    background-color: #dcd7d2;
+    width: 40%;
+    position: absolute;
+    right: 0;
+    border-radius: 10px;
+    padding: 5px;
+
+}
+.createBlog .asideInputOptions button {
+    padding: 12px 0px;
+    border-radius: 10px;
+    transition: all 0.3s;
+}
+.createBlog .asideInputOptions button:hover {
+    box-shadow: 0px 1px 3px #979490;
+}
+
+.createBlog .hidden {
+    display: none;
+}
+.createBlog .rotate {
+    transform: rotate(45deg);
+}

@@ -24,7 +24,6 @@ function CreateBlog() {
         const file = e.target.files[0];
         if (file) {
             if (file.type.startsWith("image/")) {
-                console.log(file);
                 const reader = new FileReader();
                 reader.onloadend = () => {
                     setHeroImage(reader.result);
@@ -34,6 +33,13 @@ function CreateBlog() {
             }
         }
     };
+
+    // Add Block option
+    const [asideOption, setAsideOption] = useState(false);
+    const toggleAsideOption = (e) => {
+        e.preventDefault();
+        setAsideOption(!asideOption);
+    } 
 
     // JSX
     return (
@@ -60,8 +66,14 @@ function CreateBlog() {
 
                 <div className="contentInput">
                     <aside className='asideInput'>
-                        <div>
-                            <button>+</button>
+                        <div className='asideInputAdd'>
+                            <button onClick={toggleAsideOption}>
+                                <img src="../icon/plus-sign-circle-stroke-rounded.svg" alt="" className={!asideOption ? "rotate" : ""} />
+                            </button>
+                            <div className={`asideInputOptions ${asideOption ? "hidden" : ""}`}>
+                                <button value="" >Paragraph</button>
+                                <button value="">Table</button>
+                            </div>
                         </div>
                     </aside>
                     <main className='mainInput'>
