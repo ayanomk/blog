@@ -1,4 +1,5 @@
 import './CreateBlog.css';
+import BlogTable from '../components/BlogTable';
 import { useState } from 'react';
 
 function CreateBlog() {
@@ -66,11 +67,12 @@ function CreateBlog() {
 
                 <div className="contentInput">
                     <aside className='asideInput'>
+                        <BlogTable />
                         <div className='asideInputAdd'>
                             <button onClick={toggleAsideOption}>
-                                <img src="../icon/plus-sign-circle-stroke-rounded.svg" alt="" className={!asideOption ? "rotate" : ""} />
+                                <img src="../icon/plus-sign-circle-stroke-rounded.svg" alt="" className={asideOption ? "rotate" : ""} />
                             </button>
-                            <div className={`asideInputOptions ${asideOption ? "hidden" : ""}`}>
+                            <div className={`asideInputOptions ${asideOption ? "" : "hidden"}`}>
                                 <button value="" >Paragraph</button>
                                 <button value="">Table</button>
                             </div>
