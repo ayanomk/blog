@@ -72,11 +72,11 @@
     margin-top: 40px;
 }
 /* ASIDE */
-.createBlog .asideInputAdd {
+.createBlog .inputAdd {
     text-align: right;
     position: relative;
 }
-.createBlog .asideInputAdd img {
+.createBlog .inputAdd img {
     width: 130%;
     transition: all 0.3s;
 }

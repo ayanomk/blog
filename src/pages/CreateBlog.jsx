@@ -39,6 +39,8 @@ function CreateBlog() {
 
     // ASIDE TABLE DATA
     const addSideTable = (table) => {
+        // CLOSE ASIDE BLOCK OPTION
+        setAsideOption(false);
         // ADD SECTION TO DATA IF NEW SECTION
         addSection({type: 'info', title: 'Information'})
         // ADD DATA
@@ -86,11 +88,15 @@ function CreateBlog() {
         }
     };
 
-    // Add Block option
+    // Add SIDE Block option
     const [asideOption, setAsideOption] = useState(false);
-    const toggleAsideOption = (e) => {
-        e.preventDefault();
+    const toggleAsideOption = () => {
         setAsideOption(!asideOption);
+    }
+    // Add MAIN Block option
+    const [mainOption, setMainOption] = useState(false);
+    const toggleMainOption = () => {
+        setMainOption(!mainOption);
     }
 
     // BLOCKS
@@ -107,9 +113,6 @@ function CreateBlog() {
     // JSX
     return (
         <div className="createBlog">
-            {/* <header>
-                <h1>Create a blog post</h1>
-            </header> */}
 
             <form action="">
                 <div className="title">
@@ -128,6 +131,7 @@ function CreateBlog() {
                 </div>
 
                 <div className="contentInput">
+
                     <aside className='asideInput'>
                         {/* {formData.sections.some(section => section.sectionType === "info") ? <BlogTable /> : "" } */}
                         {formData.sections.map((section, secIdx) =>
@@ -145,8 +149,8 @@ function CreateBlog() {
                                 </> : null
                             )
                         )}
-                        <div className='asideInputAdd'>
-                            <button onClick={toggleAsideOption}>
+                        <div className='inputAdd'>
+                            <button type='button' onClick={toggleAsideOption}>
                                 <img src="../icon/plus-sign-circle-stroke-rounded.svg" alt="" className={asideOption ? "rotate" : ""} />
                             </button>
                             <div className={`asideInputOptions ${asideOption ? "" : "hidden"}`}>
@@ -155,44 +159,25 @@ function CreateBlog() {
                             </div>
                         </div>
                     </aside>
+
                     <main className='mainInput'>
-                        <div>
-                            <button>+</button>
+                        <div className='inputAdd'>
+                            <button type='button' onClick={toggleMainOption}>
+                                <img src="../icon/plus-sign-circle-stroke-rounded.svg" alt="" className={mainOption ? "rotate" : ""} />
+                            </button>
+                            <div className={`asideInputOptions ${mainOption ? "" : "hidden"}`}>
+                                <button value="" type='button'>Paragraph</button>
+                                <button value="" type='button'>Image Horizontal</button>
+                                <button value="" type='button'>Image Vertical x 2</button>
+                                <button value="" type='button'>Image Vertical x 3</button>
+                                {/* <button value="" type='button'>Table</button> */}
+                            </div>
                         </div>
                     </main>
                 </div>
 
             </form>
 
-            {/* <article className="blog">
-                <header>
-                    <div className="title">
-                        <div className='mainTitle'>
-                            <h1>test</h1>
-                            <p>test</p>
-                        </div>
-                        <div className='dateLocation'>
-                            <p>test</p>
-                            <p>test</p>
-                        </div>
-                    </div>
-                    <img className='heroImg' src="" alt="" loading="lazy" />
-                </header>
-
-                <main>
-                    <aside className="" >
-                        <div className='asideSub'>
-                            <h2>test</h2>
-                        </div>
-                    </aside>
-                    <section className="">
-                        <h2>test</h2> 
-                            <div className='subsection'>
-                                <h3>test</h3>
-                            </div>
-                    </section>
-                </main>
-            </article> */}
         </div>
     )
 }
