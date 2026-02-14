@@ -1,68 +1,61 @@
-import { useState } from 'react';
 import './BlogTable.css';
 
-function BlogTable() {
+function BlogTable({tableData, setTableData}) {
     // TABLE TITLE
-    const [tableTitle, setTableTitle] = useState("");
     const handleTitleChange = (e) => {
-        setTableTitle(e.target.value);
+        const newData = { ...tableData, title: e.target.value };
+        setTableData(newData);
+
         e.target.style.height = 'auto';
         e.target.style.height = e.target.scrollHeight + 'px';
     }
 
     // TABLE HEAD DATA
-    const [headData, setHeadData] = useState(['', '']);
-    const handleHeadChange = (val, idx) => {
-        setHeadData(prev => {
-            const newHeadData = [...prev];
-            newHeadData[idx] = val;
-            return newHeadData;
-        })
+    const handleHeadChange = (val, idx) => {        
+        const newHeader = [...tableData.header];
+        newHeader[idx] = val;
+        const newData = { ...tableData, header: newHeader };
+        setTableData(newData);
     };
 
     // TABLE BODY DATA
-    const [rowData, setRowData] = useState([
-        ['', '']
-    ])
     const handleBodyChange = (val, rIdx, cIdx) => {
-        setRowData(prev => {
-            const newRowData = [...prev];
-            newRowData[rIdx] = [...newRowData[rIdx]];
-            newRowData[rIdx][cIdx] = val;
-            return newRowData;
-        })
+        const newRowsData = [...tableData.rows];
+        newRowsData[rIdx][cIdx] = val;
+        const newData = { ...tableData, rows: newRowsData };
+        setTableData(newData);
     };
 
     // ADD ROW
-    const handleAddRow = (e) => {
-        e.preventDefault();
-        setRowData(prev => {
-            const newRowData = [...prev, ['', '']];
-            return newRowData;
-        })
+    const handleAddRow = () => {
+        const newRowsData = [...tableData.rows, ['', '']];
+        const newData = { ...tableData, rows: newRowsData };
+        setTableData(newData);
+        console.log(tableData);
     }
 
     // DELETE ROW
     const handleDeleteRow = (rIdx) => {
-        setRowData(prev => {
-            return prev.filter((_, idx) => idx !== rIdx);
-        })
+        const rowsData = [...tableData.rows];
+        const newRowsData = rowsData.filter((_, idx) => idx != rIdx);
+        const newData = { ...tableData, rows: newRowsData };
+        setTableData(newData);
     }
 
     return (
         <div className="blogTable">
-            <textarea className='tableTitleInput' value={tableTitle} onChange={handleTitleChange} name='tableTitle' rows={1} style={{overflow:'hidden', resize:'none'}} placeholder='Table title' />
+            <textarea className='tableTitleInput' value={tableData.title} onChange={handleTitleChange} name='tableTitle' rows={1} style={{overflow:'hidden', resize:'none'}} placeholder='Table title' />
 
             <table>
                 <thead>
                     <tr>
-                        {headData.map((hData, hIdx) => (
+                        {tableData.header.map((hData, hIdx) => (
                             <th key={hIdx}><input type="text" value={hData} onChange={(e) => handleHeadChange(e.target.value, hIdx)} /></th>
                         ))}
                     </tr>
                 </thead>
                 <tbody>
-                    {rowData.map((rowData, rIdx) => {
+                    {tableData.rows.map((rowData, rIdx) => {
                         return <tr key={rIdx}>
                             {rowData.map((rd, cIdx) => (
                                 <td key={cIdx}><input type="text" value={rd} onChange={(e) => handleBodyChange(e.target.value, rIdx, cIdx)} /></td>
@@ -77,7 +70,7 @@ function BlogTable() {
                 {/* <button>
                     <img src="../icon/delete-02-stroke-rounded.svg" alt="" />
                 </button> */}
-                <button onClick={handleAddRow}>
+                <button type='button' onClick={handleAddRow}>
                     <img src="../icon/column-insert-stroke-rounded.svg" alt="" style={{rotate:"90deg"}} />
                 </button>
             </div>

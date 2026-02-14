@@ -9,7 +9,8 @@ function CreateBlog() {
         descriptionInput: '',
         locationInput: '',
         dateInput: '',
-        heroImageInput: ''
+        heroImageInput: '',
+        sections: []
     })
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -18,6 +19,42 @@ function CreateBlog() {
             [name]: value
         });
     };
+
+    // ADD SECTION
+    const addSection = (newSectionType) => {
+        if (formData.sections.every(section => section.sectionType != newSectionType.type)) {
+            const newSection = {
+                section: newSectionType.title,
+                sectionType: newSectionType.type,
+                subsections: [
+                ]
+            }
+            setFormData(prev => ({
+                ...prev,
+                sections: [...prev.sections, newSection]
+            }));
+        }
+    }
+
+    // ASIDE TABLE DATA
+    const addSideTable = (table) => {
+        // ADD SECTION TO DATA IF NEW SECTION
+        addSection({type: 'info', title: 'Information'})
+        // ADD DATA
+        setFormData(prev => ({
+            ...prev,
+            sections: prev.sections.map((section) =>
+                section.sectionType === 'info'? {
+                    ...section,
+                    subsections: [
+                        ...section.subsections,
+                        table
+                    ]
+                }
+                : section
+            )
+        }));
+    }
 
     // hero image preview
     const [heroImage, setHeroImage] = useState(null);
@@ -40,7 +77,18 @@ function CreateBlog() {
     const toggleAsideOption = (e) => {
         e.preventDefault();
         setAsideOption(!asideOption);
-    } 
+    }
+
+    // BLOCKS
+    // TABLE
+    const tableBlock = {
+        type: "table",
+        title: "",
+        header: ["", ""],
+        rows: [
+            ["", ""]
+        ]
+    }
 
     // JSX
     return (
@@ -67,14 +115,25 @@ function CreateBlog() {
 
                 <div className="contentInput">
                     <aside className='asideInput'>
-                        <BlogTable />
+                        {/* {formData.sections.some(section => section.sectionType === "info") ? <BlogTable /> : "" } */}
+                        {formData.sections.map((section, secIdx) =>
+                            section.subsections?.map((sub, subIdx) =>
+                                sub.type === "table" ? <BlogTable key={subIdx} tableData={sub} setTableData={(newData) => {
+                                    setFormData(prev => {
+                                        const updatedSections = [...prev.sections];
+                                        updatedSections[secIdx].subsections[subIdx] = newData;
+                                        return { ...prev, sections: updatedSections };
+                                    });
+                                }} /> : null
+                            )
+                        )}
                         <div className='asideInputAdd'>
                             <button onClick={toggleAsideOption}>
                                 <img src="../icon/plus-sign-circle-stroke-rounded.svg" alt="" className={asideOption ? "rotate" : ""} />
                             </button>
                             <div className={`asideInputOptions ${asideOption ? "" : "hidden"}`}>
                                 <button value="" >Paragraph</button>
-                                <button value="">Table</button>
+                                <button value="" type='button' onClick={() => {addSideTable(tableBlock)}}>Table</button>
                             </div>
                         </div>
                     </aside>
