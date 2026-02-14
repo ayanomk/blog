@@ -18,6 +18,7 @@ function CreateBlog() {
             ...formData,
             [name]: value
         });
+        console.log(formData);
     };
 
     // ADD SECTION
@@ -54,6 +55,19 @@ function CreateBlog() {
                 : section
             )
         }));
+    }
+    const deleteSideTable = (secIdx, subIdx) => {
+        setFormData(prev => ({
+            ...prev,
+            sections: prev.sections.map((section, sIdx) => {
+                if(sIdx !== secIdx) return section;
+
+                return {
+                    ...section,
+                    subsections: section.subsections.filter((sub, idx) => idx != subIdx)
+                }
+            })
+        }))
     }
 
     // hero image preview
@@ -118,13 +132,17 @@ function CreateBlog() {
                         {/* {formData.sections.some(section => section.sectionType === "info") ? <BlogTable /> : "" } */}
                         {formData.sections.map((section, secIdx) =>
                             section.subsections?.map((sub, subIdx) =>
-                                sub.type === "table" ? <BlogTable key={subIdx} tableData={sub} setTableData={(newData) => {
-                                    setFormData(prev => {
-                                        const updatedSections = [...prev.sections];
-                                        updatedSections[secIdx].subsections[subIdx] = newData;
-                                        return { ...prev, sections: updatedSections };
-                                    });
-                                }} /> : null
+                                sub.type === "table" ? 
+                                <>
+                                    <BlogTable key={subIdx} tableData={sub} setTableData={(newData) => {
+                                        setFormData(prev => {
+                                            const updatedSections = [...prev.sections];
+                                            updatedSections[secIdx].subsections[subIdx] = newData;
+                                            return { ...prev, sections: updatedSections };
+                                        });}} 
+                                    />
+                                    <img src="../icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteSideTable(secIdx, subIdx)} />
+                                </> : null
                             )
                         )}
                         <div className='asideInputAdd'>
