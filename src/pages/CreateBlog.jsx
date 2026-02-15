@@ -32,22 +32,6 @@ function CreateBlog() {
         });
     };
 
-    // // ADD SECTION
-    // const addSection = (newSectionType) => {
-    //     if (formData.sections.every(section => section.sectionType != newSectionType.type)) {
-    //         const newSection = {
-    //             section: newSectionType.title,
-    //             sectionType: newSectionType.type,
-    //             subsections: [
-    //             ]
-    //         }
-    //         setFormData(prev => ({
-    //             ...prev,
-    //             sections: [...prev.sections, newSection]
-    //         }));
-    //     }
-    // }
-
     // ADD MAIN PARAGRAPH
     const addMain = (type, content) => {
         setMainOption(false);
@@ -72,35 +56,33 @@ function CreateBlog() {
     const addSideTable = (table) => {
         // CLOSE ASIDE BLOCK OPTION
         setAsideOption(false);
-        // ADD SECTION TO DATA IF NEW SECTION
-        addSection({type: 'info', title: 'Information'})
-        // ADD DATA
-        setFormData(prev => ({
-            ...prev,
-            sections: prev.sections.map((section) =>
-                section.sectionType === 'info'? {
-                    ...section,
-                    subsections: [
-                        ...section.subsections,
-                        table
-                    ]
-                }
-                : section
-            )
-        }));
-    }
-    const deleteSideTable = (secIdx, subIdx) => {
-        setFormData(prev => ({
-            ...prev,
-            sections: prev.sections.map((section, sIdx) => {
-                if(sIdx !== secIdx) return section;
 
-                return {
-                    ...section,
-                    subsections: section.subsections.filter((sub, idx) => idx != subIdx)
-                }
-            })
-        }))
+        setFormData(prev => {
+            const updatedSections = [...prev.sections];
+            updatedSections[0] = {
+                ...updatedSections[0],
+                blocks: [...updatedSections[0].blocks, table]
+            }
+
+            return {
+                ...prev,
+                sections: updatedSections
+            }
+        })
+    }
+    const deleteSideTable = (sideBidx) => {
+        setFormData(prev => {
+            const updatedSections = [...prev.sections];
+            updatedSections[0] = {
+                ...updatedSections[0],
+                blocks: updatedSections[0].blocks.filter((_, idx) => idx !== sideBidx)
+            }
+
+            return{
+                ...prev,
+                sections: updatedSections
+            }
+        })
     }
 
     // hero image preview
@@ -164,22 +146,22 @@ function CreateBlog() {
                 <div className="contentInput">
 
                     <aside className='asideInput'>
-                        {/* {formData.sections.some(section => section.sectionType === "info") ? <BlogTable /> : "" } */}
-                        {formData.sections.map((section, secIdx) =>
-                            section.subsections?.map((sub, subIdx) =>
-                                sub.type === "table" ? 
-                                <>
-                                    <BlogTable key={subIdx} tableData={sub} setTableData={(newData) => {
+                        {formData.sections[0].blocks?.map((block, sideBidx) => {
+                            if (block.type === 'table') {
+                                return <div key={sideBidx} >
+                                    <BlogTable tableData={block} setTableData={(newData) => {
                                         setFormData(prev => {
                                             const updatedSections = [...prev.sections];
-                                            updatedSections[secIdx].subsections[subIdx] = newData;
-                                            return { ...prev, sections: updatedSections };
-                                        });}} 
+                                            updatedSections[0].blocks[sideBidx] = newData;
+
+                                            return {...prev, sections: updatedSections}
+                                        })}}
                                     />
-                                    <img src="../icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteSideTable(secIdx, subIdx)} />
-                                </> : null
-                            )
-                        )}
+                                    <img src="../icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteSideTable(sideBidx)} />
+                                </div>
+                            }
+                        })}
+
                         <div className='inputAdd'>
                             <button type='button' onClick={toggleAsideOption}>
                                 <img src="../icon/plus-sign-circle-stroke-rounded.svg" alt="" className={asideOption ? "rotate" : ""} />
@@ -192,12 +174,12 @@ function CreateBlog() {
                     </aside>
 
                     <main className='mainInput'>
-                        {formData.sections[1].blocks.map((block) => {
+                        {formData.sections[1].blocks?.map((block, mainBidx) => {
                             if (block.type === 'text') {
-                                return <>
+                                return <div key={mainBidx}>
                                         <BlogParagraph />
-                                        <img src="../icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteSideTable(secIdx, subIdx)} />
-                                    </>
+                                        <img src="../icon/delete-02-stroke-rounded.svg" alt=""/>
+                                    </div>
                             }
                         })}
 
