@@ -1,5 +1,6 @@
 import './CreateBlog.css';
 import BlogTable from '../components/BlogTable';
+import BlogParagraph from '../components/BlogParagraph';
 import { useState } from 'react';
 
 function CreateBlog() {
@@ -10,7 +11,18 @@ function CreateBlog() {
         locationInput: '',
         dateInput: '',
         heroImageInput: '',
-        sections: []
+        sections: [
+            {
+                section: "Information",
+                sectionType: "info",
+                blocks: []
+            },
+            {
+                section: "The Day",
+                sectionType: "content",
+                blocks: []
+            }
+        ]
     })
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -18,23 +30,42 @@ function CreateBlog() {
             ...formData,
             [name]: value
         });
-        console.log(formData);
     };
 
-    // ADD SECTION
-    const addSection = (newSectionType) => {
-        if (formData.sections.every(section => section.sectionType != newSectionType.type)) {
-            const newSection = {
-                section: newSectionType.title,
-                sectionType: newSectionType.type,
-                subsections: [
-                ]
-            }
-            setFormData(prev => ({
-                ...prev,
-                sections: [...prev.sections, newSection]
-            }));
+    // // ADD SECTION
+    // const addSection = (newSectionType) => {
+    //     if (formData.sections.every(section => section.sectionType != newSectionType.type)) {
+    //         const newSection = {
+    //             section: newSectionType.title,
+    //             sectionType: newSectionType.type,
+    //             subsections: [
+    //             ]
+    //         }
+    //         setFormData(prev => ({
+    //             ...prev,
+    //             sections: [...prev.sections, newSection]
+    //         }));
+    //     }
+    // }
+
+    // ADD MAIN PARAGRAPH
+    const addMain = (type, content) => {
+        setMainOption(false);
+
+        const newBlock = {
+            type: type,
+            content: content
         }
+
+        setFormData(prev => {
+            const updatedSections = [...prev.sections];
+            updatedSections[1] = {
+                ...updatedSections[1],
+                blocks: [...updatedSections[1].blocks, newBlock]
+            };
+
+            return {...prev, sections: updatedSections}
+        })
     }
 
     // ASIDE TABLE DATA
@@ -161,18 +192,30 @@ function CreateBlog() {
                     </aside>
 
                     <main className='mainInput'>
+                        {formData.sections[1].blocks.map((block) => {
+                            if (block.type === 'text') {
+                                return <>
+                                        <BlogParagraph />
+                                        <img src="../icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteSideTable(secIdx, subIdx)} />
+                                    </>
+                            }
+                        })}
+
                         <div className='inputAdd'>
                             <button type='button' onClick={toggleMainOption}>
                                 <img src="../icon/plus-sign-circle-stroke-rounded.svg" alt="" className={mainOption ? "rotate" : ""} />
                             </button>
                             <div className={`asideInputOptions ${mainOption ? "" : "hidden"}`}>
-                                <button value="" type='button'>Paragraph</button>
+                                <button value="" type='button'>Header</button>
+                                <button value="" type='button'>Header 2</button>
+                                <button value="" type='button' onClick={() => {addMain("text", "asdfasdf;asfn;askdnf;kadnk")}}>Paragraph</button>
                                 <button value="" type='button'>Image Horizontal</button>
                                 <button value="" type='button'>Image Vertical x 2</button>
                                 <button value="" type='button'>Image Vertical x 3</button>
                                 {/* <button value="" type='button'>Table</button> */}
                             </div>
                         </div>
+
                     </main>
                 </div>
 
