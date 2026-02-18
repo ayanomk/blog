@@ -66,6 +66,14 @@ function CreateBlog() {
             }
         })
     }
+    const updateMain = (newData) => {
+        setFormData(prev => {
+            const updatedSections = [...prev.sections];
+            updatedSections[1].blocks[mainBidx].content = newData;
+
+            return {...prev, sections: updatedSections}
+        })
+    }
 
     // ASIDE TABLE DATA
     const addSideTable = (table) => {
@@ -205,43 +213,22 @@ function CreateBlog() {
 
                     <main className='mainInput'>
                         {formData.sections[1].blocks?.map((block, mainBidx) => {
-                            if (block.type === 'text') {
-                                return <div key={mainBidx}>
-                                        <BlogParagraph paragraphData={block.content} setParagraphData={(newData) => {
-                                            setFormData(prev => {
-                                                const updatedSections = [...prev.sections];
-                                                updatedSections[1].blocks[mainBidx].content = newData;
-
-                                                return {...prev, sections: updatedSections}
-                                            })}}
-                                        />
-                                        <img src="../icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteMainBlock(mainBidx)}/>
-                                    </div>
-                            } else if (block.type === 'header') {
-                                return <div key={mainBidx}>
-                                    <BlogHeaderBlock headerType={'h1'} headerData={block.content} setHeaderData={(newData) => {
-                                        setFormData(prev => {
-                                            const updatedSections = [...prev.sections];
-                                            updatedSections[1].blocks[mainBidx].content = newData;
-
-                                            return {...prev, sections: updatedSections}
-                                        })
-                                    }} />
-                                        <img src="../icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteMainBlock(mainBidx)}/>
-                                    </div>
-                            } else if (block.type === 'header2') {
-                                return <div key={mainBidx}>
-                                    <BlogHeaderBlock headerType={'h2'} headerData={block.content} setHeaderData={(newData) => {
-                                        setFormData(prev => {
-                                            const updatedSections = [...prev.sections];
-                                            updatedSections[1].blocks[mainBidx].content = newData;
-
-                                            return {...prev, sections: updatedSections}
-                                        })
-                                    }} />
-                                        <img src="../icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteMainBlock(mainBidx)}/>
-                                    </div>
+                            let content;
+                            switch (block.type) {
+                                case 'text':
+                                    content = <BlogParagraph paragraphData={block.content} setParagraphData={(newData) => updateMain(newData)}/>
+                                    break;
+                                case 'header':
+                                    content = <BlogHeaderBlock headerType={'h1'} headerData={block.content} setHeaderData={(newData) => updateMain(newData)} />
+                                    break;
+                                case 'header2':
+                                    content = <BlogHeaderBlock headerType={'h2'} headerData={block.content} setHeaderData={(newData) => updateMain(newData)} />
+                                    break;
                             }
+                            return <div key={mainBidx}>
+                                {content}
+                                <img src="../icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteMainBlock(mainBidx)}/>
+                            </div>
                         })}
 
                         <div className='inputAdd'>
