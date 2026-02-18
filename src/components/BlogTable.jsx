@@ -2,13 +2,13 @@ import './BlogTable.css';
 
 function BlogTable({tableData, setTableData}) {
     // TABLE TITLE
-    const handleTitleChange = (e) => {
-        const newData = { ...tableData, title: e.target.value };
-        setTableData(newData);
+    // const handleTitleChange = (e) => {
+    //     const newData = { ...tableData, title: e.target.value };
+    //     setTableData(newData);
 
-        e.target.style.height = 'auto';
-        e.target.style.height = e.target.scrollHeight + 'px';
-    }
+    //     e.target.style.height = 'auto';
+    //     e.target.style.height = e.target.scrollHeight + 'px';
+    // }
 
     // TABLE HEAD DATA
     const handleHeadChange = (val, idx) => {        
@@ -44,7 +44,7 @@ function BlogTable({tableData, setTableData}) {
 
     return (
         <div className="blogTable">
-            <textarea className='tableTitleInput' value={tableData.title} onChange={handleTitleChange} name='tableTitle' rows={1} style={{overflow:'hidden', resize:'none'}} placeholder='Table title' />
+            {/* <textarea className='tableTitleInput' value={tableData.title} onChange={handleTitleChange} name='tableTitle' rows={1} style={{overflow:'hidden', resize:'none'}} placeholder='Table title' /> */}
 
             <table>
                 <thead>

@@ -33,12 +33,12 @@ function CreateBlog() {
     };
 
     // ADD MAIN PARAGRAPH
-    const addMain = (type, content) => {
+    const addMain = (block) => {
         setMainOption(false);
 
         const newBlock = {
-            type: type,
-            content: content
+            type: block.type,
+            content: block.content
         }
 
         setFormData(prev => {
@@ -49,6 +49,20 @@ function CreateBlog() {
             };
 
             return {...prev, sections: updatedSections}
+        })
+    }
+    const deleteMainBlock = (delIdx) => {
+        setFormData(prev => {
+            const updatedSections = [...prev.sections];
+            updatedSections[1] = {
+                ...updatedSections[1],
+                blocks: updatedSections[1].blocks.filter((_, idx) => idx !== delIdx)
+            }
+
+            return {
+                ...prev,
+                sections: updatedSections
+            }
         })
     }
 
@@ -113,10 +127,15 @@ function CreateBlog() {
     }
 
     // BLOCKS
+    // PARAGRAPH
+    const paragraphBlock = {
+        type: "text",
+        content: ""
+    }
     // TABLE
     const tableBlock = {
         type: "table",
-        title: "",
+        // title: "",
         header: ["", ""],
         rows: [
             ["", ""]
@@ -167,7 +186,8 @@ function CreateBlog() {
                                 <img src="../icon/plus-sign-circle-stroke-rounded.svg" alt="" className={asideOption ? "rotate" : ""} />
                             </button>
                             <div className={`asideInputOptions ${asideOption ? "" : "hidden"}`}>
-                                <button value="" >Paragraph</button>
+                                <button value="" type='button' >Header 1</button>
+                                <button value="" type='button' >Paragraph</button>
                                 <button value="" type='button' onClick={() => {addSideTable(tableBlock)}}>Table</button>
                             </div>
                         </div>
@@ -185,7 +205,7 @@ function CreateBlog() {
                                                 return {...prev, sections: updatedSections}
                                             })}}
                                         />
-                                        <img src="../icon/delete-02-stroke-rounded.svg" alt=""/>
+                                        <img src="../icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteMainBlock(mainBidx)}/>
                                     </div>
                             }
                         })}
@@ -197,7 +217,7 @@ function CreateBlog() {
                             <div className={`asideInputOptions ${mainOption ? "" : "hidden"}`}>
                                 <button value="" type='button'>Header</button>
                                 <button value="" type='button'>Header 2</button>
-                                <button value="" type='button' onClick={() => {addMain("text", "")}}>Paragraph</button>
+                                <button value="" type='button' onClick={() => {addMain(paragraphBlock)}}>Paragraph</button>
                                 <button value="" type='button'>Image Horizontal</button>
                                 <button value="" type='button'>Image Vertical x 2</button>
                                 <button value="" type='button'>Image Vertical x 3</button>
