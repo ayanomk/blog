@@ -185,12 +185,25 @@ function CreateBlog() {
 
                     <aside className='asideInput'>
                         {formData.sections[0].blocks?.map((block, sideBidx) => {
-                            if (block.type === 'table') {
-                                return <div key={sideBidx} >
-                                    <BlogTable tableData={block} setTableData={(newData) => updateSide(newData, sideBidx)} />
-                                    <img src="../icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteSideBlock(sideBidx)} />
-                                </div>
+                            let content;
+                            switch (block.type) {
+                                case 'table':
+                                    content = <BlogTable tableData={block} setTableData={(newData) => updateSide(newData, sideBidx)} />
+                                    break;
+                                case 'header':
+                                    content = <BlogHeaderBlock headerType={'h1'} headerData={block} setHeaderData={(newData) => updateSide(newData, sideBidx)} />
+                                    break;
+                                case 'text':
+                                    content = <BlogParagraph paragraphData={block} setParagraphData={(newData) => updateSide(newData, sideBidx)}/>
+                                    break;
+                                default:
+                                    content = null;
                             }
+
+                            return <div  key={sideBidx}>
+                                {content}
+                                <img src="../icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteSideBlock(sideBidx)} />
+                            </div>
                         })}
 
                         <div className='inputAdd'>
@@ -198,8 +211,8 @@ function CreateBlog() {
                                 <img src="../icon/plus-sign-circle-stroke-rounded.svg" alt="" className={asideOption ? "rotate" : ""} />
                             </button>
                             <div className={`asideInputOptions ${asideOption ? "" : "hidden"}`}>
-                                <button value="" type='button' >Header 1</button>
-                                <button value="" type='button' >Paragraph</button>
+                                <button value="" type='button' onClick={() => {addSide(headerBlock)}}>Header 1</button>
+                                <button value="" type='button' onClick={() => {addSide(paragraphBlock)}}>Paragraph</button>
                                 <button value="" type='button' onClick={() => {addSide(tableBlock)}}>Table</button>
                             </div>
                         </div>
@@ -218,6 +231,8 @@ function CreateBlog() {
                                 case 'header2':
                                     content = <BlogHeaderBlock headerType={'h2'} headerData={block} setHeaderData={(newData) => updateMain(newData, mainBidx)} />
                                     break;
+                                default:
+                                    content = null;
                             }
                             return <div key={mainBidx}>
                                 {content}
