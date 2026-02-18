@@ -1,15 +1,6 @@
 import './BlogTable.css';
 
 function BlogTable({tableData, setTableData}) {
-    // TABLE TITLE
-    // const handleTitleChange = (e) => {
-    //     const newData = { ...tableData, title: e.target.value };
-    //     setTableData(newData);
-
-    //     e.target.style.height = 'auto';
-    //     e.target.style.height = e.target.scrollHeight + 'px';
-    // }
-
     // TABLE HEAD DATA
     const handleHeadChange = (val, idx) => {        
         const newHeader = [...tableData.header];
@@ -44,7 +35,6 @@ function BlogTable({tableData, setTableData}) {
 
     return (
         <div className="blogTable">
-            {/* <textarea className='tableTitleInput' value={tableData.title} onChange={handleTitleChange} name='tableTitle' rows={1} style={{overflow:'hidden', resize:'none'}} placeholder='Table title' /> */}
 
             <table>
                 <thead>
@@ -67,9 +57,6 @@ function BlogTable({tableData, setTableData}) {
             </table>
 
             <div className='blogTableControl'>
-                {/* <button>
-                    <img src="../icon/delete-02-stroke-rounded.svg" alt="" />
-                </button> */}
                 <button type='button' onClick={handleAddRow}>
                     <img src="../icon/column-insert-stroke-rounded.svg" alt="" style={{rotate:"90deg"}} />
                 </button>

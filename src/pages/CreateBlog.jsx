@@ -66,7 +66,7 @@ function CreateBlog() {
             }
         })
     }
-    const updateMain = (newData) => {
+    const updateMain = (newData, mainBidx) => {
         setFormData(prev => {
             const updatedSections = [...prev.sections];
             updatedSections[1].blocks[mainBidx].content = newData;
@@ -75,25 +75,21 @@ function CreateBlog() {
         })
     }
 
-    // ASIDE TABLE DATA
-    const addSideTable = (table) => {
-        // CLOSE ASIDE BLOCK OPTION
+    // ASIDE
+    const addSide = (block) => {
         setAsideOption(false);
 
         setFormData(prev => {
             const updatedSections = [...prev.sections];
             updatedSections[0] = {
                 ...updatedSections[0],
-                blocks: [...updatedSections[0].blocks, table]
-            }
+                blocks: [...updatedSections[0].blocks, block]
+            };
 
-            return {
-                ...prev,
-                sections: updatedSections
-            }
+            return {...prev, sections: updatedSections}
         })
     }
-    const deleteSideTable = (sideBidx) => {
+    const deleteSideBlock = (sideBidx) => {
         setFormData(prev => {
             const updatedSections = [...prev.sections];
             updatedSections[0] = {
@@ -101,10 +97,15 @@ function CreateBlog() {
                 blocks: updatedSections[0].blocks.filter((_, idx) => idx !== sideBidx)
             }
 
-            return{
-                ...prev,
-                sections: updatedSections
-            }
+            return{...prev, sections: updatedSections}
+        })
+    }
+    const updateSide = (newData, sideBIdx) => {
+        setFormData(prev => {
+            const updatedSections = [...prev.sections];
+            updatedSections[0].blocks[sideBIdx] = newData;
+
+            return {...prev, sections: updatedSections}
         })
     }
 
@@ -186,15 +187,8 @@ function CreateBlog() {
                         {formData.sections[0].blocks?.map((block, sideBidx) => {
                             if (block.type === 'table') {
                                 return <div key={sideBidx} >
-                                    <BlogTable tableData={block} setTableData={(newData) => {
-                                        setFormData(prev => {
-                                            const updatedSections = [...prev.sections];
-                                            updatedSections[0].blocks[sideBidx] = newData;
-
-                                            return {...prev, sections: updatedSections}
-                                        })}}
-                                    />
-                                    <img src="../icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteSideTable(sideBidx)} />
+                                    <BlogTable tableData={block} setTableData={(newData) => updateSide(newData, sideBidx)} />
+                                    <img src="../icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteSideBlock(sideBidx)} />
                                 </div>
                             }
                         })}
@@ -206,7 +200,7 @@ function CreateBlog() {
                             <div className={`asideInputOptions ${asideOption ? "" : "hidden"}`}>
                                 <button value="" type='button' >Header 1</button>
                                 <button value="" type='button' >Paragraph</button>
-                                <button value="" type='button' onClick={() => {addSideTable(tableBlock)}}>Table</button>
+                                <button value="" type='button' onClick={() => {addSide(tableBlock)}}>Table</button>
                             </div>
                         </div>
                     </aside>
@@ -216,13 +210,13 @@ function CreateBlog() {
                             let content;
                             switch (block.type) {
                                 case 'text':
-                                    content = <BlogParagraph paragraphData={block.content} setParagraphData={(newData) => updateMain(newData)}/>
+                                    content = <BlogParagraph paragraphData={block.content} setParagraphData={(newData) => updateMain(newData, mainBidx)}/>
                                     break;
                                 case 'header':
-                                    content = <BlogHeaderBlock headerType={'h1'} headerData={block.content} setHeaderData={(newData) => updateMain(newData)} />
+                                    content = <BlogHeaderBlock headerType={'h1'} headerData={block.content} setHeaderData={(newData) => updateMain(newData, mainBidx)} />
                                     break;
                                 case 'header2':
-                                    content = <BlogHeaderBlock headerType={'h2'} headerData={block.content} setHeaderData={(newData) => updateMain(newData)} />
+                                    content = <BlogHeaderBlock headerType={'h2'} headerData={block.content} setHeaderData={(newData) => updateMain(newData, mainBidx)} />
                                     break;
                             }
                             return <div key={mainBidx}>
