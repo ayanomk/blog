@@ -69,7 +69,7 @@ function CreateBlog() {
     const updateMain = (newData, mainBidx) => {
         setFormData(prev => {
             const updatedSections = [...prev.sections];
-            updatedSections[1].blocks[mainBidx].content = newData;
+            updatedSections[1].blocks[mainBidx] = newData;
 
             return {...prev, sections: updatedSections}
         })
@@ -210,13 +210,13 @@ function CreateBlog() {
                             let content;
                             switch (block.type) {
                                 case 'text':
-                                    content = <BlogParagraph paragraphData={block.content} setParagraphData={(newData) => updateMain(newData, mainBidx)}/>
+                                    content = <BlogParagraph paragraphData={block} setParagraphData={(newData) => updateMain(newData, mainBidx)}/>
                                     break;
                                 case 'header':
-                                    content = <BlogHeaderBlock headerType={'h1'} headerData={block.content} setHeaderData={(newData) => updateMain(newData, mainBidx)} />
+                                    content = <BlogHeaderBlock headerType={'h1'} headerData={block} setHeaderData={(newData) => updateMain(newData, mainBidx)} />
                                     break;
                                 case 'header2':
-                                    content = <BlogHeaderBlock headerType={'h2'} headerData={block.content} setHeaderData={(newData) => updateMain(newData, mainBidx)} />
+                                    content = <BlogHeaderBlock headerType={'h2'} headerData={block} setHeaderData={(newData) => updateMain(newData, mainBidx)} />
                                     break;
                             }
                             return <div key={mainBidx}>
