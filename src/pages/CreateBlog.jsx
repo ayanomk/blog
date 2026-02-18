@@ -2,6 +2,7 @@ import './CreateBlog.css';
 import BlogTable from '../components/BlogTable';
 import BlogParagraph from '../components/BlogParagraph';
 import { useState } from 'react';
+import BlogHeaderBlock from '../components/BlogHeaderBlock';
 
 function CreateBlog() {
     // form data
@@ -127,6 +128,15 @@ function CreateBlog() {
     }
 
     // BLOCKS
+    // HEADER
+    const headerBlock = {
+        type: "header",
+        content: ""
+    }
+    const header2Block = {
+        type: "header2",
+        content: ""
+    }
     // PARAGRAPH
     const paragraphBlock = {
         type: "text",
@@ -207,6 +217,30 @@ function CreateBlog() {
                                         />
                                         <img src="../icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteMainBlock(mainBidx)}/>
                                     </div>
+                            } else if (block.type === 'header') {
+                                return <div key={mainBidx}>
+                                    <BlogHeaderBlock headerType={'h1'} headerData={block.content} setHeaderData={(newData) => {
+                                        setFormData(prev => {
+                                            const updatedSections = [...prev.sections];
+                                            updatedSections[1].blocks[mainBidx].content = newData;
+
+                                            return {...prev, sections: updatedSections}
+                                        })
+                                    }} />
+                                        <img src="../icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteMainBlock(mainBidx)}/>
+                                    </div>
+                            } else if (block.type === 'header2') {
+                                return <div key={mainBidx}>
+                                    <BlogHeaderBlock headerType={'h2'} headerData={block.content} setHeaderData={(newData) => {
+                                        setFormData(prev => {
+                                            const updatedSections = [...prev.sections];
+                                            updatedSections[1].blocks[mainBidx].content = newData;
+
+                                            return {...prev, sections: updatedSections}
+                                        })
+                                    }} />
+                                        <img src="../icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteMainBlock(mainBidx)}/>
+                                    </div>
                             }
                         })}
 
@@ -215,8 +249,8 @@ function CreateBlog() {
                                 <img src="../icon/plus-sign-circle-stroke-rounded.svg" alt="" className={mainOption ? "rotate" : ""} />
                             </button>
                             <div className={`asideInputOptions ${mainOption ? "" : "hidden"}`}>
-                                <button value="" type='button'>Header</button>
-                                <button value="" type='button'>Header 2</button>
+                                <button value="" type='button' onClick={() => {addMain(headerBlock)}}>Header</button>
+                                <button value="" type='button'onClick={() => {addMain(header2Block)}}>Header 2</button>
                                 <button value="" type='button' onClick={() => {addMain(paragraphBlock)}}>Paragraph</button>
                                 <button value="" type='button'>Image Horizontal</button>
                                 <button value="" type='button'>Image Vertical x 2</button>

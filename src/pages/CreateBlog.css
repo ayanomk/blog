@@ -61,11 +61,15 @@
 }
 .createBlog .mainInput {
     width: 70%;
-    background-color: thistle;
+    /* background-color: thistle; */
 }
 .createBlog .asideInput {
     width: 25%;
-    background-color: papayawhip;
+    height: 100%;
+    background-color: #eae6e0;
+    box-shadow: 0px 0px 10px #b0aba3;
+    border-radius: 10px;
+    padding: 10px 20px;
 }
 
 .createBlog .contentInput {
