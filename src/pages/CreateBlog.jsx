@@ -177,7 +177,14 @@ function CreateBlog() {
                         {formData.sections[1].blocks?.map((block, mainBidx) => {
                             if (block.type === 'text') {
                                 return <div key={mainBidx}>
-                                        <BlogParagraph />
+                                        <BlogParagraph paragraphData={block.content} setParagraphData={(newData) => {
+                                            setFormData(prev => {
+                                                const updatedSections = [...prev.sections];
+                                                updatedSections[1].blocks[mainBidx].content = newData;
+
+                                                return {...prev, sections: updatedSections}
+                                            })}}
+                                        />
                                         <img src="../icon/delete-02-stroke-rounded.svg" alt=""/>
                                     </div>
                             }
@@ -190,7 +197,7 @@ function CreateBlog() {
                             <div className={`asideInputOptions ${mainOption ? "" : "hidden"}`}>
                                 <button value="" type='button'>Header</button>
                                 <button value="" type='button'>Header 2</button>
-                                <button value="" type='button' onClick={() => {addMain("text", "asdfasdf;asfn;askdnf;kadnk")}}>Paragraph</button>
+                                <button value="" type='button' onClick={() => {addMain("text", "")}}>Paragraph</button>
                                 <button value="" type='button'>Image Horizontal</button>
                                 <button value="" type='button'>Image Vertical x 2</button>
                                 <button value="" type='button'>Image Vertical x 3</button>
