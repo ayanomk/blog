@@ -1,3 +1,4 @@
+import './BlogImageBlock.css';
 import { useEffect, useState } from "react";
 
 function BlogImageBlock({imgData, setImgData}) {
@@ -57,12 +58,12 @@ function BlogImageBlock({imgData, setImgData}) {
         }
     }
 
-    return <div>
+    return <div className='imageBlockInput'>
         <input type="file" name="" id="" onChange={handleChange} multiple />
 
-        <div style={{display: "flex", flexDirection:"row", justifyContent: "space-around", width:"100%"}}>
+        <div className='imageBlock'>
             {imgData.src.map((src, idx) => (
-                <img key={idx} src={src} alt="" style={{width:"45%", height:"100%"}} />
+                <img key={idx} src={src} alt="" className={imgData.dir} />
             ))}
         </div>
     </div>
