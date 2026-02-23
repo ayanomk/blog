@@ -84,23 +84,22 @@
     width: 130%;
     transition: all 0.3s;
 }
-.createBlog .asideInputOptions {
+.createBlog .inputOptions {
     display: flex;
     flex-direction: column;
     background-color: #dcd7d2;
-    width: 40%;
     position: absolute;
     right: 0;
     border-radius: 10px;
     padding: 5px;
-
+    width: 200px;
 }
-.createBlog .asideInputOptions button {
+.createBlog .inputOptions button {
     padding: 12px 0px;
     border-radius: 10px;
     transition: all 0.3s;
 }
-.createBlog .asideInputOptions button:hover {
+.createBlog .inputOptions button:hover {
     box-shadow: 0px 1px 3px #979490;
 }
 

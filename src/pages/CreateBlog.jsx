@@ -218,7 +218,7 @@ function CreateBlog() {
                             <button type='button' onClick={toggleAsideOption}>
                                 <img src="../icon/plus-sign-circle-stroke-rounded.svg" alt="" className={asideOption ? "rotate" : ""} />
                             </button>
-                            <div className={`asideInputOptions ${asideOption ? "" : "hidden"}`}>
+                            <div className={`inputOptions ${asideOption ? "" : "hidden"}`}>
                                 <button value="" type='button' onClick={() => {addSide(headerBlock)}}>Header 1</button>
                                 <button value="" type='button' onClick={() => {addSide(paragraphBlock)}}>Paragraph</button>
                                 <button value="" type='button' onClick={() => {addSide(tableBlock)}}>Table</button>
@@ -255,13 +255,11 @@ function CreateBlog() {
                             <button type='button' onClick={toggleMainOption}>
                                 <img src="../icon/plus-sign-circle-stroke-rounded.svg" alt="" className={mainOption ? "rotate" : ""} />
                             </button>
-                            <div className={`asideInputOptions ${mainOption ? "" : "hidden"}`}>
-                                <button value="" type='button' onClick={() => {addMain(headerBlock)}}>Header</button>
+                            <div className={`inputOptions ${mainOption ? "" : "hidden"}`}>
+                                <button value="" type='button' onClick={() => {addMain(headerBlock)}}>Header 1</button>
                                 <button value="" type='button' onClick={() => {addMain(header2Block)}}>Header 2</button>
                                 <button value="" type='button' onClick={() => {addMain(paragraphBlock)}}>Paragraph</button>
-                                <button value="" type='button' onClick={() => {addMain(imageBlock)}}>Image Horizontal</button>
-                                <button value="" type='button'>Image Vertical x 2</button>
-                                <button value="" type='button'>Image Vertical x 3</button>
+                                <button value="" type='button' onClick={() => {addMain(imageBlock)}}>Images</button>
                                 {/* <button value="" type='button'>Table</button> */}
                             </div>
                         </div>
