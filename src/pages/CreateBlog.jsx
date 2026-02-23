@@ -180,9 +180,9 @@ function CreateBlog() {
                                     content = null;
                             }
 
-                            return <div  key={sideBidx}>
+                            return <div key={sideBidx} className='block'>
                                 {content}
-                                <img src="../icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteBlock(0, sideBidx)} />
+                                <img className='deleteButton' src="../icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteBlock(0, sideBidx)} />
                             </div>
                         })}
 
@@ -217,9 +217,9 @@ function CreateBlog() {
                                 default:
                                     content = null;
                             }
-                            return <div key={mainBidx}>
+                            return <div key={mainBidx} className='block'>
                                 {content}
-                                <img src="../icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteBlock(1, mainBidx)}/>
+                                <img className='deleteButton' src="../icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteBlock(1, mainBidx)}/>
                             </div>
                         })}
 

@@ -1,3 +1,6 @@
+.blogHeaderBlock {
+    width: 100%;
+}
 .blogHeaderBlock textarea {
     font-weight: bold;
     text-transform: capitalize;

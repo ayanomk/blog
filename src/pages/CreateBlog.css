@@ -1,6 +1,6 @@
 .createBlog {
     scrollbar-gutter: stable;
-    padding: calc(60px * 1.1) 8% 20px;
+    padding: calc(60px * 1.1) 8% 170px;
     background-color: #f0ede8;
     min-height: calc(100vh - 35px);
 }
@@ -109,4 +109,18 @@
 }
 .createBlog .rotate {
     transform: rotate(45deg);
+}
+
+.createBlog .block {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: end;
+    margin-bottom: 20px;
+}
+.createBlog .block .deleteButton {
+    width: 30px;
+}
+.createBlog .block .deleteButton:hover {
+    cursor: pointer;
 }

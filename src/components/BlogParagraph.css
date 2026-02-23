@@ -1,12 +1,11 @@
-/* .blogParagraph {
+.blogParagraph {
     width: 100%;
-    background-color: papayawhip;
-} */
+}
 .blogParagraph textarea {
     width: 100%;
     font-size: 1.1em;
     line-height: 2;
-    border: 1px solid grey;
+    border: 1px solid rgb(197, 197, 197);
     border-radius: 5px;
     background-color: transparent;
 }

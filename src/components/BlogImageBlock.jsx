@@ -59,13 +59,12 @@ function BlogImageBlock({imgData, setImgData}) {
     }
 
     return <div className='imageBlockInput'>
-        <input type="file" name="" id="" onChange={handleChange} multiple />
-
         <div className='imageBlock'>
             {imgData.src.map((src, idx) => (
                 <img key={idx} src={src} alt="" className={imgData.dir} />
             ))}
         </div>
+        <input type="file" name="" id="" onChange={handleChange} multiple />
     </div>
 }
 
