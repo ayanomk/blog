@@ -54,36 +54,35 @@
 /* MAIN */
 .blog .info {
     width: 25%;
-}
-.blog .content {
-    width: 70%;
-}
-.blog .asideSub {
+    height: 100%;
     background-color: #eae6e0;
     box-shadow: 0px 0px 10px #b0aba3;
     border-radius: 10px;
     padding: 10px 20px 20px;
 }
+.blog .content {
+    width: 70%;
+}
 .blog main section, main aside {
-    margin-bottom: 40px;
+    margin-bottom: 80px;
 }
 
-.blog main section .subsection {
-    margin-bottom: 60px;
+.blog main .mainBlock {
+    margin-bottom: 20px;
 }
-.blog main section .subsection h3 {
-    margin-bottom: 15px;
+.blog main section .mainBlock h3 {
     display: flex;
     align-items: baseline;
     gap: 0.5rem;
+    margin-top: 40px;
 }
-.blog main section .subsection h3::after {
+.blog main section .mainBlock h3::after {
     content: "";
     flex: 1;
     border-bottom: 1px solid black;
 }
-.blog main section .subsection p {
-    margin-bottom: 20px;
+.blog main .mainBlock p {
+    margin-bottom: 25px;
     font-size: 1.1em;
     line-height: 2;
 }
@@ -105,17 +104,25 @@
     padding: 5px 10px;
     text-align: left;
 }
-.blog .imgH {
+.blog .imgBlock {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
     width: 100%;
-    padding: 0px 5%;
+}
+.blog .imgBlock img {
+    margin-bottom: 10px;
+    border-radius: 5px;
+
+}
+.blog .imgH {
+    width: 98%;
 }
 .blog .imgV2 {
-    width: 50%;
-    padding: 0px 2%;
+    width: 48%;
 }
 .blog .imgV3 {
-    width: 33%;
-    padding: 0px 1%;
+    width: 31%;
 }
 
 
