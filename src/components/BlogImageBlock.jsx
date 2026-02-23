@@ -1,21 +1,23 @@
 import { useEffect, useState } from "react";
 
-function BlogImageBlock() {
-    const [previews, setPreviews] = useState([]);
+function BlogImageBlock({imgData, setImgData}) {
+    // clean up temporary memory for previous URL
+    let urls = [];
+    useEffect(() => {
+        console.log("hi");
+        // return will make the following function run before the previews value change instead of after value change
+        return () => {
+            urls.forEach((url) => {
+                URL.revokeObjectURL(url);
+            })
+        }
+    }, [urls])
 
-    // // clean up temporary memory for previous URL
-    // useEffect(() => {
-    //     // return will make the following function run before the previews value change instead of after value change
-    //     return () => {
-    //         previews.forEach((url) => {
-    //             URL.revokeObjectURL(url);
-    //         })
-    //     }
-    // }, [previews])
 
     const handleChange = (e) => {
         const files = Array.from(e.target.files);
         if(e.target.files.length && e.target.files.length <= 3) {
+            urls = [];
 
             files.forEach(file => {
                 if (file.type.startsWith("image/")) {
@@ -28,15 +30,20 @@ function BlogImageBlock() {
                     img.onload = () => {
                         if (img.width > img.height) {
                             if (e.target.files.length === 1) {
-                                setPreviews([url]);
-                                // setPreviews(prev => [...prev, url]);
+                                urls = [url];
+                                setImgData({type: 'img', dir: 'imgH', src: urls});
                             } else {
                                 // cleans up temporary local URL for invalid images
                                 URL.revokeObjectURL(url);
                             }
                         } else {
                             if (e.target.files.length > 1) {
-                                setPreviews(prev => [...prev, url]);
+                                urls.push(url);
+                                if (urls.length == 2) {
+                                    setImgData({type: 'img', dir: 'imgV2', src: [...urls]})
+                                } else if (urls.length == 3) {
+                                    setImgData({type: 'img', dir: 'imgV3', src: [...urls]})
+                                }
                             } else {
                                 // cleans up temporary local URL for invalid images
                                 URL.revokeObjectURL(url);
@@ -51,24 +58,12 @@ function BlogImageBlock() {
         }
     }
 
-    // const handleDeleteImg = (src) => {
-    //     URL.revokeObjectURL(src);
-
-    //     setPreviews(prev => {
-    //         const newPrev = prev.filter((val) => val != src);
-    //         return newPrev;
-    //     })
-    // }
-
     return <div>
         <input type="file" name="" id="" onChange={handleChange} multiple />
 
         <div>
-            {previews.map((img, idx) => (
-                <div>
-                    <img key={idx} src={img} alt="" style={{width:"100%", height:"100%"}} />
-                    {/* <img src="../icon/delete-02-stroke-rounded.svg" alt="" onClick={() => handleDeleteImg(img)}/> */}
-                </div>
+            {imgData.src.map((src, idx) => (
+                <img key={idx} src={src} alt="" style={{width:"100%", height:"100%"}} />
             ))}
         </div>
     </div>

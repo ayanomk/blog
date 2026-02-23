@@ -38,16 +38,11 @@ function CreateBlog() {
     const addMain = (block) => {
         setMainOption(false);
 
-        const newBlock = {
-            type: block.type,
-            content: block.content
-        }
-
         setFormData(prev => {
             const updatedSections = [...prev.sections];
             updatedSections[1] = {
                 ...updatedSections[1],
-                blocks: [...updatedSections[1].blocks, newBlock]
+                blocks: [...updatedSections[1].blocks, block]
             };
 
             return {...prev, sections: updatedSections}
@@ -165,7 +160,7 @@ function CreateBlog() {
     const imageBlock = {
         type: "img",
         dir: "",
-        src: ""
+        src: []
     }
 
     // JSX
@@ -226,7 +221,6 @@ function CreateBlog() {
                     </aside>
 
                     <main className='mainInput'>
-                        <BlogImageBlock />
                         {formData.sections[1].blocks?.map((block, mainBidx) => {
                             let content;
                             switch (block.type) {
@@ -238,6 +232,9 @@ function CreateBlog() {
                                     break;
                                 case 'header2':
                                     content = <BlogHeaderBlock headerType={'h2'} headerData={block} setHeaderData={(newData) => updateMain(newData, mainBidx)} />
+                                    break;
+                                case 'img':
+                                    content = <BlogImageBlock imgData={block} setImgData={(newData) => updateMain(newData, mainBidx)} />
                                     break;
                                 default:
                                     content = null;
