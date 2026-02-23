@@ -2,6 +2,7 @@
     scrollbar-gutter: stable;
     padding: calc(60px * 1.1) 8% 20px;
     background-color: #f0ede8;
+    min-height: calc(100vh - 35px);
 }
 
 .createBlog form {

@@ -17,14 +17,18 @@ function App() {
 
       <ScrollToTop />
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/adventures" element={<Adventure />} />
-        <Route path="/blog/:id" element={<Blog />} />
-        <Route path="/admin/create-blog" element={<CreateBlog />} />
-      </Routes>
+      <div className="mainContent">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/adventures" element={<Adventure />} />
+          <Route path="/blog/:id" element={<Blog />} />
+          <Route path="/admin/create-blog" element={<CreateBlog />} />
+        </Routes>
 
-      <Footer />
+        <Footer />
+
+      </div>
+
     </>
   )
 }
