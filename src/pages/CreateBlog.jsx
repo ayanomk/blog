@@ -34,32 +34,34 @@ function CreateBlog() {
         });
     };
 
-    // ADD MAIN PARAGRAPH
-    const addMain = (block) => {
+    // BLOCK MANAGEMENTS
+    const addBlock = (sct, block) => {
         setMainOption(false);
+        setAsideOption(false);
 
         setFormData(prev => {
             const updatedSections = [...prev.sections];
-            updatedSections[1] = {
-                ...updatedSections[1],
-                blocks: [...updatedSections[1].blocks, block]
+            updatedSections[sct] = {
+                ...updatedSections[sct],
+                blocks: [...updatedSections[sct].blocks, block]
             };
 
             return {...prev, sections: updatedSections}
         })
     }
-    const deleteMainBlock = (delIdx) => {
+
+    const deleteBlock = (sct, delIdx) => {
         // free image URL memory
-        formData.sections[1].blocks[delIdx].src?.forEach(url => {
+        formData.sections[sct].blocks[delIdx].src?.forEach(url => {
             URL.revokeObjectURL(url);
         });
         
         // remove block
         setFormData(prev => {
             const updatedSections = [...prev.sections];
-            updatedSections[1] = {
-                ...updatedSections[1],
-                blocks: updatedSections[1].blocks.filter((_, idx) => idx !== delIdx)
+            updatedSections[sct] = {
+                ...updatedSections[sct],
+                blocks: updatedSections[sct].blocks.filter((_, idx) => idx !== delIdx)
             }
 
             return {
@@ -68,78 +70,51 @@ function CreateBlog() {
             }
         })
     }
-    const updateMain = (newData, mainBidx) => {
+
+    const updateBlock = (sct, newData, mainBidx) => {
         setFormData(prev => {
             const updatedSections = [...prev.sections];
-            updatedSections[1].blocks[mainBidx] = newData;
-
-            return {...prev, sections: updatedSections}
-        })
-    }
-
-    // ASIDE
-    const addSide = (block) => {
-        setAsideOption(false);
-
-        setFormData(prev => {
-            const updatedSections = [...prev.sections];
-            updatedSections[0] = {
-                ...updatedSections[0],
-                blocks: [...updatedSections[0].blocks, block]
-            };
-
-            return {...prev, sections: updatedSections}
-        })
-    }
-    const deleteSideBlock = (sideBidx) => {
-        setFormData(prev => {
-            const updatedSections = [...prev.sections];
-            updatedSections[0] = {
-                ...updatedSections[0],
-                blocks: updatedSections[0].blocks.filter((_, idx) => idx !== sideBidx)
-            }
-
-            return{...prev, sections: updatedSections}
-        })
-    }
-    const updateSide = (newData, sideBIdx) => {
-        setFormData(prev => {
-            const updatedSections = [...prev.sections];
-            updatedSections[0].blocks[sideBIdx] = newData;
+            updatedSections[sct].blocks[mainBidx] = newData;
 
             return {...prev, sections: updatedSections}
         })
     }
 
     // hero image preview
-    const [heroImage, setHeroImage] = useState(null);
     const handleHeroImagePreviewChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             if (file.type.startsWith("image/")) {
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                    setHeroImage(reader.result);
-                };
-                reader.readAsDataURL(file);
-                handleChange(e);
+                URL.revokeObjectURL(formData.heroImageInput);
+
+                const img = new Image();
+                const url = URL.createObjectURL(file);
+
+                img.onload = () => {                    
+                    setFormData(prev => {
+                        return {
+                            ...prev,
+                            heroImageInput: url
+                        }
+                    })
+                }
+                img.src = url;
             }
         }
     };
 
-    // Add SIDE Block option
+    // SIDE Block option
     const [asideOption, setAsideOption] = useState(false);
     const toggleAsideOption = () => {
         setAsideOption(!asideOption);
     }
-    // Add MAIN Block option
+    // MAIN Block option
     const [mainOption, setMainOption] = useState(false);
     const toggleMainOption = () => {
         setMainOption(!mainOption);
     }
 
     // BLOCKS
-    // HEADER
     const headerBlock = {
         type: "header",
         content: ""
@@ -148,12 +123,10 @@ function CreateBlog() {
         type: "header2",
         content: ""
     }
-    // PARAGRAPH
     const paragraphBlock = {
         type: "text",
         content: ""
     }
-    // TABLE
     const tableBlock = {
         type: "table",
         // title: "",
@@ -162,7 +135,6 @@ function CreateBlog() {
             ["", ""]
         ]
     }
-    // IMAGES
     const imageBlock = {
         type: "img",
         dir: "",
@@ -185,8 +157,8 @@ function CreateBlog() {
                     </div>
                 </div>
                 <div className='heroInput'>
-                    {heroImage != null ? <img src={heroImage} alt="" /> : ""}
-                    <input className='heroImageInput' type="file" name="heroImageInput" value={formData.heroImageInput} onChange={handleHeroImagePreviewChange} />
+                    {formData.heroImageInput != '' ? <img src={formData.heroImageInput} alt="" /> : ""}
+                    <input className='heroImageInput' type="file" name="heroImageInput" onChange={handleHeroImagePreviewChange} />
                 </div>
 
                 <div className="contentInput">
@@ -196,13 +168,13 @@ function CreateBlog() {
                             let content;
                             switch (block.type) {
                                 case 'table':
-                                    content = <BlogTable tableData={block} setTableData={(newData) => updateSide(newData, sideBidx)} />
+                                    content = <BlogTable tableData={block} setTableData={(newData) => updateBlock(0, newData, sideBidx)} />
                                     break;
                                 case 'header':
-                                    content = <BlogHeaderBlock headerType={'h1'} headerData={block} setHeaderData={(newData) => updateSide(newData, sideBidx)} />
+                                    content = <BlogHeaderBlock headerType={'h1'} headerData={block} setHeaderData={(newData) => updateBlock(0, newData, sideBidx)} />
                                     break;
                                 case 'text':
-                                    content = <BlogParagraph paragraphData={block} setParagraphData={(newData) => updateSide(newData, sideBidx)}/>
+                                    content = <BlogParagraph paragraphData={block} setParagraphData={(newData) => updateBlock(0, newData, sideBidx)}/>
                                     break;
                                 default:
                                     content = null;
@@ -210,7 +182,7 @@ function CreateBlog() {
 
                             return <div  key={sideBidx}>
                                 {content}
-                                <img src="../icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteSideBlock(sideBidx)} />
+                                <img src="../icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteBlock(0, sideBidx)} />
                             </div>
                         })}
 
@@ -219,9 +191,9 @@ function CreateBlog() {
                                 <img src="../icon/plus-sign-circle-stroke-rounded.svg" alt="" className={asideOption ? "rotate" : ""} />
                             </button>
                             <div className={`inputOptions ${asideOption ? "" : "hidden"}`}>
-                                <button value="" type='button' onClick={() => {addSide(headerBlock)}}>Header 1</button>
-                                <button value="" type='button' onClick={() => {addSide(paragraphBlock)}}>Paragraph</button>
-                                <button value="" type='button' onClick={() => {addSide(tableBlock)}}>Table</button>
+                                <button value="" type='button' onClick={() => {addBlock(0, headerBlock)}}>Header 1</button>
+                                <button value="" type='button' onClick={() => {addBlock(0, paragraphBlock)}}>Paragraph</button>
+                                <button value="" type='button' onClick={() => {addBlock(0, tableBlock)}}>Table</button>
                             </div>
                         </div>
                     </aside>
@@ -231,23 +203,23 @@ function CreateBlog() {
                             let content;
                             switch (block.type) {
                                 case 'text':
-                                    content = <BlogParagraph paragraphData={block} setParagraphData={(newData) => updateMain(newData, mainBidx)}/>
+                                    content = <BlogParagraph paragraphData={block} setParagraphData={(newData) => updateBlock(1, newData, mainBidx)}/>
                                     break;
                                 case 'header':
-                                    content = <BlogHeaderBlock headerType={'h1'} headerData={block} setHeaderData={(newData) => updateMain(newData, mainBidx)} />
+                                    content = <BlogHeaderBlock headerType={'h1'} headerData={block} setHeaderData={(newData) => updateBlock(1, newData, mainBidx)} />
                                     break;
                                 case 'header2':
-                                    content = <BlogHeaderBlock headerType={'h2'} headerData={block} setHeaderData={(newData) => updateMain(newData, mainBidx)} />
+                                    content = <BlogHeaderBlock headerType={'h2'} headerData={block} setHeaderData={(newData) => updateBlock(1, newData, mainBidx)} />
                                     break;
                                 case 'img':
-                                    content = <BlogImageBlock imgData={block} setImgData={(newData) => updateMain(newData, mainBidx)} />
+                                    content = <BlogImageBlock imgData={block} setImgData={(newData) => updateBlock(1, newData, mainBidx)} />
                                     break;
                                 default:
                                     content = null;
                             }
                             return <div key={mainBidx}>
                                 {content}
-                                <img src="../icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteMainBlock(mainBidx)}/>
+                                <img src="../icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteBlock(1, mainBidx)}/>
                             </div>
                         })}
 
@@ -256,11 +228,10 @@ function CreateBlog() {
                                 <img src="../icon/plus-sign-circle-stroke-rounded.svg" alt="" className={mainOption ? "rotate" : ""} />
                             </button>
                             <div className={`inputOptions ${mainOption ? "" : "hidden"}`}>
-                                <button value="" type='button' onClick={() => {addMain(headerBlock)}}>Header 1</button>
-                                <button value="" type='button' onClick={() => {addMain(header2Block)}}>Header 2</button>
-                                <button value="" type='button' onClick={() => {addMain(paragraphBlock)}}>Paragraph</button>
-                                <button value="" type='button' onClick={() => {addMain(imageBlock)}}>Images</button>
-                                {/* <button value="" type='button'>Table</button> */}
+                                <button value="" type='button' onClick={() => {addBlock(1, headerBlock)}}>Header 1</button>
+                                <button value="" type='button' onClick={() => {addBlock(1, header2Block)}}>Header 2</button>
+                                <button value="" type='button' onClick={() => {addBlock(1, paragraphBlock)}}>Paragraph</button>
+                                <button value="" type='button' onClick={() => {addBlock(1, imageBlock)}}>Images</button>
                             </div>
                         </div>
 
