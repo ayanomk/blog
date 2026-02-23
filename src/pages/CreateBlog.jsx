@@ -1,8 +1,9 @@
 import './CreateBlog.css';
 import BlogTable from '../components/BlogTable';
 import BlogParagraph from '../components/BlogParagraph';
-import { useState } from 'react';
 import BlogHeaderBlock from '../components/BlogHeaderBlock';
+import BlogImageBlock from '../components/BlogImageBlock';
+import { useState } from 'react';
 
 function CreateBlog() {
     // form data
@@ -160,6 +161,12 @@ function CreateBlog() {
             ["", ""]
         ]
     }
+    // IMAGES
+    const imageBlock = {
+        type: "img",
+        dir: "",
+        src: ""
+    }
 
     // JSX
     return (
@@ -219,6 +226,7 @@ function CreateBlog() {
                     </aside>
 
                     <main className='mainInput'>
+                        <BlogImageBlock />
                         {formData.sections[1].blocks?.map((block, mainBidx) => {
                             let content;
                             switch (block.type) {
@@ -246,9 +254,9 @@ function CreateBlog() {
                             </button>
                             <div className={`asideInputOptions ${mainOption ? "" : "hidden"}`}>
                                 <button value="" type='button' onClick={() => {addMain(headerBlock)}}>Header</button>
-                                <button value="" type='button'onClick={() => {addMain(header2Block)}}>Header 2</button>
+                                <button value="" type='button' onClick={() => {addMain(header2Block)}}>Header 2</button>
                                 <button value="" type='button' onClick={() => {addMain(paragraphBlock)}}>Paragraph</button>
-                                <button value="" type='button'>Image Horizontal</button>
+                                <button value="" type='button' onClick={() => {addMain(imageBlock)}}>Image Horizontal</button>
                                 <button value="" type='button'>Image Vertical x 2</button>
                                 <button value="" type='button'>Image Vertical x 3</button>
                                 {/* <button value="" type='button'>Table</button> */}
