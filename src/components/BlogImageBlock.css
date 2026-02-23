@@ -1,0 +1,21 @@
+.imageBlockInput {
+    width: 100%;
+}
+.imageBlock {
+    display: flex; 
+    flex-direction: row;
+    justify-content: space-around; 
+    width: 100%;
+}
+.imageBlock .imgH {
+    width: 100%; 
+    padding: 0px 5%;
+}
+.imageBlock .imgV2 {
+    width: 50%;
+    padding: 0px 2%;
+}
+.imageBlock .imgV3 {
+    width: 33%;
+    padding: 0px 1%;
+}
