@@ -1,3 +1,6 @@
+.imageBlockInput {
+    width: 100%;
+}
 .imageBlock {
     display: flex; 
     flex-direction: row;

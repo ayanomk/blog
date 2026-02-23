@@ -238,7 +238,13 @@ function CreateBlog() {
                     </main>
                 </div>
 
+
             </form>
+
+            <div className="submitButtons">
+                <button type='button'>Save Draft</button>
+                <button type='button'>Publish</button>
+            </div>
 
         </div>
     )
