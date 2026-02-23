@@ -49,6 +49,12 @@ function CreateBlog() {
         })
     }
     const deleteMainBlock = (delIdx) => {
+        // free image URL memory
+        formData.sections[1].blocks[delIdx].src?.forEach(url => {
+            URL.revokeObjectURL(url);
+        });
+        
+        // remove block
         setFormData(prev => {
             const updatedSections = [...prev.sections];
             updatedSections[1] = {

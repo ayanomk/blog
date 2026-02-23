@@ -4,7 +4,6 @@ function BlogImageBlock({imgData, setImgData}) {
     // clean up temporary memory for previous URL
     let urls = [];
     useEffect(() => {
-        console.log("hi");
         // return will make the following function run before the previews value change instead of after value change
         return () => {
             urls.forEach((url) => {
@@ -61,9 +60,9 @@ function BlogImageBlock({imgData, setImgData}) {
     return <div>
         <input type="file" name="" id="" onChange={handleChange} multiple />
 
-        <div>
+        <div style={{display: "flex", flexDirection:"row", justifyContent: "space-around", width:"100%"}}>
             {imgData.src.map((src, idx) => (
-                <img key={idx} src={src} alt="" style={{width:"100%", height:"100%"}} />
+                <img key={idx} src={src} alt="" style={{width:"45%", height:"100%"}} />
             ))}
         </div>
     </div>
