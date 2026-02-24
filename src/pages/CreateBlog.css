@@ -20,7 +20,7 @@
     background-color: #f0ede8;
     width: 100%;
 }
-.createBlog .title {
+.createBlog .titleInput {
     display: flex;
     align-items: end;
     justify-content: space-between;
@@ -29,14 +29,14 @@
 .createBlog .mainTitle {
     width: 75%;
 }
-.createBlog .titleInput {
+.createBlog .title {
     font-size: 4.5rem;
     text-transform: capitalize;
     font-family: "IM_Fell_French_Canon_SC", serif;
     font-weight: bold;
     margin-bottom: 10px;
 }
-.createBlog .descriptionInput {
+.createBlog .description {
     font-size: 1.1em;
 }
 .createBlog .dateLocation {
@@ -48,7 +48,7 @@
 .createBlog .dateLocation input {
     text-align: right;
 }
-.createBlog .heroImageInput {
+.createBlog .hero {
     width: 25%;
 }
 .createBlog .heroInput img {

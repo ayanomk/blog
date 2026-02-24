@@ -58,8 +58,43 @@ const getBlogsByFilter = async (req, res) => {
     successResponse(res, `All blog fetched successfully`, data);
 }
 
+/**
+ * POST SINGLE BLOG
+ * @param {*} req 
+ * @param {*} res 
+ */
+const createBlog = async (req, res) => {
+    const { locationInput, dateInput, ...rest } = req.body;
+
+    const [city, country] = locationInput.split(",").map(s => s.trim());
+
+    let year, month, date;
+    const d = new Date(dateInput);
+    year = d.getFullYear();
+    month = d.getMonth() + 1;
+    date = d.getDate();
+
+    const newPost = await Post.create({
+        ...rest,
+        tripId: res.title,
+        day: 1,
+        region: "Oceania",
+        lat: -37.8142,
+        lng: 144.9632,
+        city,
+        country,
+        year,
+        month,
+        date
+    });
+
+    successResponse(res, "Blog created successfully", newPost);
+
+}
+
 module.exports = {
     getAllBlogs,
     getBlogById,
-    getBlogsByFilter
+    getBlogsByFilter,
+    createBlog
 };

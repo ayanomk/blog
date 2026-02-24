@@ -22,7 +22,7 @@ const htmlRenderer = (block, blockIdx) => {
                 <table key={blockIdx}>
                     <thead>
                         <tr>
-                            {block.content.headers.map((el, elIdx) => (
+                            {block.content.header.map((el, elIdx) => (
                                 <th key={elIdx}>{el}</th>
                             ))}
                         </tr>

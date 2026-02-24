@@ -48,3 +48,18 @@ export const getBlogsByFilter = async (query = {}) => {
     if (result.status === "fail") throw result;
     return result.data;
 }
+
+export const createBlog = async (data) => {
+    const res = await fetch(`${API_BASE}/admin/blogs`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    });
+
+    const result = await res.json();
+
+    if (result.status === "fail") throw result;
+    return result.data;
+}

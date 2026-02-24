@@ -34,7 +34,7 @@ const seed = async () => {
                         {
                             "type": "table",
                             "content": {
-                                "headers": ["Time", "Activity"],
+                                "header": ["Time", "Activity"],
                                 "rows": [
                                     ["10:00", "Arrive at Adelaide Parklands Terminal"],
                                     ["11:30", "Board train"],
