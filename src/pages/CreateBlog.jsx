@@ -5,22 +5,22 @@ import BlogHeaderBlock from '../components/BlogHeaderBlock';
 import BlogImageBlock from '../components/BlogImageBlock';
 import { useState } from 'react';
 
+import { createBlog } from '../services/blogService.js';
+
 function CreateBlog() {
     // form data
     const [formData, setFormData] = useState({
-        titleInput: '',
-        descriptionInput: '',
+        title: '',
+        description: '',
         locationInput: '',
         dateInput: '',
-        heroImageInput: '',
+        hero: '',
         sections: [
             {
-                section: "Information",
                 sectionType: "info",
                 blocks: []
             },
             {
-                section: "The Day",
                 sectionType: "content",
                 blocks: []
             }
@@ -33,6 +33,18 @@ function CreateBlog() {
             [name]: value
         });
     };
+
+    // SUBMIT BLOG
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            await createBlog(formData);
+            console.log("Blog created");
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
     // BLOCK MANAGEMENTS
     const addBlock = (sct, block) => {
@@ -85,7 +97,7 @@ function CreateBlog() {
         const file = e.target.files[0];
         if (file) {
             if (file.type.startsWith("image/")) {
-                URL.revokeObjectURL(formData.heroImageInput);
+                URL.revokeObjectURL(formData.hero);
 
                 const img = new Image();
                 const url = URL.createObjectURL(file);
@@ -94,7 +106,7 @@ function CreateBlog() {
                     setFormData(prev => {
                         return {
                             ...prev,
-                            heroImageInput: url
+                            hero: url
                         }
                     })
                 }
@@ -116,7 +128,7 @@ function CreateBlog() {
 
     // BLOCKS
     const headerBlock = {
-        type: "header",
+        type: "header1",
         content: ""
     }
     const header2Block = {
@@ -129,16 +141,19 @@ function CreateBlog() {
     }
     const tableBlock = {
         type: "table",
-        // title: "",
-        header: ["", ""],
-        rows: [
-            ["", ""]
-        ]
+        content: {
+            header: ["", ""],
+            rows: [
+                ["", ""]
+            ]
+        }
     }
     const imageBlock = {
         type: "img",
-        dir: "",
-        src: []
+        content: {
+            dir: "",
+            src: []
+        }
     }
 
     // JSX
@@ -146,10 +161,10 @@ function CreateBlog() {
         <div className="createBlog">
 
             <form action="">
-                <div className="title">
+                <div className="titleInput">
                     <div className='mainTitle'>
-                        <input type="text" className='titleInput' name="titleInput" value={formData.titleInput} onChange={handleChange} placeholder='Title' />
-                        <input type="text" className='descriptionInput' name="descriptionInput" value={formData.descriptionInput} onChange={handleChange} placeholder='Description' />
+                        <input type="text" className='title' name="title" value={formData.title} onChange={handleChange} placeholder='Title' />
+                        <input type="text" className='description' name="description" value={formData.description} onChange={handleChange} placeholder='Description' />
                     </div>
                     <div className='dateLocation'>
                         <input type="text" name="locationInput" value={formData.locationInput} onChange={handleChange} placeholder='Location' />
@@ -157,8 +172,8 @@ function CreateBlog() {
                     </div>
                 </div>
                 <div className='heroInput'>
-                    {formData.heroImageInput != '' ? <img src={formData.heroImageInput} alt="" /> : ""}
-                    <input className='heroImageInput' type="file" name="heroImageInput" onChange={handleHeroImagePreviewChange} />
+                    {formData.hero != '' ? <img src={formData.hero} alt="" /> : ""}
+                    <input className='hero' type="file" name="hero" onChange={handleHeroImagePreviewChange} />
                 </div>
 
                 <div className="contentInput">
@@ -170,7 +185,7 @@ function CreateBlog() {
                                 case 'table':
                                     content = <BlogTable tableData={block} setTableData={(newData) => updateBlock(0, newData, sideBidx)} />
                                     break;
-                                case 'header':
+                                case 'header1':
                                     content = <BlogHeaderBlock headerType={'h1'} headerData={block} setHeaderData={(newData) => updateBlock(0, newData, sideBidx)} />
                                     break;
                                 case 'text':
@@ -205,7 +220,7 @@ function CreateBlog() {
                                 case 'text':
                                     content = <BlogParagraph paragraphData={block} setParagraphData={(newData) => updateBlock(1, newData, mainBidx)}/>
                                     break;
-                                case 'header':
+                                case 'header1':
                                     content = <BlogHeaderBlock headerType={'h1'} headerData={block} setHeaderData={(newData) => updateBlock(1, newData, mainBidx)} />
                                     break;
                                 case 'header2':
@@ -243,7 +258,7 @@ function CreateBlog() {
 
             <div className="submitButtons">
                 <button type='button'>Save Draft</button>
-                <button type='button'>Publish</button>
+                <button type='button' onClick={handleSubmit}>Publish</button>
             </div>
 
         </div>
