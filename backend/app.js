@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 
-const { connectDb, connectDB } =require("./config/db.js");
+const { connectDB } =require("./config/db.js");
 
 const { errorHandler } = require("./middleware/errorHandler.js");
 
