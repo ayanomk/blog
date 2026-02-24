@@ -22,10 +22,10 @@ function Map({trips}) {
 
             {/* markers */}
             {trips.map(trip => (
-                <Marker key = {trip.id} position={[trip.lat, trip.lng]}>
+                <Marker key = {trip._id} position={[trip.lat, trip.lng]}>
                     <Popup>
                         <div className="markerPopup">
-                            <Link to={`/blog/${trip.id}`}>
+                            <Link to={`/blogs/${trip._id}`}>
                                 <h4>{trip.title}</h4>
                                 <p>{trip.city}</p>
                             </Link>
