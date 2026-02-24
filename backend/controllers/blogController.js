@@ -1,16 +1,16 @@
 const AppError = require("../utils/AppError");
 const { successResponse } = require("../utils/response.js");
 
-const posts = require("../data/mockData.json");
+// const posts = require("../data/mockData.json");
+
+const Post = require("../models/Post.js");
 
 /**
  * GET ALL BLOGS
  * @returns all blogs data
  */
 const getAllBlogs = async (req, res) => {
-    // FIXME! switch after connecting to db
-    // const data = await posts.findAll();
-    const data = posts;
+    const data = await Post.find();
 
     // fail
     if (!data || data.length === 0) throw new AppError("No blogs found", 404);
@@ -27,8 +27,7 @@ const getAllBlogs = async (req, res) => {
 const getBlogById = async (req, res) => {
     const id = req.params.id;
     // FIXME! switch after connecting to db
-    // const data = await posts.findById(id);
-    const data = posts.find(p => p.id === Number(id));
+    const data = await Post.findById(id);
 
     // fail
     if (!data) throw new AppError(`Blog ID: ${id} not found`, 404);
@@ -45,7 +44,7 @@ const getBlogById = async (req, res) => {
 const getBlogsByFilter = async (req, res) => {
     const {excludeId, tripId, excludeTripId, country, regions, years} = req.query;
     
-    let data = posts;
+    let data = await Post.find();
     if (regions) data = data.filter(p => regions.includes(p.region));
     if (years) data = data.filter(p => years.includes(p.year));
     if (excludeId) data = data.filter(p => p.id !== Number(excludeId));

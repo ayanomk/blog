@@ -8,7 +8,7 @@ const blockSchema = new mongoose.Schema({
 
 // SECTION SCHEMA
 const sectionSchema = new mongoose.Schema({
-    type: {type: String, required: true},
+    sectionType: {type: String, required: true},
     blocks: [blockSchema]
 }, {_id: false});
 

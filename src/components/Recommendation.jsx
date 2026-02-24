@@ -10,7 +10,7 @@ import './Recommendation.css';
 const blogCardMaker = (blog, idx) => {
     return (
         <div className="card" key={idx}>
-            <Link to={`/blog/${blog.id}`}>
+            <Link to={`/blogs/${blog._id}`}>
                 <img src={blog.hero} alt="" loading="lazy" />
                 <div className="cardInfo">
                     <h3>{blog.title}{blog.day > 0 ? `: Day ${blog.day}` : null}</h3>
