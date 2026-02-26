@@ -102,7 +102,6 @@ const createBlog = async (req, res) => {
         ...rest,
         title: formattedTitle,
         tripId: tripId,
-        day: 1,
         region: region,
         lat: lat,
         lng: lng,
