@@ -14,6 +14,7 @@ function CreateBlog() {
         description: '',
         locationInput: '',
         dateInput: '',
+        day: 1,
         hero: '',
         sections: [
             {
@@ -168,7 +169,10 @@ function CreateBlog() {
                     </div>
                     <div className='dateLocation'>
                         <input type="text" name="locationInput" value={formData.locationInput} onChange={handleChange} placeholder='Location' />
-                        <input type="date" name="dateInput" value={formData.dateInput} onChange={handleChange} placeholder='Date' />
+                        <div style={{display:"flex",}}>
+                            <input type="date" name="dateInput" value={formData.dateInput} onChange={handleChange} placeholder='Date' />
+                            <input type="number" name="day" value={formData.day} onChange={handleChange} placeholder='Day' style={{width: "30%", marginLeft:"15px"}} />
+                        </div>
                     </div>
                 </div>
                 <div className='heroInput'>

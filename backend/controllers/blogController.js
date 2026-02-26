@@ -1,8 +1,6 @@
 const AppError = require("../utils/AppError");
 const { successResponse } = require("../utils/response.js");
-
-// const posts = require("../data/mockData.json");
-
+const countries = require("world-countries");
 const Post = require("../models/Post.js");
 
 /**
@@ -64,23 +62,49 @@ const getBlogsByFilter = async (req, res) => {
  * @param {*} res 
  */
 const createBlog = async (req, res) => {
-    const { locationInput, dateInput, ...rest } = req.body;
+    const { title, locationInput, dateInput, ...rest } = req.body;
 
+    // !FIXME Capitalise title
+    let splitStr = title.split(' ');
+    for (let i = 0; i < splitStr.length; i++) {
+        splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+    }
+    const formattedTitle = splitStr.join(' ');
+
+    
+    // !FIXME LAT LNG Modify to handle errors
+    let lat, lng;
+    const latLngRes = await fetch(
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(locationInput)}&format=json`
+    )
+    const latLngData = await latLngRes.json();
+    if (latLngData.length > 0) {
+        lat = parseFloat(latLngData[0].lat);
+        lng = parseFloat(latLngData[0].lon);
+    }
+
+    // !FIXME Find region
     const [city, country] = locationInput.split(",").map(s => s.trim());
+    const worldCountry = countries.find(c => c.name.common == country);
+    const region = worldCountry.region;
 
+    // !FIXME USE DATE
     let year, month, date;
     const d = new Date(dateInput);
     year = d.getFullYear();
     month = d.getMonth() + 1;
     date = d.getDate();
 
+    let tripId = title.replaceAll(' ', '-');
+    tripId = tripId + '-' + year;
+
     const newPost = await Post.create({
         ...rest,
-        tripId: res.title,
-        day: 1,
-        region: "Oceania",
-        lat: -37.8142,
-        lng: 144.9632,
+        title: formattedTitle,
+        tripId: tripId,
+        region: region,
+        lat: lat,
+        lng: lng,
         city,
         country,
         year,

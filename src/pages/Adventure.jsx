@@ -16,6 +16,7 @@ function Adventure() {
         getAllBlogs()
         .then((data) => {
             setAllBlogs(data);
+            console.log(data);
         })
         .catch(err => console.log(err));
     }, []);
