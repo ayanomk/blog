@@ -29,6 +29,10 @@ function CreateBlog() {
     })
     const handleChange = (e) => {
         const { name, value } = e.target;
+        // validation
+        if (value.length === 0 || value == 0) e.target.classList.add("missingForm");
+        else e.target.classList.remove("missingForm");
+
         setFormData({
             ...formData,
             [name]: value
@@ -164,14 +168,14 @@ function CreateBlog() {
             <form action="">
                 <div className="titleInput">
                     <div className='mainTitle'>
-                        <input type="text" className='title' name="title" value={formData.title} onChange={handleChange} placeholder='Title' />
-                        <input type="text" className='description' name="description" value={formData.description} onChange={handleChange} placeholder='Description' />
+                        <input type="text" className='title' name="title" value={formData.title} onChange={handleChange} placeholder='Title' required />
+                        <input type="text" className='description' name="description" value={formData.description} onChange={handleChange} placeholder='Description' required />
                     </div>
                     <div className='dateLocation'>
-                        <input type="text" name="locationInput" value={formData.locationInput} onChange={handleChange} placeholder='Location' />
+                        <input type="text" name="locationInput" value={formData.locationInput} onChange={handleChange} placeholder='Location' required />
                         <div style={{display:"flex",}}>
-                            <input type="date" name="dateInput" value={formData.dateInput} onChange={handleChange} placeholder='Date' />
-                            <input type="number" name="day" value={formData.day} onChange={handleChange} placeholder='Day' style={{width: "30%", marginLeft:"15px"}} />
+                            <input type="date" name="dateInput" value={formData.dateInput} onChange={handleChange} placeholder='Date' required />
+                            <input type="number" name="day" value={formData.day} onChange={handleChange} placeholder='Day' min={1} style={{width: "30%", marginLeft:"15px"}} required />
                         </div>
                     </div>
                 </div>
