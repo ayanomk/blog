@@ -70,9 +70,10 @@ const createBlog = async (req, res) => {
         splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
     }
     const formattedTitle = splitStr.join(' ');
+
     
-    let lat, lng;
     // !FIXME LAT LNG Modify to handle errors
+    let lat, lng;
     const latLngRes = await fetch(
         `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(locationInput)}&format=json`
     )
@@ -94,10 +95,13 @@ const createBlog = async (req, res) => {
     month = d.getMonth() + 1;
     date = d.getDate();
 
+    let tripId = title.replaceAll(' ', '-');
+    tripId = tripId + '-' + year;
+
     const newPost = await Post.create({
         ...rest,
         title: formattedTitle,
-        tripId: res.title,
+        tripId: tripId,
         day: 1,
         region: region,
         lat: lat,
