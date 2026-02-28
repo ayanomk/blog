@@ -5,17 +5,20 @@ import BlogHeaderBlock from '../components/BlogHeaderBlock';
 import BlogImageBlock from '../components/BlogImageBlock';
 import SubmitFormMessage from '../components/SubmitFormMessage.jsx';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { createBlog } from '../services/blogService.js';
 
 function CreateBlog() {
+    const navigate = useNavigate();
+
     // form data
     const [formData, setFormData] = useState({
         title: '',
         description: '',
         locationInput: '',
         dateInput: '',
-        day: 1,
+        day: 0,
         hero: '',
         sections: [
             {
@@ -87,8 +90,8 @@ function CreateBlog() {
         // Create blog if no missing fields
         if (missingFields.length === 0) {
             try {
-                await createBlog(formData);
-                console.log("Blog created");
+                const res = await createBlog(formData);
+                navigate(`/blogs/${res._id}`);
             } catch (err) {
                 if (err.message.includes("country")) {
                     document.querySelector(`.locationInput`).classList.add('missingForm');
@@ -226,7 +229,7 @@ function CreateBlog() {
                         <input type="text" name="locationInput" className='locationInput' value={formData.locationInput} onChange={handleChange} placeholder='Location' required />
                         <div style={{display:"flex",}}>
                             <input type="date" name="dateInput" className='dateInput' value={formData.dateInput} onChange={handleChange} placeholder='Date' required />
-                            <input type="number" name="day" className='day' value={formData.day} onChange={handleChange} placeholder='Day' min={1} style={{width: "30%", marginLeft:"15px"}} required />
+                            <input type="number" name="day" className='day' value={formData.day} onChange={handleChange} placeholder='Day' min={0} style={{width: "30%", marginLeft:"15px"}} required />
                         </div>
                     </div>
                 </div>
