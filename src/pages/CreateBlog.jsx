@@ -3,6 +3,7 @@ import BlogTable from '../components/BlogTable';
 import BlogParagraph from '../components/BlogParagraph';
 import BlogHeaderBlock from '../components/BlogHeaderBlock';
 import BlogImageBlock from '../components/BlogImageBlock';
+import SubmitFormMessage from '../components/SubmitFormMessage.jsx';
 import { useState } from 'react';
 
 import { createBlog } from '../services/blogService.js';
@@ -40,15 +41,65 @@ function CreateBlog() {
     };
 
     // SUBMIT BLOG
+    const [invalidForm, setInvalidaForm] = useState([]);
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setInvalidaForm([])
 
-        try {
-            await createBlog(formData);
-            console.log("Blog created");
-        } catch (err) {
-            console.log(err);
+        // Check for missing required fields
+        const missingFields = [];
+        Object.entries(formData).forEach(([key, val]) => {
+            if (val.length === 0) {
+                document.querySelector(`.${key}`).classList.add('missingForm');
+                missingFields.push(key)
+            }
+        })
+
+        // Remove empty blocks
+        const deleteBlocks = {};
+        formData.sections.map((section, sIdx) => {
+            deleteBlocks[sIdx] = [];
+            section.blocks.map((block, bIdx) => {
+                if (block.type === 'table' && block.content.header[0] === '') {
+                    deleteBlocks[sIdx].push(bIdx);
+                } else if (block.type === 'img' && block.content.dir === '') {
+                    deleteBlocks[sIdx].push(bIdx);
+                } else if (block.content === '') {
+                    deleteBlocks[sIdx].push(bIdx);
+                }
+            })
+        })
+
+        setFormData(prev => {
+            const updatedSections = [...prev.sections];
+            Object.keys(deleteBlocks).forEach((sIdx) => {
+                updatedSections[sIdx] = {
+                    ...updatedSections[sIdx],
+                    blocks: updatedSections[sIdx].blocks.filter((_, idx) => !deleteBlocks[sIdx].includes(idx))
+                }
+            });
+            return {
+                ...prev,
+                sections: updatedSections
+            }
+        })
+
+        // Create blog if no missing fields
+        if (missingFields.length === 0) {
+            try {
+                await createBlog(formData);
+                console.log("Blog created");
+            } catch (err) {
+                if (err.message.includes("country")) {
+                    document.querySelector(`.locationInput`).classList.add('missingForm');
+                    missingFields.push('locationInput');
+                }
+                console.log(err);
+            }
         }
+
+        setInvalidaForm(missingFields);
+
     }
 
     // BLOCK MANAGEMENTS
@@ -172,10 +223,10 @@ function CreateBlog() {
                         <input type="text" className='description' name="description" value={formData.description} onChange={handleChange} placeholder='Description' required />
                     </div>
                     <div className='dateLocation'>
-                        <input type="text" name="locationInput" value={formData.locationInput} onChange={handleChange} placeholder='Location' required />
+                        <input type="text" name="locationInput" className='locationInput' value={formData.locationInput} onChange={handleChange} placeholder='Location' required />
                         <div style={{display:"flex",}}>
-                            <input type="date" name="dateInput" value={formData.dateInput} onChange={handleChange} placeholder='Date' required />
-                            <input type="number" name="day" value={formData.day} onChange={handleChange} placeholder='Day' min={1} style={{width: "30%", marginLeft:"15px"}} required />
+                            <input type="date" name="dateInput" className='dateInput' value={formData.dateInput} onChange={handleChange} placeholder='Date' required />
+                            <input type="number" name="day" className='day' value={formData.day} onChange={handleChange} placeholder='Day' min={1} style={{width: "30%", marginLeft:"15px"}} required />
                         </div>
                     </div>
                 </div>
@@ -269,6 +320,7 @@ function CreateBlog() {
                 <button type='button' onClick={handleSubmit}>Publish</button>
             </div>
 
+            {invalidForm.length !== 0 && <SubmitFormMessage missingFormList={invalidForm} setMissingFormList={() => setInvalidaForm([])} />}
         </div>
     )
 }

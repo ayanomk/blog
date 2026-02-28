@@ -19,6 +19,7 @@
     border-bottom: 1px solid grey;
     background-color: #f0ede8;
     width: 100%;
+    margin-bottom: 10px;
 }
 .createBlog .titleInput {
     display: flex;

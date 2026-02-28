@@ -86,6 +86,9 @@ const createBlog = async (req, res) => {
     // !FIXME Find region
     const [city, country] = locationInput.split(",").map(s => s.trim());
     const worldCountry = countries.find(c => c.name.common == country);
+    if (worldCountry === undefined) {
+        throw new AppError('Invalid country');
+    }
     const region = worldCountry.region;
 
     // !FIXME USE DATE
