@@ -157,6 +157,8 @@ function CreateBlog() {
         const file = e.target.files[0];
         if (file) {
             if (file.type.startsWith("image/")) {
+                e.target.classList.remove("missingForm");
+
                 URL.revokeObjectURL(formData.hero);
 
                 const img = new Image();
