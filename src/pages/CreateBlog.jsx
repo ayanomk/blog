@@ -73,24 +73,25 @@ function CreateBlog() {
             })
         })
 
-        setFormData(prev => {
-            const updatedSections = [...prev.sections];
-            Object.keys(deleteBlocks).forEach((sIdx) => {
-                updatedSections[sIdx] = {
-                    ...updatedSections[sIdx],
-                    blocks: updatedSections[sIdx].blocks.filter((_, idx) => !deleteBlocks[sIdx].includes(idx))
-                }
-            });
-            return {
-                ...prev,
-                sections: updatedSections
+        const updatedSections = [...formData.sections];
+        Object.keys(deleteBlocks).forEach((sIdx) => {
+            updatedSections[sIdx] = {
+                ...updatedSections[sIdx],
+                blocks: updatedSections[sIdx].blocks.filter((_, idx) => !deleteBlocks[sIdx].includes(idx))
             }
-        })
+        });
+        const updatedFormData = {
+            ...formData,
+            sections: updatedSections
+        }
+
+        setFormData(updatedFormData);
+
 
         // Create blog if no missing fields
         if (missingFields.length === 0) {
             try {
-                const res = await createBlog(formData);
+                const res = await createBlog(updatedFormData);
                 navigate(`/blogs/${res._id}`);
             } catch (err) {
                 if (err.message.includes("country")) {
