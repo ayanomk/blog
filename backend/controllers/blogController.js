@@ -45,7 +45,7 @@ const getBlogsByFilter = async (req, res) => {
     let data = await Post.find();
     if (regions) data = data.filter(p => regions.includes(p.region));
     if (years) data = data.filter(p => years.includes(p.year));
-    if (excludeId) data = data.filter(p => p.id !== Number(excludeId));
+    if (excludeId) data = data.filter(p => p._id.toString() !== excludeId);
     if (tripId) data = data.filter(p => p.tripId === tripId);
     if (excludeTripId) data = data.filter(p => p.tripId !== excludeTripId)
     if (country) data = data.filter(p => p.country === country );
@@ -86,6 +86,9 @@ const createBlog = async (req, res) => {
     // !FIXME Find region
     const [city, country] = locationInput.split(",").map(s => s.trim());
     const worldCountry = countries.find(c => c.name.common == country);
+    if (worldCountry === undefined) {
+        throw new AppError('Invalid country');
+    }
     const region = worldCountry.region;
 
     // !FIXME USE DATE
