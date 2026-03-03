@@ -5,6 +5,8 @@ const { connectDB } =require("./config/db.js");
 
 const { errorHandler } = require("./middleware/errorHandler.js");
 
+require("dotenv").config();
+
 const app = express();
 
 app.use(cors());
@@ -21,7 +23,7 @@ const blogRoutes = require("./routes/blogRoutes.js");
 app.use('/api/blogs', blogRoutes);
 // ADMIN BLOG
 const adminRoutes = require("./routes/adminRoutes.js");
-app.use('/api/admin/blogs', adminRoutes);
+app.use('/api/admin', adminRoutes);
 
 // ERROR
 app.use(errorHandler);
