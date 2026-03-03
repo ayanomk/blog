@@ -5,6 +5,8 @@ const { connectDB } =require("./config/db.js");
 
 const { errorHandler } = require("./middleware/errorHandler.js");
 
+require("dotenv").config();
+
 const app = express();
 
 app.use(cors());

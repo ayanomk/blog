@@ -15,7 +15,7 @@ const authenticateUser = async (req, res) => {
 
     const token = jwt.sign(
         { id: user._id },
-        "thereIsNoSecretIngredient",
+        process.env.JWT_SECRET,
         { expiresIn: "2h" }
     );
 
