@@ -16,16 +16,18 @@ footer p {
     text-align: center;
 }
 
-footer div {
-    position: absolute;
-    right: 0;
-}
-footer div button {
+footer .loginButton {
     padding: 10px 20px;
     color: #292929;
     transition: all 0.5s;
 }
-footer div button:hover {
+footer .loginButton:hover {
     color: #6b1d2f;
     font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    footer .loginButton {
+        display: none;
+    }
 }

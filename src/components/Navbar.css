@@ -99,6 +99,7 @@ nav .hamburger {
         backdrop-filter: blur(10px);
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
         transform: translateX(110%);
         transition: all 0.4s;
         text-align: right;
@@ -108,5 +109,9 @@ nav .hamburger {
     }
     nav .nav-items a {
         margin-bottom: 20px;
+    }
+    nav .nav-items div {
+        display: flex;
+        flex-direction: column;
     }
 }
