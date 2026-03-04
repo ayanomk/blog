@@ -13,12 +13,14 @@ function Login() {
         password: ''
     })
 
-    const handleLogin = async () => {
+    const handleLogin = async (e) => {
+        e.preventDefault();
+
         const res = await login(loginInfo);
         if (res.status == "fail") setError("Invalid username or password");
         else {
             localStorage.setItem("token", res.token);
-            navigate("/admin/create-blog")
+            navigate("/adventures")
         }
     }
 
@@ -36,7 +38,7 @@ function Login() {
     return (
         <div className="loginPage">
             {error ? <p className="errorMessage">{error}</p> : null}
-            <div className="loginCard">
+            <form className="loginCard" onSubmit={handleLogin}>
                 <img src="../public/icon/user-circle-stroke-rounded.svg" alt="" />
                 <div className="loginDetail">
                     <label htmlFor="username">USERNAME</label>
@@ -49,8 +51,8 @@ function Login() {
                         <img src={viewPassowrd ? "../public/icon/view-stroke-rounded.svg" : "../public/icon/view-off-stroke-rounded.svg"} onClick={() => setPasswordView(!viewPassowrd)} alt="" />
                     </div>
                 </div>
-                <button type="button" onClick={handleLogin}>LOGIN</button>
-            </div>
+                <button type="submit" onClick={handleLogin}>LOGIN</button>
+            </form>
 
         </div>
     )
