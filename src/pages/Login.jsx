@@ -1,9 +1,13 @@
 import { useState } from "react";
 import "./Login.css";
 import { login } from '../services/loginService.js';
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+    const navigate = useNavigate();
     const [viewPassowrd, setPasswordView] = useState(false);
+    const [error, setError] = useState("");
+
     const [loginInfo, setLoginInfo] = useState({
         username: '',
         password: ''
@@ -11,11 +15,16 @@ function Login() {
 
     const handleLogin = async () => {
         const res = await login(loginInfo);
-        if (res.status == "fail") console.log(res.message);
-        else localStorage.setItem("token", res.token);
+        if (res.status == "fail") setError("Invalid username or password");
+        else {
+            localStorage.setItem("token", res.token);
+            navigate("/admin/create-blog")
+        }
     }
 
     const handleChange = (e) => {
+        setError("");
+
         const { name, value } = e.target;
 
         setLoginInfo({
@@ -26,6 +35,7 @@ function Login() {
 
     return (
         <div className="loginPage">
+            {error ? <p className="errorMessage">{error}</p> : null}
             <div className="loginCard">
                 <img src="../public/icon/user-circle-stroke-rounded.svg" alt="" />
                 <div className="loginDetail">
