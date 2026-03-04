@@ -3,9 +3,31 @@ footer {
     width: 100%;
     font-size: 0.9em;
     display: flex;
+    /* flex-direction: column; */
     align-items: center;
-    justify-content: center;
+    /* justify-content: center; */
     color: #afaead;
     background-color: #eae6e0;
     box-shadow: 0 0 2px #b0aba3;
+}
+
+footer p {
+    width: 100%;
+    text-align: center;
+}
+
+footer .loginButton {
+    padding: 8px 20px;
+    color: #292929;
+    transition: all 0.5s;
+}
+footer .loginButton:hover {
+    color: #6b1d2f;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    footer .loginButton {
+        display: none;
+    }
 }
