@@ -10,7 +10,7 @@ const authenticationHandler = require("../middleware/authenticationHandler.js");
 /**
  * LOGIN
  */
-router.get('/login', asyncWrapper(authenticateUser));
+router.post('/login', asyncWrapper(authenticateUser));
 
 /**
  * GET
