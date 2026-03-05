@@ -98,6 +98,7 @@ function CreateBlog() {
                     document.querySelector(`.locationInput`).classList.add('missingForm');
                     missingFields.push('locationInput');
                 }
+                if (err.message == "No token") navigate("/admin/login");
                 console.log(err);
             }
         }

@@ -50,10 +50,13 @@ export const getBlogsByFilter = async (query = {}) => {
 }
 
 export const createBlog = async (data) => {
+    const token = localStorage.getItem("token");
+
     const res = await fetch(`${API_BASE}/admin/blogs`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify(data),
     });
