@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
+import ProtectedRoute from './components/ProtectedRoute';
 
 import "./App.css";
 import "leaflet/dist/leaflet.css";
@@ -24,7 +25,9 @@ function App() {
           <Route path="/adventures" element={<Adventure />} />
           <Route path="/blogs/:id" element={<Blog />} />
           <Route path="/admin/login" element={<Login />} />
-          <Route path="/admin/create-blog" element={<CreateBlog />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/admin/create-blog" element={<CreateBlog />} />
+          </Route>
         </Routes>
 
         <Footer />

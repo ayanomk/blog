@@ -1,6 +1,6 @@
 import { API_BASE } from './apiConfig.js';
 
-export const login = async (loginInfo) => {
+export const validateLogin = async (loginInfo) => {
     const res = await fetch(`${API_BASE}/admin/login`, {
         method: "POST",
         headers: {

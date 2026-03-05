@@ -44,6 +44,16 @@ nav .nav-items a.active::after {
     width: 100%;
 }
 
+nav .login {
+    font-size: 1rem;
+    margin-bottom: 5px;
+    transition: all 0.3s;
+}
+
+nav .login:hover {
+    color: #6b1d2f;
+}
+
 /* HAMBURGER */
 nav .hamburger {
     position: relative;

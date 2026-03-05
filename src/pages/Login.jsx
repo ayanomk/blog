@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "./Login.css";
-import { login } from '../services/loginService.js';
+import { validateLogin } from '../services/loginService.js';
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext.jsx";
 
 function Login() {
+    const {login} = useContext(AuthContext);
+
     const navigate = useNavigate();
     const [viewPassowrd, setPasswordView] = useState(false);
     const [error, setError] = useState("");
@@ -16,10 +19,10 @@ function Login() {
     const handleLogin = async (e) => {
         e.preventDefault();
 
-        const res = await login(loginInfo);
+        const res = await validateLogin(loginInfo);
         if (res.status == "fail") setError("Invalid username or password");
         else {
-            localStorage.setItem("token", res.token);
+            login(res.token);
             navigate("/adventures")
         }
     }
@@ -31,7 +34,7 @@ function Login() {
 
         setLoginInfo({
             ...loginInfo,
-            [name]: value
+            [name]: value.trim()
         })
     }
 
@@ -39,7 +42,7 @@ function Login() {
         <div className="loginPage">
             {error ? <p className="errorMessage">{error}</p> : null}
             <form className="loginCard" onSubmit={handleLogin}>
-                <img src="../public/icon/user-circle-stroke-rounded.svg" alt="" />
+                <img src="/icon/user-circle-stroke-rounded.svg" alt="" />
                 <div className="loginDetail">
                     <label htmlFor="username">USERNAME</label>
                     <input type="text" id="username" name="username" value={loginInfo.username} onChange={handleChange} />
@@ -48,7 +51,7 @@ function Login() {
                     <label htmlFor="password">PASSWORD</label>
                     <div className="passwordView">
                         <input type={viewPassowrd ? "text" : "password"} id="password" name="password" onChange={handleChange}/>
-                        <img src={viewPassowrd ? "../public/icon/view-stroke-rounded.svg" : "../public/icon/view-off-stroke-rounded.svg"} onClick={() => setPasswordView(!viewPassowrd)} alt="" />
+                        <img src={viewPassowrd ? "/icon/view-stroke-rounded.svg" : "/icon/view-off-stroke-rounded.svg"} onClick={() => setPasswordView(!viewPassowrd)} alt="" />
                     </div>
                 </div>
                 <button type="submit" onClick={handleLogin}>LOGIN</button>
