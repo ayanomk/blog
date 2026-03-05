@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "./Login.css";
-import { login } from '../services/loginService.js';
+import { validateLogin } from '../services/loginService.js';
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext.jsx";
 
 function Login() {
+    const {login} = useContext(AuthContext);
+
     const navigate = useNavigate();
     const [viewPassowrd, setPasswordView] = useState(false);
     const [error, setError] = useState("");
@@ -16,10 +19,10 @@ function Login() {
     const handleLogin = async (e) => {
         e.preventDefault();
 
-        const res = await login(loginInfo);
+        const res = await validateLogin(loginInfo);
         if (res.status == "fail") setError("Invalid username or password");
         else {
-            localStorage.setItem("token", res.token);
+            login(res.token);
             navigate("/adventures")
         }
     }
@@ -31,7 +34,7 @@ function Login() {
 
         setLoginInfo({
             ...loginInfo,
-            [name]: value
+            [name]: value.trim()
         })
     }
 

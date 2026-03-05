@@ -1,10 +1,13 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import "./Navbar.css"
 import Logo from "./Logo"
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 function Navbar() {
+    const {isLoggedIn, logout} = useContext(AuthContext);
+    const navigate = useNavigate();
     // HAMBURGER
     const [hamburgerOpen, setHamburgerOpen] = useState(false);
 
@@ -19,7 +22,15 @@ function Navbar() {
                     <NavLink to="/adventures" className={({ isActive }) => isActive ? "active" : ""} onClick={() => setHamburgerOpen(false)}>Adventures</NavLink>
                     <NavLink to="/aboutme" className={({ isActive }) => isActive ? "active" : ""} onClick={() => setHamburgerOpen(false)}>About me</NavLink>
                 </div>
-                <NavLink to="/admin/login" className={"login"} style={{display: `${hamburgerOpen ? "block" : "none"}`}} onClick={() => setHamburgerOpen(false)}>Login</NavLink>
+                {isLoggedIn ? 
+                    <button className={"login"} style={{display: `${hamburgerOpen ? "block" : "none"}`}} onClick={() => {
+                        setHamburgerOpen(false);
+                        logout();
+                    }}>Logout</button> 
+                    : <button className={"login"} style={{display: `${hamburgerOpen ? "block" : "none"}`}} onClick={() => {
+                        setHamburgerOpen(false);
+                        navigate("/admin/login");
+                    }}>Login</button>}
             </div>
 
             {/* hamburger */}

@@ -23,7 +23,6 @@ footer .loginButton {
 }
 footer .loginButton:hover {
     color: #6b1d2f;
-    font-weight: bold;
 }
 
 @media (max-width: 768px) {
