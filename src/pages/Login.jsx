@@ -39,7 +39,7 @@ function Login() {
         <div className="loginPage">
             {error ? <p className="errorMessage">{error}</p> : null}
             <form className="loginCard" onSubmit={handleLogin}>
-                <img src="../public/icon/user-circle-stroke-rounded.svg" alt="" />
+                <img src="/icon/user-circle-stroke-rounded.svg" alt="" />
                 <div className="loginDetail">
                     <label htmlFor="username">USERNAME</label>
                     <input type="text" id="username" name="username" value={loginInfo.username} onChange={handleChange} />
@@ -48,7 +48,7 @@ function Login() {
                     <label htmlFor="password">PASSWORD</label>
                     <div className="passwordView">
                         <input type={viewPassowrd ? "text" : "password"} id="password" name="password" onChange={handleChange}/>
-                        <img src={viewPassowrd ? "../public/icon/view-stroke-rounded.svg" : "../public/icon/view-off-stroke-rounded.svg"} onClick={() => setPasswordView(!viewPassowrd)} alt="" />
+                        <img src={viewPassowrd ? "/icon/view-stroke-rounded.svg" : "/icon/view-off-stroke-rounded.svg"} onClick={() => setPasswordView(!viewPassowrd)} alt="" />
                     </div>
                 </div>
                 <button type="submit" onClick={handleLogin}>LOGIN</button>
