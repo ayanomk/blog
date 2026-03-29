@@ -17,10 +17,10 @@ function BlogImageBlock({imgData, setImgData}) {
         setErrorMsg("");
 
         const files = Array.from(e.target.files);
+        const imageFiles = files.filter(file => file.type.startsWith("image/"));
 
-        if(e.target.files.length && e.target.files.length <= 3) {
-
-            const processUploadedImages = files.map(file => {
+        if(imageFiles.length && imageFiles.length <= 3) {
+            const processUploadedImages = imageFiles.map(file => {
                 // create promise for each file
                 // function 'resolve' is called when data is ready and resolves the promise
                 // 'resolve' contains the data (return value, which in this case an object {})
@@ -56,9 +56,9 @@ function BlogImageBlock({imgData, setImgData}) {
                     setImgData({type: 'img', content: {dir: portraitNum == 2 ? 'imgV2' : 'imgV3', src: results}})
                 }
             }
-        } else if (e.target.files.length === 0){
+        } else if (imageFiles.length === 0){
             setErrorMsg("Please upload image");
-        } else if (e.target.files.length > 3){
+        } else if (imageFiles.length > 3){
             setErrorMsg("Portrait upload must be 2 or 3 images. Landscape upload must be 1 image.");
         }
     }
