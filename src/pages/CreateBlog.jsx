@@ -110,8 +110,8 @@ function CreateBlog() {
                 finalFormData.append("data", JSON.stringify(cleanData));
                 images.forEach(image => finalFormData.append("images", image));
 
-                // const res = await createBlog(updatedFormData);
-                // navigate(`/blogs/${res._id}`);
+                const res = await createBlog(finalFormData);
+                navigate(`/blogs/${res._id}`);
             } catch (err) {
                 if (err.message.includes("country")) {
                     document.querySelector(`.locationInput`).classList.add('missingForm');
