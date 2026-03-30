@@ -92,6 +92,10 @@ const createBlog = async (req, res) => {
 
         // replace null image placeholder with url and id
         let imgFileIdx = 0;
+        // hero image
+        const hero = cloudinaryImages[imgFileIdx];
+        imgFileIdx++;
+        // content images
         sections.forEach(section => {
             section.blocks.forEach(block => {
                 if (block.type === 'img') {
@@ -183,6 +187,7 @@ const createBlog = async (req, res) => {
             year,
             month,
             date,
+            hero,
             sections
         });
 

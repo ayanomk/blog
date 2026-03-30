@@ -99,7 +99,7 @@ function Blog() {
                         <p>{`${blogData.year}/${blogData.month}/${blogData.date}`}</p>
                     </div>
                 </div>
-                <img className='heroImg' src={blogData.hero} alt="" loading="lazy" />
+                <img className='heroImg' src={blogData.hero.url} alt="" loading="lazy" />
             </header>
 
             <main>

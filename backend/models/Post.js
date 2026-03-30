@@ -12,6 +12,12 @@ const sectionSchema = new mongoose.Schema({
     blocks: [blockSchema]
 }, {_id: false});
 
+// HERO IMAGE SCHEMA
+const heroImageSchema = new mongoose.Schema({
+    url: {type: String, required: true},
+    publicId: { type: String, required: true }
+}, {_id: false});
+
 
 const postSchema = new mongoose.Schema({
     tripId: String,
@@ -26,7 +32,7 @@ const postSchema = new mongoose.Schema({
     year: Number,
     month: Number,
     date: Number,
-    hero: String,
+    hero: heroImageSchema,
     sections: [sectionSchema]
 })
 
