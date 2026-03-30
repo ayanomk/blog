@@ -91,8 +91,27 @@ function CreateBlog() {
         // Create blog if no missing fields
         if (missingFields.length === 0) {
             try {
-                const res = await createBlog(updatedFormData);
-                navigate(`/blogs/${res._id}`);
+
+                const images = [];
+                const cleanData = JSON.parse(JSON.stringify(updatedFormData));
+
+                updatedFormData.sections.forEach((section, sidx) => {
+                    section.blocks.forEach((block, bidx) => {
+                        if (block.type === 'img') {
+                            block.content.src.forEach((file, fidx) => {
+                                images.push(file.file);
+                                cleanData.sections[sidx].blocks[bidx].content.src[fidx] = null;
+                            });
+                        }
+                    })
+                })
+
+                const finalFormData = new FormData();
+                finalFormData.append("data", JSON.stringify(cleanData));
+                images.forEach(image => finalFormData.append("images", image));
+
+                // const res = await createBlog(updatedFormData);
+                // navigate(`/blogs/${res._id}`);
             } catch (err) {
                 if (err.message.includes("country")) {
                     document.querySelector(`.locationInput`).classList.add('missingForm');
