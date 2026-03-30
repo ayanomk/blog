@@ -171,81 +171,27 @@ const createBlog = async (req, res) => {
         let tripId = title.replaceAll(' ', '-');
         tripId = tripId + '-' + year;
 
-        // const newPost = await Post.create({
-        //     ...rest,
-        //     title: formattedTitle,
-        //     tripId: tripId,
-        //     region: region,
-        //     lat: lat,
-        //     lng: lng,
-        //     city,
-        //     country,
-        //     year,
-        //     month,
-        //     date,
-        //     sections
-        // });
+        const newPost = await Post.create({
+            ...rest,
+            title: formattedTitle,
+            tripId: tripId,
+            region: region,
+            lat: lat,
+            lng: lng,
+            city,
+            country,
+            year,
+            month,
+            date,
+            sections
+        });
 
-        // successResponse(res, "Blog created successfully", newPost);
+        successResponse(res, "Blog created successfully", newPost);
 
     } catch (err) {
         console.log(err);
         throw new AppError("Failed to create a blog", 500);
     }
-
-    // // !FIXME Capitalise title
-    // let splitStr = title.split(' ');
-    // for (let i = 0; i < splitStr.length; i++) {
-    //     splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
-    // }
-    // const formattedTitle = splitStr.join(' ');
-
-    
-    // // !FIXME LAT LNG Modify to handle errors
-    // let lat, lng;
-    // const latLngRes = await fetch(
-    //     `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(locationInput)}&format=json`
-    // )
-    // const latLngData = await latLngRes.json();
-    // if (latLngData.length > 0) {
-    //     lat = parseFloat(latLngData[0].lat);
-    //     lng = parseFloat(latLngData[0].lon);
-    // }
-
-    // // !FIXME Find region
-    // const [city, country] = locationInput.split(",").map(s => s.trim());
-    // const worldCountry = countries.find(c => c.name.common == country);
-    // if (worldCountry === undefined) {
-    //     throw new AppError('Invalid country');
-    // }
-    // const region = worldCountry.region;
-
-    // // !FIXME USE DATE
-    // let year, month, date;
-    // const d = new Date(dateInput);
-    // year = d.getFullYear();
-    // month = d.getMonth() + 1;
-    // date = d.getDate();
-
-    // let tripId = title.replaceAll(' ', '-');
-    // tripId = tripId + '-' + year;
-
-    // const newPost = await Post.create({
-    //     ...rest,
-    //     title: formattedTitle,
-    //     tripId: tripId,
-    //     region: region,
-    //     lat: lat,
-    //     lng: lng,
-    //     city,
-    //     country,
-    //     year,
-    //     month,
-    //     date
-    // });
-
-    // successResponse(res, "Blog created successfully", newPost);
-
 }
 
 module.exports = {
