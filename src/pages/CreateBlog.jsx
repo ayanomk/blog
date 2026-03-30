@@ -19,7 +19,10 @@ function CreateBlog() {
         locationInput: '',
         dateInput: '',
         day: 0,
-        hero: '',
+        hero: {
+            file: '',
+            previewUrl: ''
+        },
         sections: [
             {
                 sectionType: "info",
@@ -91,7 +94,29 @@ function CreateBlog() {
         // Create blog if no missing fields
         if (missingFields.length === 0) {
             try {
-                const res = await createBlog(updatedFormData);
+
+                const images = [];
+                const cleanData = JSON.parse(JSON.stringify(updatedFormData));
+
+                // separate image file and replace with null
+                images.push(updatedFormData.hero.file);
+                cleanData.hero = null;
+                updatedFormData.sections.forEach((section, sidx) => {
+                    section.blocks.forEach((block, bidx) => {
+                        if (block.type === 'img') {
+                            block.content.src.forEach((file, fidx) => {
+                                images.push(file.file);
+                                cleanData.sections[sidx].blocks[bidx].content.src[fidx] = null;
+                            });
+                        }
+                    })
+                })
+
+                const finalFormData = new FormData();
+                finalFormData.append("data", JSON.stringify(cleanData));
+                images.forEach(image => finalFormData.append("images", image));
+
+                const res = await createBlog(finalFormData);
                 navigate(`/blogs/${res._id}`);
             } catch (err) {
                 if (err.message.includes("country")) {
@@ -160,7 +185,7 @@ function CreateBlog() {
             if (file.type.startsWith("image/")) {
                 e.target.classList.remove("missingForm");
 
-                URL.revokeObjectURL(formData.hero);
+                URL.revokeObjectURL(formData.hero.previewUrl);
 
                 const img = new Image();
                 const url = URL.createObjectURL(file);
@@ -169,7 +194,10 @@ function CreateBlog() {
                     setFormData(prev => {
                         return {
                             ...prev,
-                            hero: url
+                            hero: {
+                                file: file,
+                                previewUrl: url
+                            }
                         }
                     })
                 }
@@ -238,7 +266,7 @@ function CreateBlog() {
                     </div>
                 </div>
                 <div className='heroInput'>
-                    {formData.hero != '' ? <img src={formData.hero} alt="" /> : ""}
+                    {formData.hero.previewUrl != '' ? <img src={formData.hero.previewUrl} alt="" /> : ""}
                     <input className='hero' type="file" name="hero" onChange={handleHeroImagePreviewChange} />
                 </div>
 

@@ -55,10 +55,9 @@ export const createBlog = async (data) => {
     const res = await fetch(`${API_BASE}/admin/blogs`, {
         method: "POST",
         headers: {
-            "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`
         },
-        body: JSON.stringify(data),
+        body: data,
     });
 
     const result = await res.json();

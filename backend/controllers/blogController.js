@@ -3,6 +3,8 @@ const { successResponse } = require("../utils/response.js");
 const countries = require("world-countries");
 const Post = require("../models/Post.js");
 
+const cloudinary = require('../config/cloudinary.js');
+
 /**
  * GET ALL BLOGS
  * @returns all blogs data
@@ -62,61 +64,139 @@ const getBlogsByFilter = async (req, res) => {
  * @param {*} res 
  */
 const createBlog = async (req, res) => {
-    const { title, locationInput, dateInput, ...rest } = req.body;
+    try {
+        // upload image files to cloudinary
+        const cloudinaryImages = [];
+        for (let file of req.files) {
 
-    // !FIXME Capitalise title
-    let splitStr = title.split(' ');
-    for (let i = 0; i < splitStr.length; i++) {
-        splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+            const uploadedResult = await new Promise((resolve, reject) => {
+                const stream = cloudinary.uploader.upload_stream(
+                    {folder: "blog_images"},
+                    (error, result) => {
+                        if (error) reject(error);
+                        else resolve(result);
+                    }
+                );
+                stream.end(file.buffer);
+            })
+
+            cloudinaryImages.push({
+                url: uploadedResult.secure_url,
+                publicId: uploadedResult.public_id
+            });
+        }
+
+        // string data
+        const blogData = JSON.parse(req.body.data);
+        const { title, locationInput, dateInput, sections, ...rest } = blogData;
+
+        // replace null image placeholder with url and id
+        let imgFileIdx = 0;
+        // hero image
+        const hero = cloudinaryImages[imgFileIdx];
+        imgFileIdx++;
+        // content images
+        sections.forEach(section => {
+            section.blocks.forEach(block => {
+                if (block.type === 'img') {
+                    block.content.src = block.content.src.map(_ => {
+                        const img = cloudinaryImages[imgFileIdx];
+                        imgFileIdx++;
+
+                        return img
+                    })
+                }
+            })
+        })
+        
+
+        // !FIXME Capitalise title
+        let splitStr = title.split(' ');
+        for (let i = 0; i < splitStr.length; i++) {
+            splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+        }
+        const formattedTitle = splitStr.join(' ');
+
+        
+        // !FIXME LAT LNG Modify to handle errors
+        let lat, lng;
+
+        const [city, country] = locationInput.split(",").map(s => {
+            s = s.trim();
+            s = s.charAt(0).toUpperCase() + s.slice(1);
+            return s;
+        });
+
+        try {
+            const latLngRes = await fetch(
+                `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(`${city}, ${country}`)}&format=json`,
+                {
+                    headers: {
+                        "User-Agent": process.env.NOMINATIM_USER_AGENT,
+                        "Accept-Language": "en"
+                    }
+                }
+            )
+
+            if (!latLngRes.ok) {
+                console.log("nominatim API error", latLngRes.statusText);
+            } else {
+                const text = await latLngRes.text();
+                try {
+                    const latLngData = JSON.parse(text);
+                    if (latLngData.length > 0) {
+                        lat = parseFloat(latLngData[0].lat);
+                        lng = parseFloat(latLngData[0].lon);
+                    }
+                } catch (jsonErr) {
+                    console.log(text);
+                } 
+            }
+            // const latLngData = await latLngRes.json();
+        } catch (err) {
+            console.log(err);
+            throw new AppError("Unable to get latitude and longitude from location input")
+        }
+
+        // !FIXME Find region
+        const worldCountry = countries.find(c => c.name.common == country);
+        if (worldCountry === undefined) {
+            throw new AppError('Invalid country');
+        }
+        const region = worldCountry.region;
+
+        // !FIXME USE DATE
+        let year, month, date;
+        const d = new Date(dateInput);
+        year = d.getFullYear();
+        month = d.getMonth() + 1;
+        date = d.getDate();
+
+        let tripId = title.replaceAll(' ', '-');
+        tripId = tripId + '-' + year;
+
+        const newPost = await Post.create({
+            ...rest,
+            title: formattedTitle,
+            tripId: tripId,
+            region: region,
+            lat: lat,
+            lng: lng,
+            city,
+            country,
+            year,
+            month,
+            date,
+            hero,
+            sections
+        });
+
+        successResponse(res, "Blog created successfully", newPost);
+
+    } catch (err) {
+        console.log(err);
+        throw new AppError("Failed to create a blog", 500);
     }
-    const formattedTitle = splitStr.join(' ');
-
-    
-    // !FIXME LAT LNG Modify to handle errors
-    let lat, lng;
-    const latLngRes = await fetch(
-        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(locationInput)}&format=json`
-    )
-    const latLngData = await latLngRes.json();
-    if (latLngData.length > 0) {
-        lat = parseFloat(latLngData[0].lat);
-        lng = parseFloat(latLngData[0].lon);
-    }
-
-    // !FIXME Find region
-    const [city, country] = locationInput.split(",").map(s => s.trim());
-    const worldCountry = countries.find(c => c.name.common == country);
-    if (worldCountry === undefined) {
-        throw new AppError('Invalid country');
-    }
-    const region = worldCountry.region;
-
-    // !FIXME USE DATE
-    let year, month, date;
-    const d = new Date(dateInput);
-    year = d.getFullYear();
-    month = d.getMonth() + 1;
-    date = d.getDate();
-
-    let tripId = title.replaceAll(' ', '-');
-    tripId = tripId + '-' + year;
-
-    const newPost = await Post.create({
-        ...rest,
-        title: formattedTitle,
-        tripId: tripId,
-        region: region,
-        lat: lat,
-        lng: lng,
-        city,
-        country,
-        year,
-        month,
-        date
-    });
-
-    successResponse(res, "Blog created successfully", newPost);
-
 }
 
 module.exports = {
