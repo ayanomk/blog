@@ -42,7 +42,7 @@ const htmlRenderer = (block, blockIdx) => {
             return (
                 <div className="imgBlock">
                     {block.content.src.map((el, elIdx) => (
-                        <img key={elIdx} className={block.dir} src={el} alt="" loading="lazy" />
+                        <img key={elIdx} className={block.content.dir} src={el.url} alt="" loading="lazy" />
                     ))}
                 </div>
             )

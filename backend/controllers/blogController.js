@@ -88,7 +88,22 @@ const createBlog = async (req, res) => {
 
         // string data
         const blogData = JSON.parse(req.body.data);
-        const { title, locationInput, dateInput, ...rest } = blogData;
+        const { title, locationInput, dateInput, sections, ...rest } = blogData;
+
+        // replace null image placeholder with url and id
+        let imgFileIdx = 0;
+        sections.forEach(section => {
+            section.blocks.forEach(block => {
+                if (block.type === 'img') {
+                    block.content.src = block.content.src.map(_ => {
+                        const img = cloudinaryImages[imgFileIdx];
+                        imgFileIdx++;
+
+                        return img
+                    })
+                }
+            })
+        })
         
 
         // !FIXME Capitalise title
@@ -101,7 +116,6 @@ const createBlog = async (req, res) => {
         
         // // !FIXME LAT LNG Modify to handle errors
         // let lat, lng;
-        // console.log(locationInput);
         // try {
         //     const latLngRes = await fetch(
         //         `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(locationInput)}&format=json`,
@@ -161,7 +175,8 @@ const createBlog = async (req, res) => {
         //     country,
         //     year,
         //     month,
-        //     date
+        //     date,
+        //     sections
         // });
 
         // successResponse(res, "Blog created successfully", newPost);
