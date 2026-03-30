@@ -3,6 +3,8 @@ const { successResponse } = require("../utils/response.js");
 const countries = require("world-countries");
 const Post = require("../models/Post.js");
 
+const cloudinary = require('../config/cloudinary.js');
+
 /**
  * GET ALL BLOGS
  * @returns all blogs data
@@ -63,6 +65,28 @@ const getBlogsByFilter = async (req, res) => {
  */
 const createBlog = async (req, res) => {
     try {
+        // upload image files to cloudinary
+        const cloudinaryImages = [];
+        for (let file of req.files) {
+
+            const uploadedResult = await new Promise((resolve, reject) => {
+                const stream = cloudinary.uploader.upload_stream(
+                    {folder: "blog_images"},
+                    (error, result) => {
+                        if (error) reject(error);
+                        else resolve(result);
+                    }
+                );
+                stream.end(file.buffer);
+            })
+
+            cloudinaryImages.push({
+                url: uploadedResult.secure_url,
+                publicId: uploadedResult.public_id
+            });
+        }
+
+        // string data
         const blogData = JSON.parse(req.body.data);
         const { title, locationInput, dateInput, ...rest } = blogData;
         
