@@ -114,40 +114,47 @@ const createBlog = async (req, res) => {
         const formattedTitle = splitStr.join(' ');
 
         
-        // // !FIXME LAT LNG Modify to handle errors
-        // let lat, lng;
-        // try {
-        //     const latLngRes = await fetch(
-        //         `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(locationInput)}&format=json`,
-        //         {
-        //             headers: {
-        //                 "User-Agent": "LittleAdventures/1.0 (ayano.basurita@gmail.com)",
-        //                 "Accept-Language": "en"
-        //             }
-        //         }
-        //     )
+        // !FIXME LAT LNG Modify to handle errors
+        let lat, lng;
 
-        //     if (!latLngRes.ok) {
-        //         console.log("OSM API error", latLngRes.statusText);
-        //     } else {
-        //         const text = await latLngRes.text();
-        //         try {
-        //             const latLngData = JSON.parse(text);
-        //             if (latLngData.length > 0) {
-        //                 lat = parseFloat(latLngData[0].lat);
-        //                 lng = parseFloat(latLngData[0].lon);
-        //             }
-        //         } catch (jsonErr) {
-        //             console.log(text);
-        //         } 
-        //     }
-        //     // const latLngData = await latLngRes.json();
-        // } catch (err) {
-        //     console.log(err);
-        // }
+        const [city, country] = locationInput.split(",").map(s => {
+            s = s.trim();
+            s = s.charAt(0).toUpperCase() + s.slice(1);
+            return s;
+        });
+
+        try {
+            const latLngRes = await fetch(
+                `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(`${city}, ${country}`)}&format=json`,
+                {
+                    headers: {
+                        "User-Agent": process.env.NOMINATIM_USER_AGENT,
+                        "Accept-Language": "en"
+                    }
+                }
+            )
+
+            if (!latLngRes.ok) {
+                console.log("nominatim API error", latLngRes.statusText);
+            } else {
+                const text = await latLngRes.text();
+                try {
+                    const latLngData = JSON.parse(text);
+                    if (latLngData.length > 0) {
+                        lat = parseFloat(latLngData[0].lat);
+                        lng = parseFloat(latLngData[0].lon);
+                    }
+                } catch (jsonErr) {
+                    console.log(text);
+                } 
+            }
+            // const latLngData = await latLngRes.json();
+        } catch (err) {
+            console.log(err);
+            throw new AppError("Unable to get latitude and longitude from location input")
+        }
 
         // !FIXME Find region
-        const [city, country] = locationInput.split(",").map(s => s.trim());
         const worldCountry = countries.find(c => c.name.common == country);
         if (worldCountry === undefined) {
             throw new AppError('Invalid country');
