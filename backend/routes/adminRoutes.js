@@ -7,6 +7,10 @@ const { authenticateUser } = require("../controllers/authenticationController.js
 
 const authenticationHandler = require("../middleware/authenticationHandler.js");
 
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
 /**
  * LOGIN
  */
@@ -23,6 +27,6 @@ router.get('/blogs/:id', asyncWrapper(getBlogById));
 /**
  * POST
  */
-router.post('/blogs', authenticationHandler, asyncWrapper(createBlog));
+router.post('/blogs', authenticationHandler, upload.array('images'), asyncWrapper(createBlog));
 
 module.exports = router;
