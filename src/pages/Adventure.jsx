@@ -35,7 +35,7 @@ function Adventure() {
     // filter option lists
     const tripYears = [...new Set(allBlogs.map((t) => t.year))].sort((a, b) => a - b);
     const tripRegions = ["Asia", "Oceania", "Europe", "Africa", "North America"];
-    const draftPublish = ["Draft", "Published"];
+    const draftPublish = ["Draft", "Publish"];
     
     // filter out blogs
     const [yearFilter, setYearFilter] = useState([]);

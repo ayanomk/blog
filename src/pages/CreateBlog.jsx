@@ -33,7 +33,7 @@ function CreateBlog() {
                 blocks: []
             }
         ],
-        state: 'draft'
+        state: 'Draft'
     })
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -113,7 +113,7 @@ function CreateBlog() {
                     })
                 })
 
-                cleanData.state = 'publish';
+                if (e.target.id === 'publishButton') cleanData.state = 'Publish';
 
                 const finalFormData = new FormData();
                 finalFormData.append("data", JSON.stringify(cleanData));
@@ -354,8 +354,8 @@ function CreateBlog() {
             </form>
 
             <div className="submitButtons">
-                <button type='button'>Save Draft</button>
-                <button type='button' onClick={handleSubmit}>Publish</button>
+                <button type='button' id='saveDraftButton' onClick={handleSubmit}>Save Draft</button>
+                <button type='button' id='publishButton' onClick={handleSubmit}>Publish</button>
             </div>
 
             {invalidForm.length !== 0 && <SubmitFormMessage missingFormList={invalidForm} setMissingFormList={() => setInvalidaForm([])} />}
