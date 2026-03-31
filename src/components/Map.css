@@ -32,12 +32,15 @@
 }
 .leaflet-popup-content .popupBlog img {
     width: 100%;
+    object-fit: cover;
+    aspect-ratio: 4 / 3;
 }
 .leaflet-popup-content .popupBlog p {
     font-size: 0.9rem;
 }
 .leaflet-popup-content .popupBlog .popupBlogTitle {
     font-size: 1.2rem;
+    font-weight: bold;
 }
 .leaflet-popup-content .markerPopup .popupCity {
     font-size: 1rem;

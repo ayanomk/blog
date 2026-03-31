@@ -2,6 +2,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import "leaflet/dist/leaflet.css";
 import './Map.css';
 import { Link } from 'react-router-dom';
+import Carousel from '../components/Carousel.jsx';
 
 /**
  * 
@@ -44,13 +45,9 @@ function Map({trips}) {
                 <Marker key={idx} position={[group.lat, group.lng]}>
                     <Popup>
                         <div className='markerPopup'>
-                            {group.blogs.map((blog, bidx) => (
-                                <div key={bidx} className='popupBlog'>
-                                    <img src={blog.hero.url} alt="" />
-                                    <p className='popupBlogTitle'>{blog.title}{blog.day !== 0 ? `: Day ${blog.day}` : ""}</p>
-                                    <p>{blog.date}/{blog.month}/{blog.year}</p>
-                                </div>
-                            ))}
+                            <div className="popupBlog">
+                                <Carousel data={group.blogs} />
+                            </div>
                             <p className='popupCity'>{group.city}, {group.country}</p>
                         </div>
                     </Popup>
