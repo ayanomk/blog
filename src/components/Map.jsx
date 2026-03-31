@@ -2,6 +2,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import "leaflet/dist/leaflet.css";
 import './Map.css';
 import { Link } from 'react-router-dom';
+import Carousel from '../components/Carousel.jsx';
 
 /**
  * 
@@ -9,6 +10,25 @@ import { Link } from 'react-router-dom';
  * @returns JSX of map
  */
 function Map({trips}) {
+
+    const cityGroups = {};
+    trips.forEach(trip => {
+        const key = `${trip.city.trim().toLowerCase()}_${trip.country.trim().toLowerCase()}`;
+
+        if (!cityGroups[key]) {
+            cityGroups[key] = {
+                city: trip.city.trim(),
+                country: trip.country.trim(),
+                lat: trip.lat,
+                lng: trip.lng,
+                blogs: []
+            };
+        }
+
+        cityGroups[key].blogs.push(trip);
+    })
+    const cityGroupsArray = Object.values(cityGroups);
+
     return (
         <div className='map-wrapper'>
             <MapContainer
@@ -21,18 +41,18 @@ function Map({trips}) {
                     attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'/>
 
             {/* markers */}
-            {trips.map(trip => (
-                <Marker key = {trip._id} position={[trip.lat, trip.lng]}>
+            {cityGroupsArray.map((group, idx) => (
+                <Marker key={idx} position={[group.lat, group.lng]}>
                     <Popup>
-                        <div className="markerPopup">
-                            <Link to={`/blogs/${trip._id}`}>
-                                <h4>{trip.title}</h4>
-                                <p>{trip.city}</p>
-                            </Link>
+                        <div className='markerPopup'>
+                            <div className="popupBlog">
+                                <Carousel data={group.blogs} />
+                            </div>
+                            <p className='popupCity'>{group.city}, {group.country}</p>
                         </div>
                     </Popup>
                 </Marker>
-            ))}
+            ))};
             </MapContainer>
         </div>
     )
