@@ -33,7 +33,8 @@ const postSchema = new mongoose.Schema({
     month: Number,
     date: Number,
     hero: heroImageSchema,
-    sections: [sectionSchema]
+    sections: [sectionSchema],
+    state: String
 })
 
 module.exports = mongoose.model("Post", postSchema);

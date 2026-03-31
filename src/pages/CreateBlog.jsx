@@ -32,7 +32,8 @@ function CreateBlog() {
                 sectionType: "content",
                 blocks: []
             }
-        ]
+        ],
+        state: 'draft'
     })
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -111,6 +112,8 @@ function CreateBlog() {
                         }
                     })
                 })
+
+                cleanData.state = 'publish';
 
                 const finalFormData = new FormData();
                 finalFormData.append("data", JSON.stringify(cleanData));

@@ -42,9 +42,10 @@ const getBlogById = async (req, res) => {
  * @returns filtered (multiple) blog data 
  */
 const getBlogsByFilter = async (req, res) => {
-    const {excludeId, tripId, excludeTripId, country, regions, years} = req.query;
+    const {excludeId, tripId, excludeTripId, country, regions, years, state} = req.query;
     
     let data = await Post.find();
+    if (state) data = data.filter(p => p.state === state);
     if (regions) data = data.filter(p => regions.includes(p.region));
     if (years) data = data.filter(p => years.includes(p.year));
     if (excludeId) data = data.filter(p => p._id.toString() !== excludeId);
