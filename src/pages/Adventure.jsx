@@ -14,6 +14,8 @@ import { AuthContext } from "../context/AuthContext";
 function Adventure() {
     const {isLoggedIn} = useContext(AuthContext);
 
+    const [draftPublishFilter, setDraftPublishFilter] = useState([]);
+
     // get all blog data from backend
     const [allBlogs, setAllBlogs] = useState([]);
     useEffect(() => {
@@ -24,7 +26,8 @@ function Adventure() {
             })
             .catch(err => console.log(err));
         } else {
-            getBlogsByFilter({ state: "publish" })
+            setDraftPublishFilter(["Publish"])
+            getBlogsByFilter({ state: "Publish" })
             .then((data) => {
                 setAllBlogs(data);
             })
@@ -40,7 +43,6 @@ function Adventure() {
     // filter out blogs
     const [yearFilter, setYearFilter] = useState([]);
     const [regionFilter, setRegionFilter] = useState([]);
-    const [draftPublishFilter, setDraftPublishFilter] = useState([]);
     
     const [filteredBlogs, setFilteredBlogs] = useState([]);
     useEffect(() => {
