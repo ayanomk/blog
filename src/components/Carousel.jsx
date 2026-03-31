@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Carousel.css";
 
 function Carousel({data}) {
     const [count, setCount] = useState(0);
+
+    useEffect(() => {
+        setCount(0);
+    }, [data])
 
     return (
         <div className="carousel">
