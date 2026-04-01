@@ -29,6 +29,21 @@
     border-top-right-radius: 7px;
 }
 
+.recommended .draftCard {
+    background-color: #b0aba3;
+}
+.recommended .draftCard .draftTag {
+    border-radius: 6px;
+    padding: 5px 10px;
+    margin-top: -12px;
+    background-color: #6b1d2f;
+    color: #fff;
+} 
+.recommended .draftCard .dateTagContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
 
 /* Screen size */
 @media (max-width: 1430px) {

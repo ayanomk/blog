@@ -9,13 +9,16 @@ import './Recommendation.css';
  */
 const blogCardMaker = (blog, idx) => {
     return (
-        <div className="card" key={idx}>
+        <div className={blog.state === 'Draft' ? 'card draftCard' : 'card'} key={idx}>
             <Link to={`/blogs/${blog._id}`}>
                 <img src={blog.hero.url} alt="" loading="lazy" />
                 <div className="cardInfo">
                     <h3>{blog.title}{blog.day > 0 ? `: Day ${blog.day}` : null}</h3>
                     <p>{blog.city}, {blog.country}</p>
-                    <p>{blog.year}/{blog.month}/{blog.date}</p>
+                    <div className='dateTagContainer'>
+                        <p>{blog.year}/{blog.month}/{blog.date}</p>
+                        {blog.state === 'Draft' ? <p className='draftTag'>Draft</p> : null}
+                    </div>
                 </div>
             </Link>
         </div>

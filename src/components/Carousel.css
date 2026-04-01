@@ -33,3 +33,15 @@
 .carousel .buttons .activeButton {
     background-color: #000;
 }
+
+.carousel .draftCard .draftTag {
+    border-radius: 6px;
+    padding: 5px 10px;
+    margin-top: -12px;
+    background-color: #6b1d2f;
+    color: #fff;
+} 
+.carousel .draftCard .dateTagContainer {
+    display: flex;
+    justify-content: space-between;
+}
