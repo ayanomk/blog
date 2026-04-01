@@ -1,8 +1,10 @@
 import { useParams } from "react-router-dom"
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import './Blog.css';
 import Recommendation from '../components/Recommendation.jsx'
 import { getBlogById, getBlogsByFilter } from "../services/blogService.js";
+
+import { AuthContext } from "../context/AuthContext";
 
 // Create HTML
 const htmlRenderer = (block, blockIdx) => {
@@ -53,6 +55,8 @@ const htmlRenderer = (block, blockIdx) => {
 
 // JSX
 function Blog() {
+    const {isLoggedIn} = useContext(AuthContext);
+
     // get id and blog data for that id
     const { id } = useParams();
 
@@ -88,6 +92,7 @@ function Blog() {
 
     return (
         <article className="blog">
+            {isLoggedIn ? <div className="adminButtons"><button>Edit</button><button>Delete</button></div> : null}
             <header>
                 <div className="title">
                     <div className='mainTitle'>

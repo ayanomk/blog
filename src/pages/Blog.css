@@ -125,6 +125,23 @@
     width: 31%;
 }
 
+.blog .adminButtons {
+    position: absolute;
+    right: 8%;
+    margin-top: 25px;
+}
+.blog .adminButtons button {
+    padding: 10px 20px;
+    margin-left: 20px;
+    background: #6b1d2f56;
+    border-radius: 5px;
+    transition: all 0.5s;
+}
+.blog .adminButtons button:hover {
+    color: #e1e1e1;
+    background-color: #69303d;
+    box-shadow: 2px 2px 10px #6b1d2f56;
+}
 
 /* smartphone */
 @media (max-width: 992px) {
@@ -154,5 +171,12 @@
     }
     .blog main section .subsection {
         margin-bottom: 40px;
+    }
+    .blog .adminButtons {
+        position: relative;
+        display: flex;
+        justify-content: end;
+        right: 0%;
+        margin-top: 15px;
     }
 }
