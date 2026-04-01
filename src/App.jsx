@@ -26,7 +26,8 @@ function App() {
           <Route path="/blogs/:id" element={<Blog />} />
           <Route path="/admin/login" element={<Login />} />
           <Route element={<ProtectedRoute />}>
-            <Route path="/admin/create-blog" element={<CreateBlog />} />
+            <Route path="/admin/create-blog" element={<CreateBlog isEdit={false} />} />
+            <Route path="/admin/blogs/:id/edit" element={<CreateBlog isEdit={true} />} />
           </Route>
         </Routes>
 

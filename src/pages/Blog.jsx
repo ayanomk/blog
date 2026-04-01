@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import './Blog.css';
 import Recommendation from '../components/Recommendation.jsx'
 import { getBlogById, getBlogsByFilter } from "../services/blogService.js";
+import { useNavigate } from 'react-router-dom';
 
 import { AuthContext } from "../context/AuthContext";
 
@@ -56,6 +57,7 @@ const htmlRenderer = (block, blockIdx) => {
 // JSX
 function Blog() {
     const {isLoggedIn} = useContext(AuthContext);
+    const navigate = useNavigate();
 
     // get id and blog data for that id
     const { id } = useParams();
@@ -93,7 +95,7 @@ function Blog() {
 
     return (
         <article className="blog">
-            {isLoggedIn ? <div className="adminButtons"><button>Edit</button><button>Delete</button></div> : null}
+            {isLoggedIn ? <div className="adminButtons"><button onClick={() => navigate(`/admin/blogs/${blogData._id}/edit`)}>Edit</button><button>Delete</button></div> : null}
             <header>
                 <div className="title">
                     <div className='mainTitle'>

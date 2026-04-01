@@ -4,25 +4,24 @@ import BlogParagraph from '../components/BlogParagraph';
 import BlogHeaderBlock from '../components/BlogHeaderBlock';
 import BlogImageBlock from '../components/BlogImageBlock';
 import SubmitFormMessage from '../components/SubmitFormMessage.jsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useParams } from "react-router-dom"
+import { getBlogById } from "../services/blogService.js";
 
 import { createBlog } from '../services/blogService.js';
 
-function CreateBlog() {
+function CreateBlog({isEdit}) {
     const navigate = useNavigate();
 
     // form data
-    const [formData, setFormData] = useState({
+    const initialForm = {
         title: '',
         description: '',
         locationInput: '',
         dateInput: '',
         day: 0,
-        hero: {
-            file: '',
-            previewUrl: ''
-        },
+        hero: "",
         sections: [
             {
                 sectionType: "info",
@@ -34,7 +33,25 @@ function CreateBlog() {
             }
         ],
         state: 'Draft'
-    })
+    }
+    const [formData, setFormData] = useState(initialForm)
+
+    const { id } = useParams();
+    useEffect(() => {
+        if (isEdit && id) {
+            getBlogById(id)
+                .then((d) => {
+                    console.log(d);
+                    d['locationInput'] = `${d.city}, ${d.country}`;
+                    d['dateInput'] = `${d.year}-${String(d.month).padStart(2, "0")}-${String(d.date).padStart(2, "0")}`;
+                    setFormData(d)
+                })
+                .catch(err => console.log(err));
+        } else {
+            setFormData(initialForm)
+        }
+    }, [isEdit, id])
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         // validation
@@ -269,7 +286,7 @@ function CreateBlog() {
                     </div>
                 </div>
                 <div className='heroInput'>
-                    {formData.hero.previewUrl != '' ? <img src={formData.hero.previewUrl} alt="" /> : ""}
+                    {formData.hero != "" ? <img src={formData.hero.url? formData.hero.url : formData.hero.previewUrl} alt="" /> : ""}
                     <input className='hero' type="file" name="hero" onChange={handleHeroImagePreviewChange} />
                 </div>
 
@@ -294,13 +311,13 @@ function CreateBlog() {
 
                             return <div key={sideBidx} className='block'>
                                 {content}
-                                <img className='deleteButton' src="../icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteBlock(0, sideBidx)} />
+                                <img className='deleteButton' src="/icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteBlock(0, sideBidx)} />
                             </div>
                         })}
 
                         <div className='inputAdd'>
                             <button type='button' onClick={toggleAsideOption}>
-                                <img src="../icon/plus-sign-circle-stroke-rounded.svg" alt="" className={asideOption ? "rotate" : ""} />
+                                <img src="/icon/plus-sign-circle-stroke-rounded.svg" alt="" className={asideOption ? "rotate" : ""} />
                             </button>
                             <div className={`inputOptions ${asideOption ? "" : "hidden"}`}>
                                 <button value="" type='button' onClick={() => {addBlock(0, headerBlock)}}>Header 1</button>
@@ -331,13 +348,13 @@ function CreateBlog() {
                             }
                             return <div key={mainBidx} className='block'>
                                 {content}
-                                <img className='deleteButton' src="../icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteBlock(1, mainBidx)}/>
+                                <img className='deleteButton' src="/icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteBlock(1, mainBidx)}/>
                             </div>
                         })}
 
                         <div className='inputAdd'>
                             <button type='button' onClick={toggleMainOption}>
-                                <img src="../icon/plus-sign-circle-stroke-rounded.svg" alt="" className={mainOption ? "rotate" : ""} />
+                                <img src="/icon/plus-sign-circle-stroke-rounded.svg" alt="" className={mainOption ? "rotate" : ""} />
                             </button>
                             <div className={`inputOptions ${mainOption ? "" : "hidden"}`}>
                                 <button value="" type='button' onClick={() => {addBlock(1, headerBlock)}}>Header 1</button>
