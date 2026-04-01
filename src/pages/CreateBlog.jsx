@@ -7,7 +7,7 @@ import SubmitFormMessage from '../components/SubmitFormMessage.jsx';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from "react-router-dom"
-import { getBlogById } from "../services/blogService.js";
+import { editBlog, getBlogById } from "../services/blogService.js";
 
 import { createBlog } from '../services/blogService.js';
 
@@ -41,10 +41,13 @@ function CreateBlog({isEdit}) {
         if (isEdit && id) {
             getBlogById(id)
                 .then((d) => {
-                    console.log(d);
-                    d['locationInput'] = `${d.city}, ${d.country}`;
-                    d['dateInput'] = `${d.year}-${String(d.month).padStart(2, "0")}-${String(d.date).padStart(2, "0")}`;
-                    setFormData(d)
+                    const {city, country, year, month, date, lat, lng, region, ...rest} = d;
+                    const editForm = {
+                        ...rest,
+                        locationInput: `${city}, ${country}`,
+                        dateInput: `${year}-${String(month).padStart(2, "0")}-${String(date).padStart(2, "0")}`
+                    };
+                    setFormData(editForm)
                 })
                 .catch(err => console.log(err));
         } else {
@@ -136,7 +139,12 @@ function CreateBlog({isEdit}) {
                 finalFormData.append("data", JSON.stringify(cleanData));
                 images.forEach(image => finalFormData.append("images", image));
 
-                const res = await createBlog(finalFormData);
+                let res;
+                if (isEdit) {
+                    res = await editBlog(id, finalFormData);
+                } else {
+                    res = await createBlog(finalFormData);
+                }
                 navigate(`/blogs/${res._id}`);
             } catch (err) {
                 if (err.message.includes("country")) {
