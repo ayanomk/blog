@@ -77,12 +77,13 @@ function Blog() {
     // get relevant blog data
     useEffect(() => {
         if (!blogData) return;
+        const isPublish = isLoggedIn ? "" : "Publish";
 
-        getBlogsByFilter({ excludeId: id, tripId: blogData.tripId })
+        getBlogsByFilter({ excludeId: id, tripId: blogData.tripId, state: isPublish })
             .then(setRelatedBlogData)
             .catch(err => console.log(err));
             
-        getBlogsByFilter({ excludeId: id, excludeTripId: blogData.tripId, country: blogData.country })
+        getBlogsByFilter({ excludeId: id, excludeTripId: blogData.tripId, country: blogData.country, state: isPublish })
             .then(setSimilarBlogData)
             .catch(err => console.log(err));
     }, [blogData])

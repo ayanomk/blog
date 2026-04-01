@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
 import "./Carousel.css";
 
 function Carousel({data}) {
@@ -10,15 +11,17 @@ function Carousel({data}) {
 
     return (
         <div className="carousel">
-            <div className={data[count].state === 'Draft' ? 'blogContainer draftCard' : 'blogContainer'}>
-                <img src={data[count].hero.url} alt="" loading="lazy" />
-                <p className="popupBlogTitle">{data[count].title}{data[count].day != 0 ? `: Day ${data[count].day}` : ""}</p>
-                {/* <p className="">{data[count].date}/{data[count].month}/{data[count].year}</p> */}
-                <div className='dateTagContainer'>
-                    <p>{data[count].date}/{data[count].month}/{data[count].year}</p>
-                    {data[count].state === 'Draft' ? <p className='draftTag'>Draft</p> : null}
+            <Link to={`/blogs/${data[count]._id}`}>
+                <div className={data[count].state === 'Draft' ? 'blogContainer draftCard' : 'blogContainer'}>
+                    <img src={data[count].hero.url} alt="" loading="lazy" />
+                    <p className="popupBlogTitle">{data[count].title}{data[count].day != 0 ? `: Day ${data[count].day}` : ""}</p>
+                    {/* <p className="">{data[count].date}/{data[count].month}/{data[count].year}</p> */}
+                    <div className='dateTagContainer'>
+                        <p>{data[count].date}/{data[count].month}/{data[count].year}</p>
+                        {data[count].state === 'Draft' ? <p className='draftTag'>Draft</p> : null}
+                    </div>
                 </div>
-            </div>
+            </Link>
             {/* <div className="lrButtons">
                 <button className="leftButton" onClick={() => {
                     if (count > 0) setCount(count-1);
