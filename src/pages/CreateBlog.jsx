@@ -36,30 +36,38 @@ function CreateBlog({isEdit}) {
     }
     const [formData, setFormData] = useState(initialForm)
 
-    const previousImages = {
+    const [previousImages, setPreviousImages] = useState({
         hero: "",
         content: []
-    }
+    })
 
     const { id } = useParams();
     useEffect(() => {
         if (isEdit && id) {
             getBlogById(id)
                 .then((d) => {
-                    const {city, country, year, month, date, lat, lng, region, ...rest} = d;
+                    const {city, country, year, month, date, lat, lng, region, hero, sections, ...rest} = d;
                     const editForm = {
                         ...rest,
+                        hero,
+                        sections,
                         locationInput: `${city}, ${country}`,
                         dateInput: `${year}-${String(month).padStart(2, "0")}-${String(date).padStart(2, "0")}`
                     };
-                    previousImages.hero = editForm.hero.publicId;
-                    editForm.sections.forEach(section => {
+
+                    const preImg = {
+                        hero: hero.publicId,
+                        content: []
+                    }
+                    sections.forEach(section => {
                         section.blocks.forEach(block => {
                             if (block.type === 'img') {
-                                block.content.src.forEach((i) => previousImages.content.push(i.publicId))
+                                block.content.src.forEach((i) => preImg.content.push(i.publicId))
                             }
                         })
                     })
+                    setPreviousImages(preImg)
+
                     setFormData(editForm)
                 })
                 .catch(err => console.log(err));

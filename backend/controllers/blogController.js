@@ -229,7 +229,8 @@ const patchBlog = async (req, res) => {
 
         // string data
         const blogData = JSON.parse(req.body.data);
-        const { title, locationInput, dateInput, sections, hero, ...rest } = blogData;
+        const previousImages = JSON.parse(req.body.previousImages);
+        let { title, locationInput, dateInput, sections, hero, ...rest } = blogData;
 
         // replace null image placeholder with url and id
         let imgFileIdx = 0;
@@ -237,6 +238,8 @@ const patchBlog = async (req, res) => {
         if (hero == null) {
             hero = cloudinaryImages[imgFileIdx];
             imgFileIdx++;
+        } else {
+            previousImages.hero = previousImages.hero == hero.publicId ? "" : previousImages.hero;
         }
         
         // content images
@@ -248,12 +251,18 @@ const patchBlog = async (req, res) => {
                             const img = cloudinaryImages[imgFileIdx];
                             imgFileIdx++;
                             return img
-                        } else return src
+                        } else {
+                            previousImages.content = previousImages.content.filter(prev => prev != src.publicId);
+                            return src
+                        }
                     })
                 }
             })
         })
-        
+
+        // destroy previouse images
+        if (previousImages.hero) await cloudinary.uploader.destroy(previousImages.hero);
+        for (const img of previousImages.content) await cloudinary.uploader.destroy(img);
 
         // !FIXME Capitalise title
         let splitStr = title.split(' ');
