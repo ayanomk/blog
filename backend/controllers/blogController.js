@@ -210,7 +210,6 @@ const patchBlog = async (req, res) => {
         // upload image files to cloudinary
         const cloudinaryImages = [];
         for (let file of req.files) {
-
             const uploadedResult = await new Promise((resolve, reject) => {
                 const stream = cloudinary.uploader.upload_stream(
                     {folder: "blog_images"},
@@ -230,22 +229,26 @@ const patchBlog = async (req, res) => {
 
         // string data
         const blogData = JSON.parse(req.body.data);
-        const { title, locationInput, dateInput, sections, ...rest } = blogData;
+        const { title, locationInput, dateInput, sections, hero, ...rest } = blogData;
 
         // replace null image placeholder with url and id
         let imgFileIdx = 0;
         // hero image
-        const hero = cloudinaryImages[imgFileIdx];
-        imgFileIdx++;
+        if (hero == null) {
+            hero = cloudinaryImages[imgFileIdx];
+            imgFileIdx++;
+        }
+        
         // content images
         sections.forEach(section => {
             section.blocks.forEach(block => {
                 if (block.type === 'img') {
-                    block.content.src = block.content.src.map(_ => {
-                        const img = cloudinaryImages[imgFileIdx];
-                        imgFileIdx++;
-
-                        return img
+                    block.content.src = block.content.src.map(src => {
+                        if(src == null) {
+                            const img = cloudinaryImages[imgFileIdx];
+                            imgFileIdx++;
+                            return img
+                        } else return src
                     })
                 }
             })

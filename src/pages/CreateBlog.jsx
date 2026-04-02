@@ -36,6 +36,11 @@ function CreateBlog({isEdit}) {
     }
     const [formData, setFormData] = useState(initialForm)
 
+    const previousImages = {
+        hero: "",
+        content: []
+    }
+
     const { id } = useParams();
     useEffect(() => {
         if (isEdit && id) {
@@ -47,6 +52,14 @@ function CreateBlog({isEdit}) {
                         locationInput: `${city}, ${country}`,
                         dateInput: `${year}-${String(month).padStart(2, "0")}-${String(date).padStart(2, "0")}`
                     };
+                    previousImages.hero = editForm.hero.publicId;
+                    editForm.sections.forEach(section => {
+                        section.blocks.forEach(block => {
+                            if (block.type === 'img') {
+                                block.content.src.forEach((i) => previousImages.content.push(i.publicId))
+                            }
+                        })
+                    })
                     setFormData(editForm)
                 })
                 .catch(err => console.log(err));
@@ -120,14 +133,18 @@ function CreateBlog({isEdit}) {
                 const cleanData = JSON.parse(JSON.stringify(updatedFormData));
 
                 // separate image file and replace with null
-                images.push(updatedFormData.hero.file);
-                cleanData.hero = null;
+                if (updatedFormData.hero.file) {
+                    images.push(updatedFormData.hero.file);
+                    cleanData.hero = null;
+                }
                 updatedFormData.sections.forEach((section, sidx) => {
                     section.blocks.forEach((block, bidx) => {
                         if (block.type === 'img') {
                             block.content.src.forEach((file, fidx) => {
-                                images.push(file.file);
-                                cleanData.sections[sidx].blocks[bidx].content.src[fidx] = null;
+                                if (file.file) {
+                                    images.push(file.file);
+                                    cleanData.sections[sidx].blocks[bidx].content.src[fidx] = null;
+                                }
                             });
                         }
                     })
@@ -141,6 +158,7 @@ function CreateBlog({isEdit}) {
 
                 let res;
                 if (isEdit) {
+                    finalFormData.append("previousImages", JSON.stringify(previousImages));
                     res = await editBlog(id, finalFormData);
                 } else {
                     res = await createBlog(finalFormData);

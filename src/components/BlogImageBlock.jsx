@@ -65,8 +65,8 @@ function BlogImageBlock({imgData, setImgData}) {
 
     return <div className='imageBlockInput'>
         <div className='imageBlock'>
-            {imgData.content.src.map((file, idx) => 
-                file.file ? <img key={idx} src={file.url ? file.url : file.previewUrl } alt="" className={imgData.content.dir} /> : null
+            {imgData.content.src.map((file, idx) =>
+                file.url || file.previewUrl ? <img key={idx} src={file.url ? file.url : file.previewUrl } alt="" className={imgData.content.dir} /> : null
             )}
         </div>
         {errorMsg ? <p className='imgUploadErrorMsg'>&#9888;{errorMsg}</p> : null}
