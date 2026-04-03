@@ -1,0 +1,46 @@
+.processPopupMsg {
+    position: fixed;
+    top: 25%;
+    left: 30%;
+    width: 40%;
+    height: 45%;
+    border-radius: 20px;
+    box-shadow: 2px 2px 10px 0px #4b4b4b;
+    padding: 35px 45px 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    background-color: #f8f8f8; /*FIXME! #dcdbd9*/
+}
+.processPopupMsg img {
+    height: 80%;
+    display: block;
+    margin: auto;
+    margin-bottom: 0px;
+    animation: shake 2s ease infinite alternate;
+}
+.processPopupMsg .typing {
+    display: inline;
+    font-size: 1.5rem;
+    text-align: center;
+    border-right: 2px solid #4e4e4e;
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+    50% {
+        border-color: transparent;
+    }
+}
+@keyframes shake {
+    35% {
+        transform: rotate(0.8deg);
+    }
+    40% {
+        transform: rotate(0deg);
+    }
+    45% {
+        transform: rotate(-0.8deg);
+    }
+}
