@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom"
 import { editBlog, getBlogById } from "../services/blogService.js";
 
 import { createBlog } from '../services/blogService.js';
+import ProcessPopupMsg from '../components/ProcessPopupMsg.jsx';
 
 function CreateBlog({isEdit}) {
     const navigate = useNavigate();
@@ -89,6 +90,8 @@ function CreateBlog({isEdit}) {
     };
 
     // SUBMIT BLOG
+    const [isInProcess, setIsInProcess] = useState(false);
+    const [isDraft, setIsDraft] = useState(true);
     const [invalidForm, setInvalidaForm] = useState([]);
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -158,7 +161,10 @@ function CreateBlog({isEdit}) {
                     })
                 })
 
-                if (e.target.id === 'publishButton') cleanData.state = 'Publish';
+                if (e.target.id === 'publishButton') {
+                    cleanData.state = 'Publish'
+                    setIsDraft(false);
+                };
 
                 const finalFormData = new FormData();
                 finalFormData.append("data", JSON.stringify(cleanData));
@@ -167,8 +173,10 @@ function CreateBlog({isEdit}) {
                 let res;
                 if (isEdit) {
                     finalFormData.append("previousImages", JSON.stringify(previousImages));
+                    setIsInProcess(true);
                     res = await editBlog(id, finalFormData);
                 } else {
+                    setIsInProcess(true);
                     res = await createBlog(finalFormData);
                 }
                 navigate(`/blogs/${res._id}`);
@@ -410,6 +418,7 @@ function CreateBlog({isEdit}) {
             </div>
 
             {invalidForm.length !== 0 && <SubmitFormMessage missingFormList={invalidForm} setMissingFormList={() => setInvalidaForm([])} />}
+            {isInProcess ? <ProcessPopupMsg msg={isDraft ? `Saving draft: ${formData.title} ...` : `Publishing blog: ${formData.title} ...`} /> : null}
         </div>
     )
 }

@@ -5,7 +5,7 @@ import Recommendation from '../components/Recommendation.jsx'
 import { getBlogById, getBlogsByFilter } from "../services/blogService.js";
 import { useNavigate } from 'react-router-dom';
 import { deleteBlog } from "../services/blogService.js";
-
+import ProcessPopupMsg from "../components/ProcessPopupMsg.jsx";
 import { AuthContext } from "../context/AuthContext";
 
 // Create HTML
@@ -55,28 +55,6 @@ const htmlRenderer = (block, blockIdx) => {
     }
 }
 
-const submitDeleteBlog = async (blog) => {
-    const {_id, sections, hero} = blog;
-    const deletes = {
-        deleteImages: [hero.publicId]
-    };
-    sections.forEach(section => {
-        section.blocks.forEach(block => {
-            if (block.type === 'img') {
-                block.content.src.forEach((img) => deletes.deleteImages.push(img.publicId));
-            }
-        })
-    })
-
-    try {
-        const res = await deleteBlog(_id, deletes);
-        navigate(`/adventures`)
-    } catch (err) {
-        console.log(err);
-    }
-
-}
-
 // JSX
 function Blog() {
     const {isLoggedIn} = useContext(AuthContext);
@@ -99,6 +77,35 @@ function Blog() {
             .catch(err => console.log(err));
     }, [id]);
 
+    // handle delete blog
+    const [deleteConfirmation, setDeleteConfirmation] = useState(false);
+    const deleteConfirm = () => {
+        setDeleteConfirmation(true);
+    }
+    const [isInDelete, setIsInDelete] = useState(false);
+    const submitDeleteBlog = async (blog) => {
+        setDeleteConfirmation(false);
+        const {_id, sections, hero} = blog;
+        const deletes = {
+            deleteImages: [hero.publicId]
+        };
+        sections.forEach(section => {
+            section.blocks.forEach(block => {
+                if (block.type === 'img') {
+                    block.content.src.forEach((img) => deletes.deleteImages.push(img.publicId));
+                }
+            })
+        })
+
+        try {
+            setIsInDelete(true);
+            const res = await deleteBlog(_id, deletes);
+            navigate(`/adventures`)
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     // get relevant blog data
     useEffect(() => {
         if (!blogData) return;
@@ -118,7 +125,7 @@ function Blog() {
 
     return (
         <article className="blog">
-            {isLoggedIn ? <div className="adminButtons"><button onClick={() => navigate(`/admin/blogs/${blogData._id}/edit`)}>Edit</button><button onClick={() => submitDeleteBlog(blogData)}>Delete</button></div> : null}
+            {isLoggedIn ? <div className="adminButtons"><button onClick={() => navigate(`/admin/blogs/${blogData._id}/edit`)}>Edit</button><button onClick={deleteConfirm}>Delete</button></div> : null}
             <header>
                 <div className="title">
                     <div className='mainTitle'>
@@ -166,6 +173,8 @@ function Blog() {
             </main>
             <Recommendation blogs={relatedBlogData} type="related" />
             <Recommendation blogs={similarBlogData} type="similar" />
+            {isInDelete ? <ProcessPopupMsg msg={`Deleting blog: ${blogData.title}`} /> : null}
+            {deleteConfirmation ? <div className="deleteConfirmationPopup"><p>Delete this blog?</p><div><button onClick={() => submitDeleteBlog(blogData)}>Delete</button><button onClick={() => setDeleteConfirmation(false)}>Cancel</button></div></div> : null}
         </article>
     )
 }
