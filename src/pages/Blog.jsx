@@ -77,8 +77,14 @@ function Blog() {
             .catch(err => console.log(err));
     }, [id]);
 
+    // handle delete blog
+    const [deleteConfirmation, setDeleteConfirmation] = useState(false);
+    const deleteConfirm = () => {
+        setDeleteConfirmation(true);
+    }
     const [isInDelete, setIsInDelete] = useState(false);
     const submitDeleteBlog = async (blog) => {
+        setDeleteConfirmation(false);
         const {_id, sections, hero} = blog;
         const deletes = {
             deleteImages: [hero.publicId]
@@ -119,7 +125,7 @@ function Blog() {
 
     return (
         <article className="blog">
-            {isLoggedIn ? <div className="adminButtons"><button onClick={() => navigate(`/admin/blogs/${blogData._id}/edit`)}>Edit</button><button onClick={() => submitDeleteBlog(blogData)}>Delete</button></div> : null}
+            {isLoggedIn ? <div className="adminButtons"><button onClick={() => navigate(`/admin/blogs/${blogData._id}/edit`)}>Edit</button><button onClick={deleteConfirm}>Delete</button></div> : null}
             <header>
                 <div className="title">
                     <div className='mainTitle'>
@@ -168,6 +174,7 @@ function Blog() {
             <Recommendation blogs={relatedBlogData} type="related" />
             <Recommendation blogs={similarBlogData} type="similar" />
             {isInDelete ? <ProcessPopupMsg msg={`Deleting blog: ${blogData.title}`} /> : null}
+            {deleteConfirmation ? <div className="deleteConfirmationPopup"><p>Delete this blog?</p><div><button onClick={() => submitDeleteBlog(blogData)}>Delete</button><button onClick={() => setDeleteConfirmation(false)}>Cancel</button></div></div> : null}
         </article>
     )
 }
