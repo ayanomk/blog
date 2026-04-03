@@ -1,29 +1,44 @@
 import './Adventure.css';
 import Map from '../components/Map.jsx';
 import Recommendation from '../components/Recommendation.jsx';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { getAllBlogs, getBlogsByFilter } from '../services/blogService.js';
 import FilterControls from '../components/Filter.jsx';
+
+import { AuthContext } from "../context/AuthContext";
 
 /**
  * 
  * @returns JSX
  */
 function Adventure() {
+    const {isLoggedIn} = useContext(AuthContext);
+
+    const [draftPublishFilter, setDraftPublishFilter] = useState([]);
+
     // get all blog data from backend
     const [allBlogs, setAllBlogs] = useState([]);
     useEffect(() => {
-        getAllBlogs()
-        .then((data) => {
-            setAllBlogs(data);
-            console.log(data);
-        })
-        .catch(err => console.log(err));
+        if (isLoggedIn) {
+            getAllBlogs()
+            .then((data) => {
+                setAllBlogs(data);
+            })
+            .catch(err => console.log(err));
+        } else {
+            setDraftPublishFilter(["Publish"])
+            getBlogsByFilter({ state: "Publish" })
+            .then((data) => {
+                setAllBlogs(data);
+            })
+            .catch(err => console.log(err));
+        }
     }, []);
     
     // filter option lists
     const tripYears = [...new Set(allBlogs.map((t) => t.year))].sort((a, b) => a - b);
     const tripRegions = ["Asia", "Oceania", "Europe", "Africa", "North America"];
+    const draftPublish = ["Draft", "Publish"];
     
     // filter out blogs
     const [yearFilter, setYearFilter] = useState([]);
@@ -31,7 +46,7 @@ function Adventure() {
     
     const [filteredBlogs, setFilteredBlogs] = useState([]);
     useEffect(() => {
-        getBlogsByFilter({ years: yearFilter, regions: regionFilter })
+        getBlogsByFilter({ years: yearFilter, regions: regionFilter, state: draftPublishFilter })
             .then((data) => {
                 setFilteredBlogs(data);
             })
@@ -39,12 +54,13 @@ function Adventure() {
                 console.log(err);
                 setFilteredBlogs([]);
             });
-    }, [yearFilter, regionFilter]);
+    }, [yearFilter, regionFilter, draftPublishFilter]);
 
     // filter options display
     const [showFilters, setShowFilters] = useState(false);
     const [yearExpand, setYearExpand] = useState(false);
     const [regionExpand, setRegionExpand] = useState(false);
+    const [draftPublishExpand, setDraftPublishExpand] = useState(false);
 
     const filterConfig = [
         {
@@ -64,6 +80,18 @@ function Adventure() {
             setExpandState: setRegionExpand
         }
     ];
+    if (isLoggedIn) {
+        filterConfig.push(
+            {
+                filterBy: "Publish",
+                filterOptions: draftPublish,
+                state: draftPublishFilter,
+                setState: setDraftPublishFilter,
+                expandState: draftPublishExpand,
+                setExpandState: setDraftPublishExpand
+            }
+        )
+    }
 
     // filter by region to display cards
     const regionFiltered = [];
@@ -89,6 +117,7 @@ function Adventure() {
                         setShowFilters(!showFilters);
                         setYearExpand(false);
                         setRegionExpand(false);
+                        setDraftPublishExpand(false);
                     }}>
                         <img src="/icon/filter-stroke-rounded.svg" alt="" />
                     </button>

@@ -4,25 +4,24 @@ import BlogParagraph from '../components/BlogParagraph';
 import BlogHeaderBlock from '../components/BlogHeaderBlock';
 import BlogImageBlock from '../components/BlogImageBlock';
 import SubmitFormMessage from '../components/SubmitFormMessage.jsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useParams } from "react-router-dom"
+import { editBlog, getBlogById } from "../services/blogService.js";
 
 import { createBlog } from '../services/blogService.js';
 
-function CreateBlog() {
+function CreateBlog({isEdit}) {
     const navigate = useNavigate();
 
     // form data
-    const [formData, setFormData] = useState({
+    const initialForm = {
         title: '',
         description: '',
         locationInput: '',
         dateInput: '',
         day: 0,
-        hero: {
-            file: '',
-            previewUrl: ''
-        },
+        hero: "",
         sections: [
             {
                 sectionType: "info",
@@ -32,8 +31,51 @@ function CreateBlog() {
                 sectionType: "content",
                 blocks: []
             }
-        ]
+        ],
+        state: 'Draft'
+    }
+    const [formData, setFormData] = useState(initialForm)
+
+    const [previousImages, setPreviousImages] = useState({
+        hero: "",
+        content: []
     })
+
+    const { id } = useParams();
+    useEffect(() => {
+        if (isEdit && id) {
+            getBlogById(id)
+                .then((d) => {
+                    const {city, country, year, month, date, lat, lng, region, hero, sections, ...rest} = d;
+                    const editForm = {
+                        ...rest,
+                        hero,
+                        sections,
+                        locationInput: `${city}, ${country}`,
+                        dateInput: `${year}-${String(month).padStart(2, "0")}-${String(date).padStart(2, "0")}`
+                    };
+
+                    const preImg = {
+                        hero: hero.publicId,
+                        content: []
+                    }
+                    sections.forEach(section => {
+                        section.blocks.forEach(block => {
+                            if (block.type === 'img') {
+                                block.content.src.forEach((i) => preImg.content.push(i.publicId))
+                            }
+                        })
+                    })
+                    setPreviousImages(preImg)
+
+                    setFormData(editForm)
+                })
+                .catch(err => console.log(err));
+        } else {
+            setFormData(initialForm)
+        }
+    }, [isEdit, id])
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         // validation
@@ -99,24 +141,36 @@ function CreateBlog() {
                 const cleanData = JSON.parse(JSON.stringify(updatedFormData));
 
                 // separate image file and replace with null
-                images.push(updatedFormData.hero.file);
-                cleanData.hero = null;
+                if (updatedFormData.hero.file) {
+                    images.push(updatedFormData.hero.file);
+                    cleanData.hero = null;
+                }
                 updatedFormData.sections.forEach((section, sidx) => {
                     section.blocks.forEach((block, bidx) => {
                         if (block.type === 'img') {
                             block.content.src.forEach((file, fidx) => {
-                                images.push(file.file);
-                                cleanData.sections[sidx].blocks[bidx].content.src[fidx] = null;
+                                if (file.file) {
+                                    images.push(file.file);
+                                    cleanData.sections[sidx].blocks[bidx].content.src[fidx] = null;
+                                }
                             });
                         }
                     })
                 })
 
+                if (e.target.id === 'publishButton') cleanData.state = 'Publish';
+
                 const finalFormData = new FormData();
                 finalFormData.append("data", JSON.stringify(cleanData));
                 images.forEach(image => finalFormData.append("images", image));
 
-                const res = await createBlog(finalFormData);
+                let res;
+                if (isEdit) {
+                    finalFormData.append("previousImages", JSON.stringify(previousImages));
+                    res = await editBlog(id, finalFormData);
+                } else {
+                    res = await createBlog(finalFormData);
+                }
                 navigate(`/blogs/${res._id}`);
             } catch (err) {
                 if (err.message.includes("country")) {
@@ -266,7 +320,7 @@ function CreateBlog() {
                     </div>
                 </div>
                 <div className='heroInput'>
-                    {formData.hero.previewUrl != '' ? <img src={formData.hero.previewUrl} alt="" /> : ""}
+                    {formData.hero != "" ? <img src={formData.hero.url? formData.hero.url : formData.hero.previewUrl} alt="" /> : ""}
                     <input className='hero' type="file" name="hero" onChange={handleHeroImagePreviewChange} />
                 </div>
 
@@ -291,13 +345,13 @@ function CreateBlog() {
 
                             return <div key={sideBidx} className='block'>
                                 {content}
-                                <img className='deleteButton' src="../icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteBlock(0, sideBidx)} />
+                                <img className='deleteButton' src="/icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteBlock(0, sideBidx)} />
                             </div>
                         })}
 
                         <div className='inputAdd'>
                             <button type='button' onClick={toggleAsideOption}>
-                                <img src="../icon/plus-sign-circle-stroke-rounded.svg" alt="" className={asideOption ? "rotate" : ""} />
+                                <img src="/icon/plus-sign-circle-stroke-rounded.svg" alt="" className={asideOption ? "rotate" : ""} />
                             </button>
                             <div className={`inputOptions ${asideOption ? "" : "hidden"}`}>
                                 <button value="" type='button' onClick={() => {addBlock(0, headerBlock)}}>Header 1</button>
@@ -328,13 +382,13 @@ function CreateBlog() {
                             }
                             return <div key={mainBidx} className='block'>
                                 {content}
-                                <img className='deleteButton' src="../icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteBlock(1, mainBidx)}/>
+                                <img className='deleteButton' src="/icon/delete-02-stroke-rounded.svg" alt="" onClick={() => deleteBlock(1, mainBidx)}/>
                             </div>
                         })}
 
                         <div className='inputAdd'>
                             <button type='button' onClick={toggleMainOption}>
-                                <img src="../icon/plus-sign-circle-stroke-rounded.svg" alt="" className={mainOption ? "rotate" : ""} />
+                                <img src="/icon/plus-sign-circle-stroke-rounded.svg" alt="" className={mainOption ? "rotate" : ""} />
                             </button>
                             <div className={`inputOptions ${mainOption ? "" : "hidden"}`}>
                                 <button value="" type='button' onClick={() => {addBlock(1, headerBlock)}}>Header 1</button>
@@ -351,8 +405,8 @@ function CreateBlog() {
             </form>
 
             <div className="submitButtons">
-                <button type='button'>Save Draft</button>
-                <button type='button' onClick={handleSubmit}>Publish</button>
+                <button type='button' id='saveDraftButton' onClick={handleSubmit}>Save Draft</button>
+                <button type='button' id='publishButton' onClick={handleSubmit}>Publish</button>
             </div>
 
             {invalidForm.length !== 0 && <SubmitFormMessage missingFormList={invalidForm} setMissingFormList={() => setInvalidaForm([])} />}
