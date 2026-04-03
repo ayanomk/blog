@@ -4,6 +4,7 @@ import './Blog.css';
 import Recommendation from '../components/Recommendation.jsx'
 import { getBlogById, getBlogsByFilter } from "../services/blogService.js";
 import { useNavigate } from 'react-router-dom';
+import { deleteBlog } from "../services/blogService.js";
 
 import { AuthContext } from "../context/AuthContext";
 
@@ -54,6 +55,28 @@ const htmlRenderer = (block, blockIdx) => {
     }
 }
 
+const submitDeleteBlog = async (blog) => {
+    const {_id, sections, hero} = blog;
+    const deletes = {
+        deleteImages: [hero.publicId]
+    };
+    sections.forEach(section => {
+        section.blocks.forEach(block => {
+            if (block.type === 'img') {
+                block.content.src.forEach((img) => deletes.deleteImages.push(img.publicId));
+            }
+        })
+    })
+
+    try {
+        const res = await deleteBlog(_id, deletes);
+        navigate(`/adventures`)
+    } catch (err) {
+        console.log(err);
+    }
+
+}
+
 // JSX
 function Blog() {
     const {isLoggedIn} = useContext(AuthContext);
@@ -95,7 +118,7 @@ function Blog() {
 
     return (
         <article className="blog">
-            {isLoggedIn ? <div className="adminButtons"><button onClick={() => navigate(`/admin/blogs/${blogData._id}/edit`)}>Edit</button><button>Delete</button></div> : null}
+            {isLoggedIn ? <div className="adminButtons"><button onClick={() => navigate(`/admin/blogs/${blogData._id}/edit`)}>Edit</button><button onClick={() => submitDeleteBlog(blogData)}>Delete</button></div> : null}
             <header>
                 <div className="title">
                     <div className='mainTitle'>

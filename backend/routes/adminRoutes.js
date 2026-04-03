@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const { asyncWrapper } = require("../utils/asyncWrapper.js");
-const { getAllBlogs, getBlogById, createBlog, patchBlog } = require("../controllers/blogController.js");
+const { getAllBlogs, getBlogById, createBlog, patchBlog, deleteBlog } = require("../controllers/blogController.js");
 const { authenticateUser } = require("../controllers/authenticationController.js"); 
 
 const authenticationHandler = require("../middleware/authenticationHandler.js");
@@ -32,5 +32,9 @@ router.post('/blogs', authenticationHandler, upload.array('images'), asyncWrappe
  * PATCH
  */
 router.patch('/blogs/:id/edit', authenticationHandler, upload.array('images'), asyncWrapper(patchBlog));
+/**
+ * DELETE
+ */
+router.delete('/blogs/:id', authenticationHandler, asyncWrapper(deleteBlog));
 
 module.exports = router;

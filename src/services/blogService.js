@@ -82,3 +82,21 @@ export const editBlog = async (id, data) => {
     if (result.status === "fail") throw result;
     return result.data;
 }
+
+export const deleteBlog = async (id, data) => {
+    const token = localStorage.getItem("token");
+
+    const res = await fetch(`${API_BASE}/admin/blogs/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data),
+    });
+
+    const result = await res.json();
+
+    if (result.status === "fail") throw result;
+    return result.data;
+}

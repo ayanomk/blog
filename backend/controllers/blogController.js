@@ -353,10 +353,24 @@ const patchBlog = async (req, res) => {
     }
 }
 
+const deleteBlog = async (req, res) => {
+    const delImgs = req.body.deleteImages;
+    const id = req.params.id;
+    for (const img of delImgs) await cloudinary.uploader.destroy(img);
+
+    const result = await Post.deleteOne({_id: id});
+    if (result.deletedCount === 0) {
+        throw new AppError("Failed to delete a blog", 404);
+    }
+    successResponse(res, "Blog deleted successfully", result);
+
+}
+
 module.exports = {
     getAllBlogs,
     getBlogById,
     getBlogsByFilter,
     createBlog,
-    patchBlog
+    patchBlog,
+    deleteBlog
 };
