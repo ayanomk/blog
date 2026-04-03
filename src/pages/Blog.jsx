@@ -5,7 +5,7 @@ import Recommendation from '../components/Recommendation.jsx'
 import { getBlogById, getBlogsByFilter } from "../services/blogService.js";
 import { useNavigate } from 'react-router-dom';
 import { deleteBlog } from "../services/blogService.js";
-
+import ProcessPopupMsg from "../components/ProcessPopupMsg.jsx";
 import { AuthContext } from "../context/AuthContext";
 
 // Create HTML
@@ -55,28 +55,6 @@ const htmlRenderer = (block, blockIdx) => {
     }
 }
 
-const submitDeleteBlog = async (blog) => {
-    const {_id, sections, hero} = blog;
-    const deletes = {
-        deleteImages: [hero.publicId]
-    };
-    sections.forEach(section => {
-        section.blocks.forEach(block => {
-            if (block.type === 'img') {
-                block.content.src.forEach((img) => deletes.deleteImages.push(img.publicId));
-            }
-        })
-    })
-
-    try {
-        const res = await deleteBlog(_id, deletes);
-        navigate(`/adventures`)
-    } catch (err) {
-        console.log(err);
-    }
-
-}
-
 // JSX
 function Blog() {
     const {isLoggedIn} = useContext(AuthContext);
@@ -98,6 +76,29 @@ function Blog() {
             .then(setBlogData)
             .catch(err => console.log(err));
     }, [id]);
+
+    const [isInDelete, setIsInDelete] = useState(false);
+    const submitDeleteBlog = async (blog) => {
+        const {_id, sections, hero} = blog;
+        const deletes = {
+            deleteImages: [hero.publicId]
+        };
+        sections.forEach(section => {
+            section.blocks.forEach(block => {
+                if (block.type === 'img') {
+                    block.content.src.forEach((img) => deletes.deleteImages.push(img.publicId));
+                }
+            })
+        })
+
+        try {
+            setIsInDelete(true);
+            const res = await deleteBlog(_id, deletes);
+            navigate(`/adventures`)
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
     // get relevant blog data
     useEffect(() => {
@@ -166,6 +167,7 @@ function Blog() {
             </main>
             <Recommendation blogs={relatedBlogData} type="related" />
             <Recommendation blogs={similarBlogData} type="similar" />
+            {isInDelete ? <ProcessPopupMsg msg={`Deleting blog: ${blogData.title}`} /> : null}
         </article>
     )
 }
