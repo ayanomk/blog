@@ -11,8 +11,11 @@ nav {
     padding: 3px 15px;
 }
 nav .logo {
-    height: 100%;
     padding-left: 1%;
+    padding-top: 5px;
+}
+nav .logo img {
+    height: 55px;
 }
 nav .nav-items a {
     margin: 0px 10px;

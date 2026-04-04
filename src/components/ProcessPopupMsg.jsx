@@ -6,7 +6,7 @@ function ProcessPopupMsg({msg}) {
             <div>
                 <p className='typing'>{msg}</p>
             </div>
-            <img src="/img/dw21batch2-mynt-01.jpg" alt="" />
+            <img src="/img/typewriter.svg" alt="" />
         </div>
     )
 }

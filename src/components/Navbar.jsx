@@ -1,7 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 
 import "./Navbar.css"
-import Logo from "./Logo"
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 
@@ -14,7 +13,7 @@ function Navbar() {
     return (
         <nav>
             <NavLink to="/" className="logo" onClick={() => setHamburgerOpen(false)}>
-                <Logo />
+                <img src="/icon/my-blog_logo.svg" alt="" />
             </NavLink>
 
             <div className={`nav-items ${hamburgerOpen ? "open" : ""}`}>

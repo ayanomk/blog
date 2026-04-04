@@ -11,13 +11,14 @@
     flex-direction: column;
     justify-content: space-between;
 
-    background-color: #f8f8f8; /*FIXME! #dcdbd9*/
+    background-color: #f8f8f8;
 }
 .processPopupMsg img {
-    height: 80%;
+    height: 50%;
+    width: 100%;
     display: block;
     margin: auto;
-    margin-bottom: 0px;
+    margin-bottom: 40px;
     animation: shake 2s ease infinite alternate;
 }
 .processPopupMsg .typing {
@@ -42,5 +43,12 @@
     }
     45% {
         transform: rotate(-0.8deg);
+    }
+}
+@media (max-width: 768px) {
+    .processPopupMsg {
+        padding: 5%;
+        left: 15%;
+        width: 70%;
     }
 }
