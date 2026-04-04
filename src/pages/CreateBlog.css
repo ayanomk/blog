@@ -183,9 +183,17 @@
     .createBlog .hero {
         width: 100%;
     }
+    .createBlog .mainInput .inputAdd button {
+        margin-top: 20px;
+    }
 }
 @media (max-width: 700px) {
     .createBlog .dateLocation {
         width: 60%;
+    }
+}
+@media (max-width: 390px) {
+    .createBlog .submitButtons button {
+        padding: 10px 20px;
     }
 }
