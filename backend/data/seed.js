@@ -6,10 +6,9 @@ const { createUser } = require("../controllers/authenticationController.js");
 
 const { connectDB } =require("../config/db.js");
 
-
 const seed = async () => {
     try {
-        connectDB();
+        await connectDB();
         await Post.deleteMany({});
 
         // await Post.create({
