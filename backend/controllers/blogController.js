@@ -64,125 +64,195 @@ const getBlogsByFilter = async (req, res) => {
 }
 
 /**
+ * Upload image files to cloudinary and get url/publicId
+ * @param {*} files files passed from req.files
+ * @returns array of data for uploaded images
+ */
+const uploadToCloudinary = async (files) => {
+    try {
+        return await Promise.all(
+            files.map((file) => {
+                return new Promise((resolve, reject) => {
+                    const stream = cloudinary.uploader.upload_stream(
+                        {folder: "blog_images"},
+                        (error, result) => {
+                            if (error) reject(error);
+                            else resolve({url: result.secure_url, publicId: result.public_id});
+                        }
+                    );
+                    stream.end(file.buffer);
+                });
+            })
+        )
+    } catch (err) {
+        throw new AppError("Image upload failed: " + err.message, 500);
+    }
+}
+
+/**
+ * Convert text to title case
+ * @param {string} text 
+ * @returns String Of Text
+ */
+const toTitleCase = (text) => {
+    let splitStr = text.split(' ');
+    for (let i = 0; i < splitStr.length; i++) {
+        splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+    }
+    return splitStr.join(' ');
+}
+
+/**
+ * Get latitude and longitude of a location
+ * @param {string} cityInput String of city
+ * @param {string} countryInput String of country
+ * @returns {object} {latitude, longitude}
+ */
+const getLatLng = async (cityInput, countryInput) => {
+    const city = cityInput.charAt(0).toUpperCase() + cityInput.substring(1);
+    const country = countryInput.charAt(0).toUpperCase() + countryInput.substring(1);
+    let lat, lng;
+
+    try {
+        const res = await fetch(
+            `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(`${city}, ${country}`)}&format=json`,
+            {
+                headers: {
+                    "User-Agent": process.env.NOMINATIM_USER_AGENT,
+                    "Accept-Language": "en"
+                }
+            }
+        )
+
+        if (!res.ok) {
+            throw new AppError("API failed to get Lat/Lng: " + res.statusText, 500);
+        } 
+
+        const data = await res.json();
+        if (data.length > 0) {
+            lat = parseFloat(data[0].lat);
+            lng = parseFloat(data[0].lon);
+        } else {
+            throw new AppError(`No Lat/Lng found for ${city}, ${country}`, 404);
+        }
+
+        return {lat, lng};
+
+    } catch (err) {
+        throw new AppError("Unable to get latitude and longitude from location input: " + err.message, err.statusCode || 500)
+    }
+}
+
+/**
+ * Get region from country
+ * @param {string} countryInput string of country
+ * @returns {string} region that country belongs to
+ */
+const getRegion = (countryInput) => {
+    const country = countryInput.toLowerCase();
+    // !FIXME Find region
+    const worldCountry = countries.find(c => c.name.common.toLowerCase() == country);
+    if (worldCountry === undefined) {
+        throw new AppError('Invalid country');
+    }
+    return worldCountry.region;
+}
+
+/**
+ * Convert Date (input) into year, month, date
+ * @param {*} dateInput date
+ * @returns {object} {year, month, date} strings
+ */
+const convertDateInput = (dateInput) => {
+    // !FIXME USE DATE
+    let year, month, date;
+    const d = new Date(dateInput);
+    year = d.getFullYear();
+    month = d.getMonth() + 1;
+    date = d.getDate();
+
+    return {year, month, date};
+}
+
+/**
+ * Get tripId used for multiple-day trip
+ * @param {string} title title
+ * @param {string} year year
+ * @returns {string} tripId title-in-lowercase_year-month
+ */
+const getTripId = (title, year, month) => {
+    let titleTripId = title.toLowerCase().replaceAll(' ', '-');
+    return titleTripId + '_' + year + '-' + month;
+}
+
+/**
+ * Replace image placeholders (null) with cloudinary url and publicId
+ * @param {array of objects} sections {type: '', blocks: []} 
+ * @param {array of objects} cloudinaryImages {url: '', publicId: ''}
+ * @returns {object} {hero, replacedSections}
+ */
+const replaceNullImagePlaceholders = (sections, cloudinaryImages) => {
+    let imgFileIdx = 0;
+    // hero image
+    const hero = cloudinaryImages[imgFileIdx];
+    imgFileIdx++;
+    // content images
+    const replacedSections = sections.map(section => ({
+        ...section,
+        blocks: section.blocks.map(block => {
+            if (block.type === 'img') {
+                return {
+                    ...block,
+                    content: {
+                        ...block.content,
+                        src: block.content.src.map(() => {
+                            const img = cloudinaryImages[imgFileIdx];
+                            imgFileIdx++;
+                            return img;
+                        })
+                    }
+                };
+            }
+            return block;
+        })
+    }))
+    return {hero, replacedSections};
+}
+
+/**
  * POST SINGLE BLOG
  * @param {*} req 
  * @param {*} res 
  */
 const createBlog = async (req, res) => {
+    const blogData = JSON.parse(req.body.data);
+    const { title, locationInput, dateInput, sections, ...rest } = blogData;
+
+    // upload images
+    const cloudinaryImages = await uploadToCloudinary(req.files);
+    // replace null images with cloudinary
+    const {hero, replacedSections} = replaceNullImagePlaceholders(sections, cloudinaryImages);
+    // format title
+    const titleCased = toTitleCase(title);
+
+    const [city, country] = locationInput.split(",").map(s => {
+        s = s.trim();
+        s = s.charAt(0).toUpperCase() + s.slice(1);
+        return s;
+    });
+
+    const {lat, lng} = await getLatLng(city, country);
+
+    const region = getRegion(country);
+
+    const {year, month, date} = convertDateInput(dateInput);
+
+    const tripId = getTripId(title, year, month);
+
     try {
-        // upload image files to cloudinary
-        const cloudinaryImages = [];
-        for (let file of req.files) {
-
-            const uploadedResult = await new Promise((resolve, reject) => {
-                const stream = cloudinary.uploader.upload_stream(
-                    {folder: "blog_images"},
-                    (error, result) => {
-                        if (error) reject(error);
-                        else resolve(result);
-                    }
-                );
-                stream.end(file.buffer);
-            })
-
-            cloudinaryImages.push({
-                url: uploadedResult.secure_url,
-                publicId: uploadedResult.public_id
-            });
-        }
-
-        // string data
-        const blogData = JSON.parse(req.body.data);
-        const { title, locationInput, dateInput, sections, ...rest } = blogData;
-
-        // replace null image placeholder with url and id
-        let imgFileIdx = 0;
-        // hero image
-        const hero = cloudinaryImages[imgFileIdx];
-        imgFileIdx++;
-        // content images
-        sections.forEach(section => {
-            section.blocks.forEach(block => {
-                if (block.type === 'img') {
-                    block.content.src = block.content.src.map(_ => {
-                        const img = cloudinaryImages[imgFileIdx];
-                        imgFileIdx++;
-
-                        return img
-                    })
-                }
-            })
-        })
-        
-
-        // !FIXME Capitalise title
-        let splitStr = title.split(' ');
-        for (let i = 0; i < splitStr.length; i++) {
-            splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
-        }
-        const formattedTitle = splitStr.join(' ');
-
-        
-        // !FIXME LAT LNG Modify to handle errors
-        let lat, lng;
-
-        const [city, country] = locationInput.split(",").map(s => {
-            s = s.trim();
-            s = s.charAt(0).toUpperCase() + s.slice(1);
-            return s;
-        });
-
-        try {
-            const latLngRes = await fetch(
-                `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(`${city}, ${country}`)}&format=json`,
-                {
-                    headers: {
-                        "User-Agent": process.env.NOMINATIM_USER_AGENT,
-                        "Accept-Language": "en"
-                    }
-                }
-            )
-
-            if (!latLngRes.ok) {
-                console.log("nominatim API error", latLngRes.statusText);
-            } else {
-                const text = await latLngRes.text();
-                try {
-                    const latLngData = JSON.parse(text);
-                    if (latLngData.length > 0) {
-                        lat = parseFloat(latLngData[0].lat);
-                        lng = parseFloat(latLngData[0].lon);
-                    }
-                } catch (jsonErr) {
-                    console.log(text);
-                } 
-            }
-            // const latLngData = await latLngRes.json();
-        } catch (err) {
-            console.log(err);
-            throw new AppError("Unable to get latitude and longitude from location input")
-        }
-
-        // !FIXME Find region
-        const worldCountry = countries.find(c => c.name.common == country);
-        if (worldCountry === undefined) {
-            throw new AppError('Invalid country');
-        }
-        const region = worldCountry.region;
-
-        // !FIXME USE DATE
-        let year, month, date;
-        const d = new Date(dateInput);
-        year = d.getFullYear();
-        month = d.getMonth() + 1;
-        date = d.getDate();
-
-        let tripId = title.replaceAll(' ', '-');
-        tripId = tripId + '-' + year;
-
         const newPost = await Post.create({
             ...rest,
-            title: formattedTitle,
+            title: titleCased,
             tripId: tripId,
             region: region,
             lat: lat,
@@ -193,14 +263,11 @@ const createBlog = async (req, res) => {
             month,
             date,
             hero,
-            sections
+            sections: replacedSections
         });
-
         successResponse(res, "Blog created successfully", newPost);
-
     } catch (err) {
-        console.log(err);
-        throw new AppError("Failed to create a blog", 500);
+        throw new AppError("Failed to create new blog : " + err.message, err.statusCode || 500);
     }
 }
 
@@ -210,132 +277,67 @@ const createBlog = async (req, res) => {
  * @param {*} res 
  */
 const patchBlog = async (req, res) => {
-    try {
-        // upload image files to cloudinary
-        const cloudinaryImages = [];
-        for (let file of req.files) {
-            const uploadedResult = await new Promise((resolve, reject) => {
-                const stream = cloudinary.uploader.upload_stream(
-                    {folder: "blog_images"},
-                    (error, result) => {
-                        if (error) reject(error);
-                        else resolve(result);
+    const blogData = JSON.parse(req.body.data);
+    const previousImages = JSON.parse(req.body.previousImages);
+    let { title, locationInput, dateInput, sections, hero, ...rest } = blogData;
+
+    // upload images
+    const cloudinaryImages = await uploadToCloudinary(req.files);
+
+    // replace null image placeholder with url and id
+    let imgFileIdx = 0;
+    // hero image
+    if (hero == null) {
+        hero = cloudinaryImages[imgFileIdx];
+        imgFileIdx++;
+    } else {
+        previousImages.hero = previousImages.hero == hero.publicId ? "" : previousImages.hero;
+    }
+    // content images
+    sections.forEach(section => {
+        section.blocks.forEach(block => {
+            if (block.type === 'img') {
+                block.content.src = block.content.src.map(src => {
+                    if(src == null) {
+                        const img = cloudinaryImages[imgFileIdx];
+                        imgFileIdx++;
+                        return img
+                    } else {
+                        previousImages.content = previousImages.content.filter(prev => prev != src.publicId);
+                        return src
                     }
-                );
-                stream.end(file.buffer);
-            })
-
-            cloudinaryImages.push({
-                url: uploadedResult.secure_url,
-                publicId: uploadedResult.public_id
-            });
-        }
-
-        // string data
-        const blogData = JSON.parse(req.body.data);
-        const previousImages = JSON.parse(req.body.previousImages);
-        let { title, locationInput, dateInput, sections, hero, ...rest } = blogData;
-
-        // replace null image placeholder with url and id
-        let imgFileIdx = 0;
-        // hero image
-        if (hero == null) {
-            hero = cloudinaryImages[imgFileIdx];
-            imgFileIdx++;
-        } else {
-            previousImages.hero = previousImages.hero == hero.publicId ? "" : previousImages.hero;
-        }
-        
-        // content images
-        sections.forEach(section => {
-            section.blocks.forEach(block => {
-                if (block.type === 'img') {
-                    block.content.src = block.content.src.map(src => {
-                        if(src == null) {
-                            const img = cloudinaryImages[imgFileIdx];
-                            imgFileIdx++;
-                            return img
-                        } else {
-                            previousImages.content = previousImages.content.filter(prev => prev != src.publicId);
-                            return src
-                        }
-                    })
-                }
-            })
+                })
+            }
         })
-
-        // destroy previouse images
+    })
+    // destroy previouse images
+    try {
         if (previousImages.hero) await cloudinary.uploader.destroy(previousImages.hero);
         for (const img of previousImages.content) await cloudinary.uploader.destroy(img);
+    } catch (delCloudinaryImageErr) {
+        throw new AppError("Failed to delete images from Cloudinary: " + delCloudinaryImageErr.message, delCloudinaryImageErr.statusCode || 500);
+    }
 
-        // !FIXME Capitalise title
-        let splitStr = title.split(' ');
-        for (let i = 0; i < splitStr.length; i++) {
-            splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
-        }
-        const formattedTitle = splitStr.join(' ');
+    const titleCased = toTitleCase(title);
 
-        
-        // !FIXME LAT LNG Modify to handle errors
-        let lat, lng;
+    const [city, country] = locationInput.split(",").map(s => {
+        s = s.trim();
+        s = s.charAt(0).toUpperCase() + s.slice(1);
+        return s;
+    });
 
-        const [city, country] = locationInput.split(",").map(s => {
-            s = s.trim();
-            s = s.charAt(0).toUpperCase() + s.slice(1);
-            return s;
-        });
+    const {lat, lng} = await getLatLng(city, country);
 
-        try {
-            const latLngRes = await fetch(
-                `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(`${city}, ${country}`)}&format=json`,
-                {
-                    headers: {
-                        "User-Agent": process.env.NOMINATIM_USER_AGENT,
-                        "Accept-Language": "en"
-                    }
-                }
-            )
+    const region = getRegion(country);
 
-            if (!latLngRes.ok) {
-                console.log("nominatim API error", latLngRes.statusText);
-            } else {
-                const text = await latLngRes.text();
-                try {
-                    const latLngData = JSON.parse(text);
-                    if (latLngData.length > 0) {
-                        lat = parseFloat(latLngData[0].lat);
-                        lng = parseFloat(latLngData[0].lon);
-                    }
-                } catch (jsonErr) {
-                    console.log(text);
-                } 
-            }
-            // const latLngData = await latLngRes.json();
-        } catch (err) {
-            console.log(err);
-            throw new AppError("Unable to get latitude and longitude from location input")
-        }
+    const {year, month, date} = convertDateInput(dateInput);
 
-        // !FIXME Find region
-        const worldCountry = countries.find(c => c.name.common == country);
-        if (worldCountry === undefined) {
-            throw new AppError('Invalid country');
-        }
-        const region = worldCountry.region;
+    const tripId = getTripId(title, year, month);
 
-        // !FIXME USE DATE
-        let year, month, date;
-        const d = new Date(dateInput);
-        year = d.getFullYear();
-        month = d.getMonth() + 1;
-        date = d.getDate();
-
-        let tripId = title.replaceAll(' ', '-');
-        tripId = tripId + '-' + year;
-
+    try {
         const newPost = await Post.findByIdAndUpdate(req.params.id, {
             ...rest,
-            title: formattedTitle,
+            title: titleCased,
             tripId: tripId,
             region: region,
             lat: lat,
@@ -348,15 +350,17 @@ const patchBlog = async (req, res) => {
             hero,
             sections
         }, {returnDocument: 'after', runValidators: true});
-
         successResponse(res, "Blog patched successfully", newPost);
-
     } catch (err) {
-        console.log(err);
-        throw new AppError("Failed to create a blog", 500);
+        throw new AppError("Failed to patch a blog: " + err.message, err.statusCode || 500);
     }
 }
 
+/**
+ * Delete a single blog
+ * @param {*} req 
+ * @param {*} res 
+ */
 const deleteBlog = async (req, res) => {
     const delImgs = req.body.deleteImages;
     const id = req.params.id;
