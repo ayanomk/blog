@@ -11,7 +11,7 @@ function BlogParagraph({paragraphData, setParagraphData}) {
 
     // JSX
     return <div className="blogParagraph">
-            <textarea name="" id="" rows={3} style={{overflow:'hidden', resize:'none'}} onChange={handleParagraphChange} value={paragraphData.content} />
+            <textarea name="" id="" rows={(paragraphData.content.length / window.innerWidth) * 20} style={{overflow:'hidden', resize:'none'}} onChange={handleParagraphChange} value={paragraphData.content} />
         </div>
 }
 

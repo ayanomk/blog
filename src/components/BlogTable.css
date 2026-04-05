@@ -1,3 +1,6 @@
+.blogTable {
+    width: 100%;
+}
 .blogTable table {
     border-collapse: collapse;
     width: 100%;
