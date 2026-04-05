@@ -1,3 +1,10 @@
+.loadingScreen {
+    scrollbar-gutter: stable;
+    padding: calc(60px * 1.1) 8% 0px;
+    background-color: #f0ede8;
+    min-height: calc(100vh - 35px);
+}
+
 .blog {
     /* navbar padding & footer padding?*/
     padding: calc(60px * 1.1) 8% 0px;

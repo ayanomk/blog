@@ -30,7 +30,7 @@ const getBlogById = async (req, res) => {
     const data = await Post.findById(id);
 
     // fail
-    if (!data) throw new AppError(`Blog ID: ${id} not found`, 500);
+    if (!data) throw new AppError(`Blog ID: ${id} not found`, 404);
     // success
     successResponse(res, `Blog ID: ${id} fetched successfully`, data);
 };

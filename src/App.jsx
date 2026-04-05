@@ -26,7 +26,7 @@ function App() {
           <Route path="/adventures" element={<Adventure />} />
           <Route path="/blogs/:id" element={<Blog />} />
           <Route path="/admin/login" element={<Login />} />
-          {/* <Route path='/somethingwentwrong' element={<Error />} /> */}
+          <Route path='/somethingwentwrong' element={<Error />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/admin/create-blog" element={<CreateBlog isEdit={false} />} />
             <Route path="/admin/blogs/:id/edit" element={<CreateBlog isEdit={true} />} />

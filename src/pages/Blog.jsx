@@ -64,6 +64,7 @@ function Blog() {
     const { id } = useParams();
 
     // get blog data
+    const [loading, setLoading] = useState(true);
     const [blogData, setBlogData] = useState();
     const [relatedBlogData, setRelatedBlogData] = useState();
     const [similarBlogData, setSimilarBlogData] = useState();
@@ -71,13 +72,22 @@ function Blog() {
         setBlogData(null);
         setRelatedBlogData([]);
         setSimilarBlogData([]);
-
-        getBlogById(id)
-            .then(setBlogData)
-            .catch(err => {
+        setLoading(true);
+        
+        const fetchBlog = async () => {
+            try {
+                const data = await getBlogById(id);
+                setBlogData(data);
+            } catch (err) {
                 if (import.meta.env.MODE === 'development') console.log(err)
-            });
-    }, [id]);
+                navigate("/somethingwentwrong");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchBlog();
+    }, [id, navigate]);
 
     // handle delete blog
     const [deleteConfirmation, setDeleteConfirmation] = useState(false);
@@ -125,9 +135,8 @@ function Blog() {
                 if (import.meta.env.MODE === 'development') console.log(err)
             });
     }, [blogData])
-        
-    // FIXME! how to handle error case?
-    if (!blogData) return <p>Blog not found...</p>
+
+    if (loading) return <div className="loadingScreen"><ProcessPopupMsg msg={"Loading blog..."} /></div>
 
     return (
         <article className="blog">

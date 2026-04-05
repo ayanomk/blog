@@ -8,7 +8,7 @@ export const getAllBlogs = async () => {
     const res = await fetch(`${API_BASE}/blogs`);
     const result = await res.json();
 
-    if (result.status === "fail") throw result;
+    if (!res.ok) throw new Error(result.message);
     return result.data;
 };
 
@@ -21,7 +21,8 @@ export const getBlogById = async (id) => {
     const res = await fetch(`${API_BASE}/blogs/${id}`);
     const result = await res.json();
 
-    if (result.status === "fail") throw result;
+    // if (result.status === "fail") throw result;
+    if (!res.ok) throw new Error(result.message);
     return result.data;
 }
 
@@ -45,7 +46,7 @@ export const getBlogsByFilter = async (query = {}) => {
     const res = await fetch(`${API_BASE}/blogs/filter?${queries.toString()}`);
     const result = await res.json();
 
-    if (result.status === "fail") throw result;
+    if (!res.ok) throw new Error(result.message);
     return result.data;
 }
 
@@ -62,7 +63,7 @@ export const createBlog = async (data) => {
 
     const result = await res.json();
 
-    if (result.status === "fail") throw result;
+    if (!res.ok) throw new Error(result.message);
     return result.data;
 }
 
@@ -79,7 +80,7 @@ export const editBlog = async (id, data) => {
 
     const result = await res.json();
 
-    if (result.status === "fail") throw result;
+    if (!res.ok) throw new Error(result.message);
     return result.data;
 }
 
@@ -97,6 +98,6 @@ export const deleteBlog = async (id, data) => {
 
     const result = await res.json();
 
-    if (result.status === "fail") throw result;
+    if (!res.ok) throw new Error(result.message);
     return result.data;
 }
