@@ -13,7 +13,7 @@ const getAllBlogs = async (req, res) => {
     const data = await Post.find();
 
     // fail
-    if (!data || data.length === 0) throw new AppError("No blogs found", 404);
+    if (!data) throw new AppError("Database Error", 500);
     // success
     successResponse(res, `All blog fetched successfully`, data);
 };
@@ -30,7 +30,7 @@ const getBlogById = async (req, res) => {
     const data = await Post.findById(id);
 
     // fail
-    if (!data) throw new AppError(`Blog ID: ${id} not found`, 404);
+    if (!data) throw new AppError(`Blog ID: ${id} not found`, 500);
     // success
     successResponse(res, `Blog ID: ${id} fetched successfully`, data);
 };
@@ -43,18 +43,22 @@ const getBlogById = async (req, res) => {
  */
 const getBlogsByFilter = async (req, res) => {
     const {excludeId, tripId, excludeTripId, country, regions, years, state} = req.query;
-    
-    let data = await Post.find();
-    if (state) data = data.filter(p => state.includes(p.state));
-    if (regions) data = data.filter(p => regions.includes(p.region));
-    if (years) data = data.filter(p => years.includes(p.year));
+
+    // Build query object
+    const query = {};
+    if (state) query.state = { $in: state.split(',') };
+    if (regions) query.region = { $in: regions.split(',') };
+    if (years) query.year = { $in: years.split(',') };
+    if (tripId) query.tripId = tripId;
+    if (excludeTripId) query.tripId = { $ne: excludeTripId };
+    if (country) query.country = country;
+
+    let data = await Post.find(query);
+    // excludeId in JS
     if (excludeId) data = data.filter(p => p._id.toString() !== excludeId);
-    if (tripId) data = data.filter(p => p.tripId === tripId);
-    if (excludeTripId) data = data.filter(p => p.tripId !== excludeTripId)
-    if (country) data = data.filter(p => p.country === country );
 
     // fail
-    if (!data || data.length === 0) throw new AppError("No blogs found", 404);
+    if (!data) throw new AppError("Database Error", 500);
     // success
     successResponse(res, `All blog fetched successfully`, data);
 }

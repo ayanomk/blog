@@ -74,7 +74,9 @@ function Blog() {
 
         getBlogById(id)
             .then(setBlogData)
-            .catch(err => console.log(err));
+            .catch(err => {
+                if (import.meta.env.MODE === 'development') console.log(err)
+            });
     }, [id]);
 
     // handle delete blog
@@ -102,7 +104,7 @@ function Blog() {
             const res = await deleteBlog(_id, deletes);
             navigate(`/adventures`)
         } catch (err) {
-            console.log(err);
+            if (import.meta.env.MODE === 'development') console.log(err);
         }
     }
 
@@ -113,11 +115,15 @@ function Blog() {
 
         getBlogsByFilter({ excludeId: id, tripId: blogData.tripId, state: isPublish })
             .then(setRelatedBlogData)
-            .catch(err => console.log(err));
-            
+            .catch(err => {
+                if (import.meta.env.MODE === 'development') console.log(err)
+            });
+
         getBlogsByFilter({ excludeId: id, excludeTripId: blogData.tripId, country: blogData.country, state: isPublish })
             .then(setSimilarBlogData)
-            .catch(err => console.log(err));
+            .catch(err => {
+                if (import.meta.env.MODE === 'development') console.log(err)
+            });
     }, [blogData])
         
     // FIXME! how to handle error case?
