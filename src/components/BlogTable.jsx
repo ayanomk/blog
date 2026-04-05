@@ -40,7 +40,6 @@ function BlogTable({tableData, setTableData}) {
             }
         }
         setTableData(newData);
-        console.log(tableData);
     }
 
     // DELETE ROW

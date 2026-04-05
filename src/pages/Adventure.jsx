@@ -24,14 +24,18 @@ function Adventure() {
             .then((data) => {
                 setAllBlogs(data);
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                if (import.meta.env.MODE === 'development') console.log(err);
+            });
         } else {
             setDraftPublishFilter(["Publish"])
             getBlogsByFilter({ state: "Publish" })
             .then((data) => {
                 setAllBlogs(data);
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                if (import.meta.env.MODE === 'development') console.log(err);
+            });
         }
     }, []);
     
@@ -51,7 +55,7 @@ function Adventure() {
                 setFilteredBlogs(data);
             })
             .catch(err => {
-                console.log(err);
+                if (import.meta.env.MODE === 'development') console.log(err);
                 setFilteredBlogs([]);
             });
     }, [yearFilter, regionFilter, draftPublishFilter]);
