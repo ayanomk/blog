@@ -183,12 +183,21 @@ function CreateBlog({isEdit}) {
                 }
                 navigate(`/blogs/${res._id}`);
             } catch (err) {
-                if (err.message.includes("country")) {
+                const errorData = err.response?.data;
+                const message = errorData?.message;
+
+                const messageArray = message ? (Array.isArray(message) ? message : [message]) : [];
+
+                if (messageArray.some(msg => msg?.toLowerCase().includes("country"))) {
                     document.querySelector(`.locationInput`).classList.add('missingForm');
-                    missingFields.push('locationInput');
+                    missingFields.push('locationInput');    
                 }
-                if (err.message == "No token") navigate("/admin/login");
-                if (import.meta.env.MODE === 'development') console.log(err);
+
+                if (messageArray.includes("No token")) navigate("/admin/login");
+                if (import.meta.env.MODE === 'development') {
+                    console.log("Full error: ", err);
+                    console.log("Backend resopnse: ", errorData);
+                };
             }
         }
 
