@@ -96,11 +96,9 @@ const postSchema = new mongoose.Schema({
     sections: [sectionSchema],
     state: {
         type: String,
-        enum: {
-            value: ["Draft", "Publish"],
-            message: "State must be either Draft or Publish"
-        } ,
+        enum: ['Draft', 'Publish'],
         default: "Draft",
+        required: [true, "State must be either Draft or Publish"]
     }
 })
 
