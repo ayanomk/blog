@@ -8,7 +8,7 @@ function SubmitFormMessage({missingFormList, setMissingFormList}) {
             <h1>Missing or invalid required fields</h1>
             <div className='missingList'>
                 <ul>
-                    {missingFormList.map((key, idx) => (
+                    {Object.keys(missingFormList).map((key, idx) => (
                         <li key={idx}>{key}</li>
                     ))}
                 </ul>
