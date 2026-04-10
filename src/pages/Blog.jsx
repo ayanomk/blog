@@ -64,6 +64,7 @@ function Blog() {
     const { id } = useParams();
 
     // get blog data
+    const [loading, setLoading] = useState(true);
     const [blogData, setBlogData] = useState();
     const [relatedBlogData, setRelatedBlogData] = useState();
     const [similarBlogData, setSimilarBlogData] = useState();
@@ -71,11 +72,22 @@ function Blog() {
         setBlogData(null);
         setRelatedBlogData([]);
         setSimilarBlogData([]);
+        setLoading(true);
+        
+        const fetchBlog = async () => {
+            try {
+                const data = await getBlogById(id);
+                setBlogData(data);
+            } catch (err) {
+                if (import.meta.env.MODE === 'development') console.log(err)
+                navigate("/somethingwentwrong");
+            } finally {
+                setLoading(false);
+            }
+        };
 
-        getBlogById(id)
-            .then(setBlogData)
-            .catch(err => console.log(err));
-    }, [id]);
+        fetchBlog();
+    }, [id, navigate]);
 
     // handle delete blog
     const [deleteConfirmation, setDeleteConfirmation] = useState(false);
@@ -102,7 +114,7 @@ function Blog() {
             const res = await deleteBlog(_id, deletes);
             navigate(`/adventures`)
         } catch (err) {
-            console.log(err);
+            if (import.meta.env.MODE === 'development') console.log(err);
         }
     }
 
@@ -113,15 +125,18 @@ function Blog() {
 
         getBlogsByFilter({ excludeId: id, tripId: blogData.tripId, state: isPublish })
             .then(setRelatedBlogData)
-            .catch(err => console.log(err));
-            
+            .catch(err => {
+                if (import.meta.env.MODE === 'development') console.log(err)
+            });
+
         getBlogsByFilter({ excludeId: id, excludeTripId: blogData.tripId, country: blogData.country, state: isPublish })
             .then(setSimilarBlogData)
-            .catch(err => console.log(err));
+            .catch(err => {
+                if (import.meta.env.MODE === 'development') console.log(err)
+            });
     }, [blogData])
-        
-    // FIXME! how to handle error case?
-    if (!blogData) return <p>Blog not found...</p>
+
+    if (loading) return <div className="loadingScreen"><ProcessPopupMsg msg={"Loading blog..."} /></div>
 
     return (
         <article className="blog">

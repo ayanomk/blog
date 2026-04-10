@@ -71,7 +71,9 @@ function CreateBlog({isEdit}) {
 
                     setFormData(editForm)
                 })
-                .catch(err => console.log(err));
+                .catch(err => {
+                    if (import.meta.env.MODE === 'development') console.log(err);
+                });
         } else {
             setFormData(initialForm)
         }
@@ -186,7 +188,7 @@ function CreateBlog({isEdit}) {
                     missingFields.push('locationInput');
                 }
                 if (err.message == "No token") navigate("/admin/login");
-                console.log(err);
+                if (import.meta.env.MODE === 'development') console.log(err);
             }
         }
 
