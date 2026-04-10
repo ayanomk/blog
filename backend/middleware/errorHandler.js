@@ -7,18 +7,25 @@ const errorHandler = (err, req, res, next) => {
     });
 
     if (err.name === "ValidationError") {
-        const msg = Object.values(err.errors).map(val => val.message);
-        return failResponse(res, 400, msg);
+        const errors = {};
+
+        Object.values(err.errors).forEach(val => {
+            errors[val.path] = val.message;
+        })
+
+        return failResponse(res, 400, "Validation failed", errors);
     }
     if (err.name === "CastError") {
-        return failResponse(res, 400, "Invalid ID");
+        const errors = {};
+        errors[err.path] = "Invalid value";
+        return failResponse(res, 400, "Invalid request data", errors);
     }
 
     const code = err.statusCode || 500;
 
     const message = process.env.NODE_ENV === "development" ? err.message : code >= 500 ? "Internal server error" : err.message;
     
-    failResponse(res, code, message);
+    failResponse(res, code, message, err.errors || {});
 };
 
 module.exports = { errorHandler };

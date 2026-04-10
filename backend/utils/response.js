@@ -7,11 +7,11 @@ const successResponse = (res, message, data) => {
     })
 };
 
-const failResponse = (res, code = 500, message, data = null) => {
+const failResponse = (res, code = 500, message, errors = {}) => {
     res.status(code).json({
         status: 'fail',
         message,
-        data
+        errors
     })
 };
 

@@ -133,7 +133,7 @@ const getLatLng = async (cityInput, countryInput) => {
             lat = parseFloat(data[0].lat);
             lng = parseFloat(data[0].lon);
         } else {
-            throw new AppError(`No Lat/Lng found for ${city}, ${country}`, 404);
+            throw new AppError(`No Lat/Lng found for ${city}, ${country}`, 404, {location: "Invalid location for latitute and longitude"});
         }
 
         return {lat, lng};
@@ -153,7 +153,7 @@ const getRegion = (countryInput) => {
     // !FIXME Find region
     const worldCountry = countries.find(c => c.name.common.toLowerCase() == country);
     if (worldCountry === undefined) {
-        throw new AppError('Invalid country');
+        throw new AppError('Invalid input', 400, {country: "Invalid country"});
     }
     return worldCountry.region;
 }
