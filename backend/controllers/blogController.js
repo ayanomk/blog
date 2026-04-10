@@ -125,7 +125,7 @@ const getLatLng = async (cityInput, countryInput) => {
         )
 
         if (!res.ok) {
-            throw new AppError("API failed to get Lat/Lng: " + res.statusText, 500);
+            throw new AppError("API failed to get Lat/Lng: " + res.statusText, 500, {location: "Invalid location for latitute and longitude"});
         } 
 
         const data = await res.json();
@@ -139,7 +139,7 @@ const getLatLng = async (cityInput, countryInput) => {
         return {lat, lng};
 
     } catch (err) {
-        throw new AppError("Unable to get latitude and longitude from location input: " + err.message, err.statusCode || 500)
+        throw new AppError("Unable to get latitude and longitude from location input: " + err.message, err.statusCode || 500, {location: "Invalid location for latitute and longitude"})
     }
 }
 
@@ -165,13 +165,13 @@ const getRegion = (countryInput) => {
  */
 const convertDateInput = (dateInput) => {
     // !FIXME USE DATE
-    let year, month, date;
+    let year, month, day;
     const d = new Date(dateInput);
     year = d.getFullYear();
     month = d.getMonth() + 1;
-    date = d.getDate();
+    day = d.getDate();
 
-    return {year, month, date};
+    return {year, month, day};
 }
 
 /**
@@ -226,7 +226,7 @@ const replaceNullImagePlaceholders = (sections, cloudinaryImages) => {
  */
 const createBlog = async (req, res) => {
     const blogData = JSON.parse(req.body.data);
-    const { title, locationInput, dateInput, sections, ...rest } = blogData;
+    const { title, location, date, sections, ...rest } = blogData;
 
     // upload images
     const cloudinaryImages = await uploadToCloudinary(req.files);
@@ -235,7 +235,7 @@ const createBlog = async (req, res) => {
     // format title
     const titleCased = toTitleCase(title);
 
-    const [city, country] = locationInput.split(",").map(s => {
+    const [city, country] = location.split(",").map(s => {
         s = s.trim();
         s = s.charAt(0).toUpperCase() + s.slice(1);
         return s;
@@ -245,7 +245,7 @@ const createBlog = async (req, res) => {
 
     const region = getRegion(country);
 
-    const {year, month, date} = convertDateInput(dateInput);
+    const {year, month, day} = convertDateInput(date);
 
     const tripId = getTripId(title, year, month);
 
@@ -261,7 +261,7 @@ const createBlog = async (req, res) => {
             country,
             year,
             month,
-            date,
+            date: day,
             hero,
             sections: replacedSections
         });
@@ -279,7 +279,7 @@ const createBlog = async (req, res) => {
 const patchBlog = async (req, res) => {
     const blogData = JSON.parse(req.body.data);
     const previousImages = JSON.parse(req.body.previousImages);
-    let { title, locationInput, dateInput, sections, hero, ...rest } = blogData;
+    let { title, location, date, sections, hero, ...rest } = blogData;
 
     // upload images
     const cloudinaryImages = await uploadToCloudinary(req.files);
@@ -320,7 +320,7 @@ const patchBlog = async (req, res) => {
 
     const titleCased = toTitleCase(title);
 
-    const [city, country] = locationInput.split(",").map(s => {
+    const [city, country] = location.split(",").map(s => {
         s = s.trim();
         s = s.charAt(0).toUpperCase() + s.slice(1);
         return s;
@@ -330,7 +330,7 @@ const patchBlog = async (req, res) => {
 
     const region = getRegion(country);
 
-    const {year, month, date} = convertDateInput(dateInput);
+    const {year, month, day} = convertDateInput(date);
 
     const tripId = getTripId(title, year, month);
 
@@ -346,7 +346,7 @@ const patchBlog = async (req, res) => {
             country,
             year,
             month,
-            date,
+            date: day,
             hero,
             sections
         }, {returnDocument: 'after', runValidators: true});

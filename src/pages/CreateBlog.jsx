@@ -19,8 +19,8 @@ function CreateBlog({isEdit}) {
     const initialForm = {
         title: '',
         description: '',
-        locationInput: '',
-        dateInput: '',
+        location: '',
+        date: '',
         day: 0,
         hero: "",
         sections: [
@@ -52,8 +52,8 @@ function CreateBlog({isEdit}) {
                         ...rest,
                         hero,
                         sections,
-                        locationInput: `${city}, ${country}`,
-                        dateInput: `${year}-${String(month).padStart(2, "0")}-${String(date).padStart(2, "0")}`
+                        location: `${city}, ${country}`,
+                        date: `${year}-${String(month).padStart(2, "0")}-${String(date).padStart(2, "0")}`
                     };
 
                     const preImg = {
@@ -94,17 +94,18 @@ function CreateBlog({isEdit}) {
     // SUBMIT BLOG
     const [isInProcess, setIsInProcess] = useState(false);
     const [isDraft, setIsDraft] = useState(true);
-    const [invalidForm, setInvalidaForm] = useState([]);
+    const [invalidForm, setInvalidForm] = useState({});
+    const [isError, setIsError] = useState(false);
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setInvalidaForm([])
+        setInvalidForm({})
 
         // Check for missing required fields
-        const missingFields = [];
+        const missingFields = {};
         Object.entries(formData).forEach(([key, val]) => {
             if (val.length === 0) {
-                document.querySelector(`.${key}`).classList.add('missingForm');
-                missingFields.push(key)
+                missingFields[key] = "Missing value";
+                setIsError(true);
             }
         })
 
@@ -139,7 +140,7 @@ function CreateBlog({isEdit}) {
 
 
         // Create blog if no missing fields
-        if (missingFields.length === 0) {
+        if (Object.keys(missingFields).length === 0) {
             try {
 
                 const images = [];
@@ -183,25 +184,30 @@ function CreateBlog({isEdit}) {
                 }
                 navigate(`/blogs/${res._id}`);
             } catch (err) {
-                const errorData = err.response?.data;
-                const message = errorData?.message;
+                setIsInProcess(false);
+                setIsError(true);
+                const message = err.message || "Something went wrong";
+                const errors = err.errors || {};
+                
+                if (err.status === 401) {
+                    navigate("/admin/login");
+                    return;
+                };
 
-                const messageArray = message ? (Array.isArray(message) ? message : [message]) : [];
-
-                if (messageArray.some(msg => msg?.toLowerCase().includes("country"))) {
-                    document.querySelector(`.locationInput`).classList.add('missingForm');
-                    missingFields.push('locationInput');    
+                if (Object.keys(errors).length > 0) {
+                    setInvalidForm(errors);
+                    return;
                 }
 
-                if (messageArray.includes("No token")) navigate("/admin/login");
                 if (import.meta.env.MODE === 'development') {
                     console.log("Full error: ", err);
-                    console.log("Backend resopnse: ", errorData);
-                };
+                } else {
+                    navigate('/somethingwentwrong');
+                }
             }
         }
 
-        setInvalidaForm(missingFields);
+        setInvalidForm(missingFields);
 
     }
 
@@ -327,20 +333,20 @@ function CreateBlog({isEdit}) {
             <form action="">
                 <div className="titleInput">
                     <div className='mainTitle'>
-                        <input type="text" className='title' name="title" value={formData.title} onChange={handleChange} placeholder='Title' required />
-                        <input type="text" className='description' name="description" value={formData.description} onChange={handleChange} placeholder='Description' required />
+                        <input type="text" className={`title ${invalidForm.title ? 'missingForm' : ''}`} name="title" value={formData.title} onChange={handleChange} placeholder='Title' required />
+                        <input type="text" className={`description ${invalidForm.description ? 'missingForm' : ''}`} name="description" value={formData.description} onChange={handleChange} placeholder='Description' required />
                     </div>
                     <div className='dateLocation'>
-                        <input type="text" name="locationInput" className='locationInput' value={formData.locationInput} onChange={handleChange} placeholder='Location' required />
+                        <input type="text" name="location" className={`location ${invalidForm.location ? 'missingForm' : ''}`} value={formData.location} onChange={handleChange} placeholder='Location' required />
                         <div style={{display:"flex",}}>
-                            <input type="date" name="dateInput" className='dateInput' value={formData.dateInput} onChange={handleChange} placeholder='Date' required />
-                            <input type="number" name="day" className='day' value={formData.day} onChange={handleChange} placeholder='Day' min={0} style={{width: "30%", marginLeft:"15px"}} required />
+                            <input type="date" name="date" className={`date ${invalidForm.date ? 'missingForm' : ''}`} value={formData.date} onChange={handleChange} placeholder='Date' required />
+                            <input type="number" name="day" className={`day ${invalidForm.day ? 'missingForm' : ''}`} value={formData.day} onChange={handleChange} placeholder='Day' min={0} style={{width: "30%", marginLeft:"15px"}} required />
                         </div>
                     </div>
                 </div>
                 <div className='heroInput'>
                     {formData.hero != "" ? <img src={formData.hero.url? formData.hero.url : formData.hero.previewUrl} alt="" /> : ""}
-                    <input className='hero' type="file" name="hero" onChange={handleHeroImagePreviewChange} />
+                    <input className={`hero ${invalidForm.hero ? 'missingForm' : ''}`} type="file" name="hero" onChange={handleHeroImagePreviewChange} />
                 </div>
 
                 <div className="contentInput">
@@ -428,7 +434,7 @@ function CreateBlog({isEdit}) {
                 <button type='button' id='publishButton' onClick={handleSubmit}>Publish</button>
             </div>
 
-            {invalidForm.length !== 0 && <SubmitFormMessage missingFormList={invalidForm} setMissingFormList={() => setInvalidaForm([])} />}
+            {isError && <SubmitFormMessage missingFormList={invalidForm} setMissingFormList={() => setIsError(false)} />}
             {isInProcess ? <ProcessPopupMsg msg={isDraft ? `Saving draft: ${formData.title} ...` : `Publishing blog: ${formData.title} ...`} /> : null}
         </div>
     )
