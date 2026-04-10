@@ -1,0 +1,41 @@
+.errorPage {
+    scrollbar-gutter: stable;
+    padding: calc(60px * 1.1) 8% 0px;
+    background-color: #f0ede8;
+    min-height: calc(100vh - 35px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.errorPage .errorMsg {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 80%;
+}
+.errorPage .errorMsg div {
+    width: 50%;
+}
+.errorPage .errorMsg p {
+    font-size: 1.7rem;
+}
+.errorPage .errorMsg img {
+    max-height: 55vh;
+    width: 40%;
+}
+
+@media (max-width: 550px) {
+    .errorPage .errorMsg {
+        flex-direction: column;
+    }
+    .errorPage .errorMsg img {
+        width: 60%;
+    }
+    .errorPage .errorMsg div {
+        margin-top: 50px;
+        width: 100%;
+    }
+    .errorPage .errorMsg p {
+        font-size: 1.2rem;
+    }
+}

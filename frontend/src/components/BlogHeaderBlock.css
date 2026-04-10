@@ -1,0 +1,19 @@
+.blogHeaderBlock {
+    width: 100%;
+}
+.blogHeaderBlock textarea {
+    font-weight: bold;
+    text-transform: capitalize;
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid black;
+    overflow: hidden;
+    resize: none;
+}
+.headerBlock textarea {
+    font-size: 2.35rem;
+}
+.header2Block textarea {
+    font-size: 1.5rem;
+}

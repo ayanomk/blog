@@ -1,0 +1,19 @@
+import { useNavigate } from "react-router-dom";
+import './Footer.css';
+import { useContext } from 'react';
+import { AuthContext } from "../context/AuthContext";
+
+function Footer() {
+    const {isLoggedIn, logout} = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    return (
+        <footer>
+            <p>&copy; 2026 my little adventures. All rights reserved.</p>
+            {isLoggedIn ? <button className={"loginButton"} onClick={logout}>Logout</button> 
+            : <button className={"loginButton"} onClick={() => navigate("./admin/login")}>Login</button>}
+        </footer>
+    )
+}
+
+export default Footer

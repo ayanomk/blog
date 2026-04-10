@@ -1,0 +1,55 @@
+.blogTable {
+    width: 100%;
+}
+.blogTable table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: auto;
+}
+.blogTable table th {
+    background-color: #454545;
+    color: #fff;
+}
+.blogTable table td {
+    background: #fff;
+}
+.blogTable table th, table td{
+    border: 1.5px solid #454545;
+    padding: 5px 10px;
+    text-align: left;
+}
+.blogTable table th input {
+    background-color: #454545;
+    color: white;
+    border-bottom: 1px solid white;
+}
+.blogTable table td input {
+    background-color: #fff;
+}
+.blogTable .blogTableOption {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    width: 30%;
+    padding: 5px;
+} 
+.blogTable .blogTableOption button {
+    padding: 10px 0px;
+}
+
+.blogTable .deleteTable, .blogTable .deleteRow {
+    border: none;
+    background-color: transparent;
+    color: black;
+}
+.blogTable .deleteTable, .blogTable .deleteRow:hover {
+    cursor: pointer;
+}
+.blogTable .tableTitleInput {
+    font-size: 2.5rem;
+    font-weight: bold;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid black;
+    background-color: transparent;
+}

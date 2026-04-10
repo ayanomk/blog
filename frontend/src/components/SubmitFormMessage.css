@@ -1,0 +1,65 @@
+.SubmitFormMessage {
+    background-color: #9391918c;
+    backdrop-filter: blur(2px);
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+    display: flex;
+}
+
+.SubmitFormMessage .validateMessage {
+    background-color: #fff;
+    max-width: 80%;
+    margin: auto;
+    text-align: right;
+    border-radius: 20px;
+    padding: 10px;
+}
+
+.SubmitFormMessage .validateMessage h1 {
+    text-align: center;
+    margin: 15px;
+    margin-top: 0px;
+    margin-bottom: 30px;
+}
+
+.SubmitFormMessage button {
+    width: 28px;
+    height: 28px;
+    position: relative;
+    padding: 10px;
+    margin: 20px;
+}
+.SubmitFormMessage .messageCancel {
+    width: 100%;
+    height: 4px;
+    position: absolute;
+    left: 0;
+    background-color: black;
+    transform: rotate(45deg);
+    border-radius: 10px;
+}
+.SubmitFormMessage .messageCancel::after {
+    content: "";
+    width: 100%;
+    height: 4px;
+    position: absolute;
+    left: 0;
+    background-color: black;
+    transform: rotate(90deg);
+    border-radius: 10px;
+}
+
+.SubmitFormMessage .missingList {
+    width: 40%;
+    margin: auto;
+    text-align: left;
+    margin-bottom: 50px;
+}
+.SubmitFormMessage .missingList li {
+    margin: 5px;
+    font-size: 1.2rem;
+}

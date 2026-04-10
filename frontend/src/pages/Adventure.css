@@ -1,0 +1,105 @@
+.adventures {
+    /* navbar padding */
+    padding: calc(60px) 5% 0px;
+
+    height: calc(100vh - 35px );
+    background-color: #f0ede8;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+}
+.adventures header {
+    text-align: center;
+}
+.adventures main {
+    display: flex;
+    flex-wrap: wrap;
+}
+.adventures .mapCard {
+    width: 85%;
+    height: calc(100% - 40px);
+    flex: 1;
+}
+
+.adventures .settings {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    width: 100%;
+    height: 40px;
+}
+.adventures .settings button {
+    width: 40px;
+    height: 40px;
+}
+.adventures .settings img {
+    width: 30px;
+}
+
+/* filter */
+.adventures .desktopFilter {
+    width: 14%;
+    min-width: 200px;
+    padding-right: 20px;
+}
+.adventures .mobileFilter {
+    display: none;
+}
+.adventures .filterClose {
+    display: none;
+}
+.adventures .filterToggle {
+    display: none;
+}
+
+
+/* Screen size */
+@media (max-width: 992px) {
+    .adventures main {
+        flex-direction: column;
+        align-items: end;
+    }
+    .adventures .mapCard {
+        width: 100%;
+    }
+    .adventures .desktopFilter {
+        display: none;
+    }
+    .adventures .filterToggle {
+        display: block;
+    }
+
+    /* FILTER */
+    .adventures .mobileFilter {
+        display: block;
+        transform: translateY(100%);
+        height: 55vh;
+        position: fixed;
+        z-index: 1000;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 95%;
+        margin: auto;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        background-color: #eae6e0af;
+        box-shadow: 0px 0px 10px #b0aba3;
+        backdrop-filter: blur(10px);
+        transition: all 0.4s;
+    }
+    .adventures .mobileFilterContent {
+        height: 100%;
+        padding: 10px 25px 10px;
+        display: flex;
+        flex-direction: column;
+    }
+    .adventures .filterClose {
+        display: block;
+    }
+    .adventures .openFilter {
+        transform: translateY(0);
+    }
+}
