@@ -1,5 +1,8 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+// import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
+// import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 
 function HeroThree() {
     const mountRef = useRef(null);
@@ -23,17 +26,91 @@ function HeroThree() {
         scene.add(camera);
 
         // Renderer
-        const renderer = new THREE.WebGLRenderer();
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(sizes.width, sizes.height);
         renderer.setClearColor("#f0ede8");
         mountRef.current.appendChild(renderer.domElement);
+
+        // Lights
+        const ambientLight = new THREE.AmbientLight("#a72525", 0.5);
+        scene.add(ambientLight);
+        const directionalLight = new THREE.DirectionalLight("#dfedff", 2);
+        directionalLight.rotation.x = 3.14 * 0.5;
+        directionalLight.position.y = 0;
+        directionalLight.position.z = 1;
+        scene.add(directionalLight); 
+        // const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight, 1, "#222");
+        // scene.add(directionalLightHelper)
         
         // Object
-        const box = new THREE.Mesh(
-            new THREE.BoxGeometry(1, 1, 1),
-            new THREE.MeshBasicMaterial({color: "#333"})
-        );
-        scene.add(box);
+        const backpackGroup = new THREE.Group();
+        scene.add(backpackGroup);
+        // const axesHelper = new THREE.AxesHelper(2);
+        // backpackGroup.add(axesHelper);
+        backpackGroup.rotation.z = - 3.14 * 0.08;
+        backpackGroup.rotation.y = 3.14 * 0.01;
+        backpackGroup.rotation.x = - 3.14 * 0.1;
+        backpackGroup.position.y = - sizes.height * 0.0006;
+        backpackGroup.position.x = sizes.width * 0.0006;
+        const gltfLoader = new GLTFLoader();
+        gltfLoader.load(
+            '/models/newBackpack.glb',
+            (gltf) => {
+                const model = gltf.scene;
+                model.traverse((child) => {
+                    if (child.isMesh) {
+                        switch (child.name) {
+                            case "body":
+                                child.material = new THREE.MeshStandardMaterial({color: "#bc9a9f"});
+                                break;
+                            case "pocket":
+                                child.material = new THREE.MeshStandardMaterial({color: "#78525b"});
+                                break;
+                            case "lid":
+                                child.material = new THREE.MeshStandardMaterial({color: "#784b56"});
+                                break;
+                            case "straps":
+                                child.material = new THREE.MeshStandardMaterial({color: "#ffa024"});
+                                break;
+                            case "shoulder":
+                                child.material = new THREE.MeshStandardMaterial({color: "#784b56"});
+                                break;
+                            case "buckle":
+                                child.material = new THREE.MeshStandardMaterial({color: "#140d19"});
+                                break;
+                            default:
+                                child.material = new THREE.MeshStandardMaterial({color: "#fff"});
+                                break;
+                        }
+                    }
+
+                })
+                model.position.y = - 1;
+                model.rotation.y = 3.14 * 1.2;
+                model.scale.set(2, 2, 2);
+                backpackGroup.add(model);
+            }
+        )
+
+        // const fontLoader = new FontLoader();
+        // fontLoader.load(
+        //     '/font/IMFellFrenchCanonSC-Regular.json',
+        //     (font) => {
+        //         const textGeometry = new TextGeometry(
+        //             "my little\nadventures",
+        //             {
+        //                 font: font,
+        //                 size: 1,
+        //                 depth: 0.2,
+        //             }
+        //         )
+        //         textGeometry.center();
+        //         const text = new THREE.Mesh(textGeometry, new THREE.MeshStandardMaterial({color: "thistle"}));
+        //         text.position.z = -5;
+        //         scene.add(text);
+        //     }
+        // )
+
 
         renderer.render(scene, camera);
         
@@ -58,7 +135,7 @@ function HeroThree() {
             const deltaTime = currentTime - time;
             time = currentTime;
 
-            box.rotation.y += 0.0002 * deltaTime;
+            backpackGroup.rotation.y += 0.0002 * deltaTime;
 
             renderer.render(scene, camera);
             window.requestAnimationFrame(tick);
