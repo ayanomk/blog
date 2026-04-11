@@ -48,10 +48,22 @@ function HeroThree() {
 
             renderer.setSize(sizes.width, sizes.height);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-            renderer.render(scene, camera);
         }
         window.addEventListener('resize', handleResize);
+
+        let time = Date.now();
+        // ANIMATION
+        const tick = () => {
+            const currentTime = Date.now();
+            const deltaTime = currentTime - time;
+            time = currentTime;
+
+            box.rotation.y += 0.0002 * deltaTime;
+
+            renderer.render(scene, camera);
+            window.requestAnimationFrame(tick);
+        }
+        tick();
 
         // Clean up when page is closed etc
         return () => {
