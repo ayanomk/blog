@@ -1,10 +1,14 @@
 import "./Home.css";
+import HeroThree from "../components/HomeThree";
 
 function Home() {
   return (
-    <header className="home">
-        <h1 className="home-text">my little adventures</h1>
-    </header>
+    <div className="home">
+      <HeroThree />
+    </div>
+    // <header className="home">
+        // {/* <h1 className="home-text">my little adventures</h1> */}
+    // </header>
   )
 }
 
