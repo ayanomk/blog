@@ -36,12 +36,29 @@ function HeroThree() {
         scene.add(box);
 
         renderer.render(scene, camera);
+        
+        // RESIZE
+        const handleResize = () => {
+            if (!mountRef.current) return;
+            sizes.width = mountRef.current.clientWidth;
+            sizes.height = mountRef.current.clientHeight;
+
+            camera.aspect = sizes.width / sizes.height;
+            camera.updateProjectionMatrix();
+
+            renderer.setSize(sizes.width, sizes.height);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            renderer.render(scene, camera);
+        }
+        window.addEventListener('resize', handleResize);
 
         // Clean up when page is closed etc
         return () => {
             const canvas = renderer.domElement;
             canvas.parentNode?.removeChild(canvas);
             renderer.dispose();
+            window.removeEventListener('resize', handleResize);
         }
     }, []);
 
