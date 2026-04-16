@@ -11,7 +11,7 @@
     text-align: center;
     color: #78525b;
     opacity: 80%;
-    text-shadow: -3px 3px 0 #140d19; /* -2px -2px 0 #000, 2px -2px 0 #000, 2px 2px 0 #000 */
+    text-shadow: 5px 5px 0px #140d19; /* -2px -2px 0 #000, 2px -2px 0 #000, 2px 2px 0 #000 */
 }
 
 /* mobile */

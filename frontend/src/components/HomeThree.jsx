@@ -31,23 +31,31 @@ function HeroThree() {
         mountRef.current.appendChild(renderer.domElement);
 
         // Lights
-        const ambientLight = new THREE.AmbientLight("#ac3535", 1.5);
+        const ambientLight = new THREE.AmbientLight("#9e4545", 2);
         scene.add(ambientLight);
-        const directionalLight = new THREE.DirectionalLight("#dfedff", 2);
+        const directionalLight = new THREE.DirectionalLight("#dce4f0", 3);
         directionalLight.rotation.x = 3.14 * 0.5;
-        directionalLight.position.y = 0;
+        directionalLight.position.y = 3;
+        directionalLight.position.x = - 2;
         directionalLight.position.z = 1;
         scene.add(directionalLight); 
         // const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight, 1, "#222");
         // scene.add(directionalLightHelper)
         
         // Object
-        // backpack
+        const textureLoader = new THREE.TextureLoader();
         const gltfLoader = new GLTFLoader();
+        // backpack
         const backpackGroup = new THREE.Group();
         backpackGroup.position.set(0, - 0.3, 0);
         backpackGroup.rotation.y = PI * 1.5;
         scene.add(backpackGroup);
+        // backpack textures
+        const lightPlumMaterial = new THREE.MeshStandardMaterial({color: "#bc9a9f"});
+        const plumMaterial = new THREE.MeshStandardMaterial({color: "#784b56"});
+        const yellowMaterial = new THREE.MeshStandardMaterial({color: "#ffa024"});
+        const blackMaterial = new THREE.MeshStandardMaterial({color: "#140d19"});
+        // backpack model
         gltfLoader.load(
             '/models/newBackpack.glb',
             (gltf) => {
@@ -56,25 +64,16 @@ function HeroThree() {
                     if (child.isMesh) {
                         switch (child.name) {
                             case "body":
-                                child.material = new THREE.MeshStandardMaterial({color: "#bc9a9f"});
-                                break;
-                            case "pocket":
-                                child.material = new THREE.MeshStandardMaterial({color: "#78525b"});
-                                break;
-                            case "lid":
-                                child.material = new THREE.MeshStandardMaterial({color: "#784b56"});
+                                child.material = lightPlumMaterial;
                                 break;
                             case "straps":
-                                child.material = new THREE.MeshStandardMaterial({color: "#ffa024"});
-                                break;
-                            case "shoulder":
-                                child.material = new THREE.MeshStandardMaterial({color: "#784b56"});
+                                child.material = yellowMaterial;
                                 break;
                             case "buckle":
-                                child.material = new THREE.MeshStandardMaterial({color: "#140d19"});
+                                child.material = blackMaterial;
                                 break;
                             default:
-                                child.material = new THREE.MeshStandardMaterial({color: "#fff"});
+                                child.material = plumMaterial;
                                 break;
                         }
                     }
@@ -86,9 +85,7 @@ function HeroThree() {
                 backpackGroup.add(model);
             }
         )
-
         // particles
-        const textureLoader = new THREE.TextureLoader();
         const particleTexture = textureLoader.load('/texture/fire_02.png');
         const particleCount = 100;
         const positions = new Float32Array(particleCount * 3);
