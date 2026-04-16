@@ -110,6 +110,20 @@ function HeroThree() {
                 scene.add(text);
             }
         )
+        // particles
+        const textureLoader = new THREE.TextureLoader();
+        const particleTexture = textureLoader.load('/texture/fire_02.png');
+        const particleCount = 180;
+        const positions = new Float32Array(particleCount * 3);
+        for (let i = 0; i < particleCount; i++) {
+            positions[i * 3 + 0] = (Math.random() - 0.5) * 7;
+            positions[i * 3 + 1] = (Math.random() - 0.5) * 5;
+            positions[i * 3 + 2] = (Math.random() - 0.5) * 3;            
+        }
+        const particlesGeometry = new THREE.BufferGeometry();
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        const particles = new THREE.Points(particlesGeometry, new THREE.PointsMaterial({ color: "#ffa024", sizeAttenuation: true, size: 0.1, transparent: true, alphaMap: particleTexture}));
+        scene.add(particles);
 
         renderer.render(scene, camera);
         
