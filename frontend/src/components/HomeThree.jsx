@@ -88,6 +88,28 @@ function HeroThree() {
                 backpackGroup.add(model);
             }
         )
+        // text
+        const fontLoader = new FontLoader();
+        fontLoader.load(
+            '/font/IMFellFrenchCanonSC-Regular.json',
+            (font) => {
+                const textGeometry = new TextGeometry(
+                    "little\nadventures",
+                    {
+                        font: font,
+                        size: 2.8,
+                        depth: 0.2,
+                        curveSegments: 5,
+                    }
+                )
+                textGeometry.center();
+                const text = new THREE.Mesh(textGeometry, new THREE.MeshStandardMaterial({color: "#784b56"}));
+                text.position.z = - 9;
+                text.position.x = - 3;
+                text.position.y = 2;
+                scene.add(text);
+            }
+        )
 
         renderer.render(scene, camera);
         
