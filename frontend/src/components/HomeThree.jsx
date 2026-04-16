@@ -113,16 +113,16 @@ function HeroThree() {
         // particles
         const textureLoader = new THREE.TextureLoader();
         const particleTexture = textureLoader.load('/texture/fire_02.png');
-        const particleCount = 180;
+        const particleCount = 100;
         const positions = new Float32Array(particleCount * 3);
         for (let i = 0; i < particleCount; i++) {
-            positions[i * 3 + 0] = (Math.random() - 0.5) * 7;
-            positions[i * 3 + 1] = (Math.random() - 0.5) * 5;
-            positions[i * 3 + 2] = (Math.random() - 0.5) * 3;            
+            positions[i * 3 + 0] = (Math.random() - 0.5) * 10;
+            positions[i * 3 + 1] = (Math.random() - 0.5) * 7;
+            positions[i * 3 + 2] = - (Math.random()) * 10;            
         }
         const particlesGeometry = new THREE.BufferGeometry();
         particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        const particles = new THREE.Points(particlesGeometry, new THREE.PointsMaterial({ color: "#ffa024", sizeAttenuation: true, size: 0.1, transparent: true, alphaMap: particleTexture}));
+        const particles = new THREE.Points(particlesGeometry, new THREE.PointsMaterial({ color: "#ffa024", size: 0.2, transparent: true, alphaMap: particleTexture}));
         scene.add(particles);
 
         renderer.render(scene, camera);
@@ -141,6 +141,17 @@ function HeroThree() {
         }
         window.addEventListener('resize', handleResize);
 
+        //  MOUSEMOVE
+        const mouse = {
+            x: 0,
+            y: 0
+        }
+        const mouseMove = (e) => {
+            mouse.x = (e.clientX / sizes.width) - 0.5;
+            mouse.y = (e.clientY / sizes.height) - 0.5;
+        }
+        window.addEventListener('mousemove', mouseMove);
+
         let time = Date.now();
         // ANIMATION
         const tick = () => {
@@ -149,6 +160,12 @@ function HeroThree() {
             time = currentTime;
 
             backpackGroup.rotation.y += 0.0002 * deltaTime;
+
+            // mousemove animation
+            const parallaxX = mouse.x * 0.8;
+            const parallaxY = - mouse.y * 0.5;
+            camera.position.x += (parallaxX - camera.position.x) * 0.0008 * deltaTime;
+            camera.position.y += (parallaxY - camera.position.y) * 0.0008 * deltaTime ;
 
             renderer.render(scene, camera);
             window.requestAnimationFrame(tick);
@@ -160,6 +177,7 @@ function HeroThree() {
             const canvas = renderer.domElement;
             canvas.parentNode?.removeChild(canvas);
             window.removeEventListener('resize', handleResize);
+            window.removeEventListener('mousemove', mouseMove);
             renderer.dispose();
         }
     }, []);
