@@ -1,8 +1,6 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
-import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 
 function HeroThree() {
     const mountRef = useRef(null);
@@ -29,7 +27,7 @@ function HeroThree() {
         // Renderer
         const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(sizes.width, sizes.height);
-        renderer.setClearColor("#f0ede8");
+        renderer.setClearAlpha(0);
         mountRef.current.appendChild(renderer.domElement);
 
         // Lights
@@ -47,8 +45,8 @@ function HeroThree() {
         // backpack
         const gltfLoader = new GLTFLoader();
         const backpackGroup = new THREE.Group();
-        backpackGroup.position.set(1.6, - 0.4, 0);
-        backpackGroup.rotation.y = PI;
+        backpackGroup.position.set(0, - 0.3, 0);
+        backpackGroup.rotation.y = PI * 1.5;
         scene.add(backpackGroup);
         gltfLoader.load(
             '/models/newBackpack.glb',
@@ -83,41 +81,20 @@ function HeroThree() {
 
                 })
                 model.scale.set(1.75, 1.75, 1.75);
-                model.position.set(0.4, - 1, 0);
+                model.position.set(0.1, - 1, 0);
                 model.rotation.z = PI * 0.1;
                 backpackGroup.add(model);
             }
         )
-        // text
-        const fontLoader = new FontLoader();
-        fontLoader.load(
-            '/font/IMFellFrenchCanonSC-Regular.json',
-            (font) => {
-                const textGeometry = new TextGeometry(
-                    "little\nadventures",
-                    {
-                        font: font,
-                        size: 2.8,
-                        depth: 0.2,
-                        curveSegments: 5,
-                    }
-                )
-                textGeometry.center();
-                const text = new THREE.Mesh(textGeometry, new THREE.MeshStandardMaterial({color: "#784b56"}));
-                text.position.z = - 9;
-                text.position.x = - 3;
-                text.position.y = 2;
-                scene.add(text);
-            }
-        )
+
         // particles
         const textureLoader = new THREE.TextureLoader();
         const particleTexture = textureLoader.load('/texture/fire_02.png');
         const particleCount = 100;
         const positions = new Float32Array(particleCount * 3);
         for (let i = 0; i < particleCount; i++) {
-            positions[i * 3 + 0] = (Math.random() - 0.5) * 10;
-            positions[i * 3 + 1] = (Math.random() - 0.5) * 7;
+            positions[i * 3 + 0] = (Math.random() - 0.5) * 12;
+            positions[i * 3 + 1] = (Math.random() - 0.5) * 8;
             positions[i * 3 + 2] = - (Math.random()) * 10;            
         }
         const particlesGeometry = new THREE.BufferGeometry();

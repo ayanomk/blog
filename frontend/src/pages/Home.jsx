@@ -4,11 +4,9 @@ import HeroThree from "../components/HomeThree";
 function Home() {
   return (
     <div className="home">
+      <h1>Little<br/>Adventures</h1>
       <HeroThree />
     </div>
-    // <header className="home">
-        // {/* <h1 className="home-text">my little adventures</h1> */}
-    // </header>
   )
 }
 
