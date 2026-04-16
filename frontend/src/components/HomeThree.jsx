@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-// import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
-// import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
+import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
+import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 
 function HeroThree() {
     const mountRef = useRef(null);
@@ -10,6 +10,7 @@ function HeroThree() {
     useEffect(() => {
         // remove all canvas inside .heroThree div
         mountRef.current.innerHTML = "";
+        const PI = 3.14;
 
         // Scene
         const scene = new THREE.Scene();
@@ -43,16 +44,12 @@ function HeroThree() {
         // scene.add(directionalLightHelper)
         
         // Object
-        const backpackGroup = new THREE.Group();
-        scene.add(backpackGroup);
-        // const axesHelper = new THREE.AxesHelper(2);
-        // backpackGroup.add(axesHelper);
-        backpackGroup.rotation.z = - 3.14 * 0.08;
-        backpackGroup.rotation.y = 3.14 * 0.01;
-        backpackGroup.rotation.x = - 3.14 * 0.1;
-        backpackGroup.position.y = - sizes.height * 0.0006;
-        backpackGroup.position.x = sizes.width * 0.0006;
+        // backpack
         const gltfLoader = new GLTFLoader();
+        const backpackGroup = new THREE.Group();
+        backpackGroup.position.set(1.6, - 0.4, 0);
+        backpackGroup.rotation.y = PI;
+        scene.add(backpackGroup);
         gltfLoader.load(
             '/models/newBackpack.glb',
             (gltf) => {
@@ -85,32 +82,12 @@ function HeroThree() {
                     }
 
                 })
-                model.position.y = - 1;
-                model.rotation.y = 3.14 * 1.2;
-                model.scale.set(2, 2, 2);
+                model.scale.set(1.75, 1.75, 1.75);
+                model.position.set(0.4, - 1, 0);
+                model.rotation.z = PI * 0.1;
                 backpackGroup.add(model);
             }
         )
-
-        // const fontLoader = new FontLoader();
-        // fontLoader.load(
-        //     '/font/IMFellFrenchCanonSC-Regular.json',
-        //     (font) => {
-        //         const textGeometry = new TextGeometry(
-        //             "my little\nadventures",
-        //             {
-        //                 font: font,
-        //                 size: 1,
-        //                 depth: 0.2,
-        //             }
-        //         )
-        //         textGeometry.center();
-        //         const text = new THREE.Mesh(textGeometry, new THREE.MeshStandardMaterial({color: "thistle"}));
-        //         text.position.z = -5;
-        //         scene.add(text);
-        //     }
-        // )
-
 
         renderer.render(scene, camera);
         
@@ -146,8 +123,8 @@ function HeroThree() {
         return () => {
             const canvas = renderer.domElement;
             canvas.parentNode?.removeChild(canvas);
-            renderer.dispose();
             window.removeEventListener('resize', handleResize);
+            renderer.dispose();
         }
     }, []);
 
