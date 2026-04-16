@@ -31,7 +31,7 @@ function HeroThree() {
         mountRef.current.appendChild(renderer.domElement);
 
         // Lights
-        const ambientLight = new THREE.AmbientLight("#a72525", 0.5);
+        const ambientLight = new THREE.AmbientLight("#ac3535", 1.5);
         scene.add(ambientLight);
         const directionalLight = new THREE.DirectionalLight("#dfedff", 2);
         directionalLight.rotation.x = 3.14 * 0.5;
@@ -111,6 +111,11 @@ function HeroThree() {
             sizes.height = mountRef.current.clientHeight;
 
             camera.aspect = sizes.width / sizes.height;
+            if (camera.aspect > 1) {
+                camera.position.z = 2;
+            } else {
+                camera.position.z = Math.min(2 / camera.aspect, 2.7);
+            }
             camera.updateProjectionMatrix();
 
             renderer.setSize(sizes.width, sizes.height);
