@@ -39,8 +39,6 @@ function HeroThree() {
         directionalLight.position.x = - 2;
         directionalLight.position.z = 1;
         scene.add(directionalLight); 
-        // const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight, 1, "#222");
-        // scene.add(directionalLightHelper)
         
         // Object
         const textureLoader = new THREE.TextureLoader();
@@ -108,16 +106,12 @@ function HeroThree() {
             sizes.height = mountRef.current.clientHeight;
 
             camera.aspect = sizes.width / sizes.height;
-            if (camera.aspect > 1) {
-                camera.position.z = 2;
-            } else {
-                camera.position.z = Math.min(2 / camera.aspect, 2.7);
-            }
             camera.updateProjectionMatrix();
 
             renderer.setSize(sizes.width, sizes.height);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         }
+        handleResize();
         window.addEventListener('resize', handleResize);
 
         //  MOUSEMOVE

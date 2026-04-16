@@ -14,7 +14,7 @@
         background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-    filter: drop-shadow(5px 5px 0px #140d19);
+    filter: drop-shadow(2px 2px 1px #140d19);
 }
 
 /* mobile */
