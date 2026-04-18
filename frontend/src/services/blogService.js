@@ -1,11 +1,9 @@
-import { API_BASE } from './apiConfig.js';
-
 /**
  * GET ALL BLOGS
  * @returns if success all blogs data. if fail error?
  */
 export const getAllBlogs = async () => {
-    const res = await fetch(`${API_BASE}/blogs`);
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/blogs`);
     const result = await res.json();
 
     if (!res.ok) {
@@ -24,7 +22,7 @@ export const getAllBlogs = async () => {
  * @returns if success single blog data. if fail error?
  */
 export const getBlogById = async (id) => {
-    const res = await fetch(`${API_BASE}/blogs/${id}`);
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/blogs/${id}`);
     const result = await res.json();
 
     // if (result.status === "fail") throw result;
@@ -55,7 +53,7 @@ export const getBlogsByFilter = async (query = {}) => {
         }
     });
 
-    const res = await fetch(`${API_BASE}/blogs/filter?${queries.toString()}`);
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/blogs/filter?${queries.toString()}`);
     const result = await res.json();
 
     if (!res.ok) {
@@ -71,7 +69,7 @@ export const getBlogsByFilter = async (query = {}) => {
 export const createBlog = async (data) => {
     const token = localStorage.getItem("token");
 
-    const res = await fetch(`${API_BASE}/admin/blogs`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/admin/blogs`, {
         method: "POST",
         headers: {
             "Authorization": `Bearer ${token}`
@@ -94,7 +92,7 @@ export const createBlog = async (data) => {
 export const editBlog = async (id, data) => {
     const token = localStorage.getItem("token");
 
-    const res = await fetch(`${API_BASE}/admin/blogs/${id}/edit`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/admin/blogs/${id}/edit`, {
         method: "PATCH",
         headers: {
             "Authorization": `Bearer ${token}`
@@ -117,7 +115,7 @@ export const editBlog = async (id, data) => {
 export const deleteBlog = async (id, data) => {
     const token = localStorage.getItem("token");
 
-    const res = await fetch(`${API_BASE}/admin/blogs/${id}`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/admin/blogs/${id}`, {
         method: "DELETE",
         headers: {
             "Authorization": `Bearer ${token}`,
