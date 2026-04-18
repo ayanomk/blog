@@ -149,6 +149,10 @@
     background-color: #69303d;
     box-shadow: 2px 2px 10px #6b1d2f56;
 }
+.blog .adminButtons button:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
 
 /* FIXME: move me to another file */
 .blog .deleteConfirmationPopup {

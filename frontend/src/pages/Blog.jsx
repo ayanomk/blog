@@ -58,7 +58,7 @@ const htmlRenderer = (block, blockIdx) => {
 
 // JSX
 function Blog() {
-    const {isLoggedIn} = useContext(AuthContext);
+    const {user} = useContext(AuthContext);
     const navigate = useNavigate();
 
     // get id and blog data for that id
@@ -128,7 +128,7 @@ function Blog() {
     // get relevant blog data
     useEffect(() => {
         if (!blogData) return;
-        const isPublish = isLoggedIn ? "" : "Publish";
+        const isPublish = user === null ? "" : "Publish";
 
         getBlogsByFilter({ excludeId: id, tripId: blogData.tripId, state: isPublish })
             .then(setRelatedBlogData)
@@ -147,7 +147,7 @@ function Blog() {
 
     return (
         <article className="blog">
-            {isLoggedIn ? <div className="adminButtons"><button onClick={() => navigate(`/admin/blogs/${blogData._id}/edit`)}>Edit</button><button onClick={deleteConfirm}>Delete</button></div> : null}
+            {user !== null ? <div className="adminButtons"><button onClick={() => navigate(`/admin/blogs/${blogData._id}/edit`)}>Edit</button><button onClick={deleteConfirm} disabled={user.role == 'User'}>Delete</button></div> : null}
             <header>
                 <div className="title">
                     <div className='mainTitle'>

@@ -14,7 +14,11 @@ const authenticateUser = async (req, res) => {
     if (!isValid) throw new AppError("Invalid credentials");
 
     const token = jwt.sign(
-        { id: user._id },
+        { 
+            id: user._id,
+            username: user.username,
+            role: user.role
+        },
         process.env.JWT_SECRET,
         { expiresIn: "2h" }
     );

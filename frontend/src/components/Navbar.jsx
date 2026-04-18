@@ -5,7 +5,7 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 function Navbar() {
-    const {isLoggedIn, logout} = useContext(AuthContext);
+    const {user, logout} = useContext(AuthContext);
     const navigate = useNavigate();
     // HAMBURGER
     const [hamburgerOpen, setHamburgerOpen] = useState(false);
@@ -19,10 +19,10 @@ function Navbar() {
             <div className={`nav-items ${hamburgerOpen ? "open" : ""}`}>
                 <div>
                     <NavLink to="/adventures" className={({ isActive }) => isActive ? "active" : ""} onClick={() => setHamburgerOpen(false)}>Adventures</NavLink>
-                    {isLoggedIn ? <NavLink to="/admin/create-blog" className={({ isActive }) => isActive ? "active" : ""} onClick={() => setHamburgerOpen(false)}>Write blog</NavLink> : null}
+                    {user !== null ? <NavLink to="/admin/create-blog" className={({ isActive }) => isActive ? "active" : ""} onClick={() => setHamburgerOpen(false)}>Write blog</NavLink> : null}
                     <NavLink to="/aboutme" className={({ isActive }) => isActive ? "active" : ""} onClick={() => setHamburgerOpen(false)}>About me</NavLink>
                 </div>
-                {isLoggedIn ? 
+                {user !== null ? 
                     <button className={"login"} style={{display: `${hamburgerOpen ? "block" : "none"}`}} onClick={() => {
                         setHamburgerOpen(false);
                         logout();

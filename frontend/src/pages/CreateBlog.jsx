@@ -4,16 +4,19 @@ import BlogParagraph from '../components/BlogParagraph';
 import BlogHeaderBlock from '../components/BlogHeaderBlock';
 import BlogImageBlock from '../components/BlogImageBlock';
 import SubmitFormMessage from '../components/SubmitFormMessage.jsx';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from "react-router-dom"
 import { editBlog, getBlogById } from "../services/blogService.js";
+import { AuthContext } from "../context/AuthContext";
+
 
 import { createBlog } from '../services/blogService.js';
 import ProcessPopupMsg from '../components/ProcessPopupMsg.jsx';
 
 function CreateBlog({isEdit}) {
     const navigate = useNavigate();
+    const {user} = useContext(AuthContext);
 
     // form data
     const initialForm = {
@@ -434,8 +437,8 @@ function CreateBlog({isEdit}) {
             </form>
 
             <div className="submitButtons">
-                <button type='button' id='saveDraftButton' onClick={handleSubmit}>Save Draft</button>
-                <button type='button' id='publishButton' onClick={handleSubmit}>Publish</button>
+                <button type='button' id='saveDraftButton' onClick={handleSubmit} disabled={user !== null}>Save Draft</button>
+                <button type='button' id='publishButton' onClick={handleSubmit} disabled={user !== null}>Publish</button>
             </div>
 
             {errorMsg && <SubmitFormMessage msg={errorMsg} missingFormList={invalidForm} setMissingFormList={() => setErrorMsg(null)} />}

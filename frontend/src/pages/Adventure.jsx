@@ -12,14 +12,14 @@ import { AuthContext } from "../context/AuthContext";
  * @returns JSX
  */
 function Adventure() {
-    const {isLoggedIn} = useContext(AuthContext);
+    const {user} = useContext(AuthContext);
 
     const [draftPublishFilter, setDraftPublishFilter] = useState([]);
 
     // get all blog data from backend
     const [allBlogs, setAllBlogs] = useState([]);
     useEffect(() => {
-        if (isLoggedIn) {
+        if (user !== null) {
             getAllBlogs()
             .then((data) => {
                 setAllBlogs(data);
@@ -84,7 +84,7 @@ function Adventure() {
             setExpandState: setRegionExpand
         }
     ];
-    if (isLoggedIn) {
+    if (user !== null) {
         filterConfig.push(
             {
                 filterBy: "Publish",
