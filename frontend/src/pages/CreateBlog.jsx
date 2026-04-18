@@ -95,7 +95,7 @@ function CreateBlog({isEdit}) {
     const [isInProcess, setIsInProcess] = useState(false);
     const [isDraft, setIsDraft] = useState(true);
     const [invalidForm, setInvalidForm] = useState({});
-    const [isError, setIsError] = useState(false);
+    const [errorMsg, setErrorMsg] = useState(null);
     const handleSubmit = async (e) => {
         e.preventDefault();
         setInvalidForm({})
@@ -105,7 +105,7 @@ function CreateBlog({isEdit}) {
         Object.entries(formData).forEach(([key, val]) => {
             if (val.length === 0) {
                 missingFields[key] = "Missing value";
-                setIsError(true);
+                setErrorMsg("Missing or invalid required fields");
             }
         })
 
@@ -185,12 +185,16 @@ function CreateBlog({isEdit}) {
                 navigate(`/blogs/${res._id}`);
             } catch (err) {
                 setIsInProcess(false);
-                setIsError(true);
                 const message = err.message || "Something went wrong";
                 const errors = err.errors || {};
+                setErrorMsg(message);
                 
                 if (err.status === 401) {
                     navigate("/admin/login");
+                    return;
+                };
+                if (err.status === 403) {
+                    setErrorMsg("Demo account cannot publish or save draft");
                     return;
                 };
 
@@ -434,7 +438,7 @@ function CreateBlog({isEdit}) {
                 <button type='button' id='publishButton' onClick={handleSubmit}>Publish</button>
             </div>
 
-            {isError && <SubmitFormMessage missingFormList={invalidForm} setMissingFormList={() => setIsError(false)} />}
+            {errorMsg && <SubmitFormMessage msg={errorMsg} missingFormList={invalidForm} setMissingFormList={() => setErrorMsg(null)} />}
             {isInProcess ? <ProcessPopupMsg msg={isDraft ? `Saving draft: ${formData.title} ...` : `Publishing blog: ${formData.title} ...`} /> : null}
         </div>
     )
