@@ -46,9 +46,9 @@ const getBlogsByFilter = async (req, res) => {
 
     // Build query object
     const query = {};
-    if (state) query.state = { $in: state.split(',') };
-    if (regions) query.region = { $in: regions.split(',') };
-    if (years) query.year = { $in: years.split(',') };
+    if (state) query.state = { $in: state };
+    if (regions) query.region = { $in: regions };
+    if (years) query.year = { $in: years };
     if (tripId) query.tripId = tripId;
     if (excludeTripId) query.tripId = { $ne: excludeTripId };
     if (country) query.country = country;
