@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { deleteBlog } from "../services/blogService.js";
 import ProcessPopupMsg from "../components/ProcessPopupMsg.jsx";
 import { AuthContext } from "../context/AuthContext";
+import SubmitFormMessage from '../components/SubmitFormMessage.jsx';
 
 // Create HTML
 const htmlRenderer = (block, blockIdx) => {
@@ -95,6 +96,7 @@ function Blog() {
         setDeleteConfirmation(true);
     }
     const [isInDelete, setIsInDelete] = useState(false);
+    const [errorMsg, setErrorMsg] = useState(null);
     const submitDeleteBlog = async (blog) => {
         setDeleteConfirmation(false);
         const {_id, sections, hero} = blog;
@@ -114,6 +116,11 @@ function Blog() {
             const res = await deleteBlog(_id, deletes);
             navigate(`/adventures`)
         } catch (err) {
+            if (err.status === 403) {
+                setIsInDelete(false);
+                setErrorMsg("Demo account cannot delete");
+                return;
+            }
             if (import.meta.env.MODE === 'development') console.log(err);
         }
     }
@@ -190,6 +197,7 @@ function Blog() {
             <Recommendation blogs={similarBlogData} type="similar" />
             {isInDelete ? <ProcessPopupMsg msg={`Deleting blog: ${blogData.title}`} /> : null}
             {deleteConfirmation ? <div className="deleteConfirmationPopup"><p>Delete this blog?</p><div><button onClick={() => submitDeleteBlog(blogData)}>Delete</button><button onClick={() => setDeleteConfirmation(false)}>Cancel</button></div></div> : null}
+            {errorMsg && <SubmitFormMessage msg={errorMsg} missingFormList={{}} setMissingFormList={() => setErrorMsg(null)} />}
         </article>
     )
 }
