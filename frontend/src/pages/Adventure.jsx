@@ -97,14 +97,6 @@ function Adventure() {
         )
     }
 
-    // filter by region to display cards
-    const regionFiltered = [];
-    regionFiltered.push(filteredBlogs.filter((t) => t.region == "Asia"));
-    regionFiltered.push(filteredBlogs.filter((t) => t.region == "Oceania"));
-    regionFiltered.push(filteredBlogs.filter((t) => t.region == "Europe"));
-    regionFiltered.push(filteredBlogs.filter((t) => t.region == "Africa"));
-    regionFiltered.push(filteredBlogs.filter((t) => t.region == "North America"));
-
     // display option: map or card (true = map, false = card)
     const [viewState, setViewState] = useState(true);
 
@@ -139,9 +131,7 @@ function Adventure() {
                     <Map trips={filteredBlogs} />
                 </div>
                 <div className="mapCard" style={{display: viewState ? 'none' : 'block'}}>
-                    {regionFiltered.map((regionBlogs, idx) => {
-                        return <Recommendation blogs={regionBlogs} type={"map"} key={idx} />
-                    })}
+                    <Recommendation blogs={filteredBlogs} type={"map"} />
                 </div>
 
                 <div className={`mobileFilter ${showFilters ? 'openFilter' : ''}`}>

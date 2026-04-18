@@ -170,6 +170,9 @@ function CreateBlog({isEdit}) {
                 if (e.target.id === 'publishButton') {
                     cleanData.state = 'Publish'
                     setIsDraft(false);
+                } else if (e.target.id === 'saveDraftButton'){
+                    cleanData.state = 'Draft'
+                    setIsDraft(true);
                 };
 
                 const finalFormData = new FormData();

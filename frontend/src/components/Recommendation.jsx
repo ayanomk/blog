@@ -42,7 +42,7 @@ function Recommendation ({blogs = [], type}) {
                 blogsHeader = `More travel blogs in ${blogs[0].country}`;
                 break;
             case "map":
-                blogsHeader = blogs[0].region;
+                blogsHeader = "";
             default:
                 break;
         }

@@ -20,7 +20,7 @@ function Navbar() {
                 <div>
                     <NavLink to="/adventures" className={({ isActive }) => isActive ? "active" : ""} onClick={() => setHamburgerOpen(false)}>Adventures</NavLink>
                     {user !== null ? <NavLink to="/admin/create-blog" className={({ isActive }) => isActive ? "active" : ""} onClick={() => setHamburgerOpen(false)}>Write blog</NavLink> : null}
-                    <NavLink to="/aboutme" className={({ isActive }) => isActive ? "active" : ""} onClick={() => setHamburgerOpen(false)}>About me</NavLink>
+                    {/* <NavLink to="/aboutme" className={({ isActive }) => isActive ? "active" : ""} onClick={() => setHamburgerOpen(false)}>About me</NavLink> */}
                 </div>
                 {user !== null ? 
                     <button className={"login"} style={{display: `${hamburgerOpen ? "block" : "none"}`}} onClick={() => {
