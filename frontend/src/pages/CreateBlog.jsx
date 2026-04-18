@@ -437,8 +437,8 @@ function CreateBlog({isEdit}) {
             </form>
 
             <div className="submitButtons">
-                <button type='button' id='saveDraftButton' onClick={handleSubmit} disabled={user !== null}>Save Draft</button>
-                <button type='button' id='publishButton' onClick={handleSubmit} disabled={user !== null}>Publish</button>
+                <button type='button' id='saveDraftButton' onClick={handleSubmit} disabled={user.role === "User"}>Save Draft</button>
+                <button type='button' id='publishButton' onClick={handleSubmit} disabled={user.role === "User"}>Publish</button>
             </div>
 
             {errorMsg && <SubmitFormMessage msg={errorMsg} missingFormList={invalidForm} setMissingFormList={() => setErrorMsg(null)} />}

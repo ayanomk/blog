@@ -12,7 +12,7 @@ const authenticationHandler = (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
 
-        if (req.user.role !== 'admin') {
+        if (req.user.role !== 'Admin') {
             throw new AppError("Forbidden", 403);
         }
 
