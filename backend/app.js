@@ -9,7 +9,7 @@ require("dotenv").config();
 
 const app = express();
 
-app.use(cors({ origin: 'https://blog-gamma-steel-40.vercel.app/' }));
+app.use(cors({ origin: 'https://blog-gamma-steel-40.vercel.app' }));
 app.use(express.json());
 
 connectDB();
