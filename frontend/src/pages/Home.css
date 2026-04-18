@@ -1,12 +1,43 @@
 /* Home.css */
 .home {
-    background-color: #f0ede8;
     height: calc(100vh - 35px);
-    display: flex;
-    align-items: center;
+    width: 100%;
+    background: linear-gradient(135deg, #f0ede8, #dfdad3);
 }
 .home h1 {
-    font-size: 2rem;
-    color: #6b1d2f;
-    padding: 20px;
+    margin-top: 100px;
+    width: 100%;
+    font-size: 10rem;
+    text-align: center;
+    color: #78525b;
+    background: linear-gradient(135deg, #bc9a9f, #78525b);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    filter: drop-shadow(2px 2px 1px #140d19);
+}
+
+/* mobile */
+@media (max-width: 950px) {
+    .home h1 {
+        font-size: 7em;
+    }
+}
+@media (max-width: 680px) {
+    .home h1 {
+        font-size: 4em;
+    }
+}
+@media (max-width: 400px) {
+    .home h1 {
+        font-size: 3em;
+    }
+}
+
+/* THREE.JS */
+.heroThree {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    height: calc(100vh - 35px);
 }

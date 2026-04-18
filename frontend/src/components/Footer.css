@@ -1,11 +1,8 @@
 footer {
     height: 35px;
     width: 100%;
-    font-size: 0.9em;
     display: flex;
-    /* flex-direction: column; */
     align-items: center;
-    /* justify-content: center; */
     color: #afaead;
     background-color: #eae6e0;
     box-shadow: 0 0 2px #b0aba3;
@@ -26,6 +23,9 @@ footer .loginButton:hover {
 }
 
 @media (max-width: 768px) {
+    footer p {
+        font-size: 0.9em;
+    }
     footer .loginButton {
         display: none;
     }
