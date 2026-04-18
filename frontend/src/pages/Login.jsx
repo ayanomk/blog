@@ -45,12 +45,12 @@ function Login() {
                 <img src="/icon/user-circle-stroke-rounded.svg" alt="" />
                 <div className="loginDetail">
                     <label htmlFor="username">USERNAME</label>
-                    <input type="text" id="username" name="username" value={loginInfo.username} onChange={handleChange} />
+                    <input type="text" id="username" name="username" value={loginInfo.username} onChange={handleChange} autoComplete="off" />
                 </div>
                 <div className="loginDetail">
                     <label htmlFor="password">PASSWORD</label>
                     <div className="passwordView">
-                        <input type={viewPassowrd ? "text" : "password"} id="password" name="password" onChange={handleChange}/>
+                        <input type={viewPassowrd ? "text" : "password"} id="password" name="password" onChange={handleChange} autoComplete="off"/>
                         <img src={viewPassowrd ? "/icon/view-stroke-rounded.svg" : "/icon/view-off-stroke-rounded.svg"} onClick={() => setPasswordView(!viewPassowrd)} alt="" />
                     </div>
                 </div>
