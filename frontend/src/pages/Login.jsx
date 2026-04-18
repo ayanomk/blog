@@ -56,6 +56,12 @@ function Login() {
                 </div>
                 <button type="submit" onClick={handleLogin}>LOGIN</button>
             </form>
+            <div className="demo-info">
+                <h1>Demo account</h1>
+                <p>Username: demo_admin</p>
+                <p>Password: password123!</p>
+                <p>Note: Saving, publishing, deleting a blog post is disabled.</p>
+            </div>
 
         </div>
     )

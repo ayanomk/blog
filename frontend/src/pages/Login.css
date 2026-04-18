@@ -2,7 +2,7 @@
     scrollbar-gutter: stable;
     overflow-y: auto;
     margin-top: 55px;
-    padding: 2% 8% 0px;
+    /* padding: 2% 8% 0px; */
     background-color: #f0ede8;
     min-height: calc(100vh - 90px);
     display: flex;
@@ -70,4 +70,16 @@
 .loginPage .loginCard button:hover {
     background-color: #6b1d2f;
     color: #fff;
+}
+.loginPage .demo-info {
+    border: 1px solid #000;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+    margin: 0px 20px 30px;
+}
+.loginPage .demo-info h1 {
+    font-size: 1em;
+    font-weight: bold;
+    margin: 0px;
 }
