@@ -148,6 +148,10 @@
     background-color: #69303d;
     box-shadow: 2px 2px 10px #6b1d2f56;
 }
+.createBlog .submitButtons button:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
 
 .createBlog .missingForm {
     box-shadow: 0px 0px 5px 2px #a02d2d;

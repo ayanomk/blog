@@ -4,16 +4,19 @@ import BlogParagraph from '../components/BlogParagraph';
 import BlogHeaderBlock from '../components/BlogHeaderBlock';
 import BlogImageBlock from '../components/BlogImageBlock';
 import SubmitFormMessage from '../components/SubmitFormMessage.jsx';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from "react-router-dom"
 import { editBlog, getBlogById } from "../services/blogService.js";
+import { AuthContext } from "../context/AuthContext";
+
 
 import { createBlog } from '../services/blogService.js';
 import ProcessPopupMsg from '../components/ProcessPopupMsg.jsx';
 
 function CreateBlog({isEdit}) {
     const navigate = useNavigate();
+    const {user} = useContext(AuthContext);
 
     // form data
     const initialForm = {
@@ -95,7 +98,7 @@ function CreateBlog({isEdit}) {
     const [isInProcess, setIsInProcess] = useState(false);
     const [isDraft, setIsDraft] = useState(true);
     const [invalidForm, setInvalidForm] = useState({});
-    const [isError, setIsError] = useState(false);
+    const [errorMsg, setErrorMsg] = useState(null);
     const handleSubmit = async (e) => {
         e.preventDefault();
         setInvalidForm({})
@@ -105,7 +108,7 @@ function CreateBlog({isEdit}) {
         Object.entries(formData).forEach(([key, val]) => {
             if (val.length === 0) {
                 missingFields[key] = "Missing value";
-                setIsError(true);
+                setErrorMsg("Missing or invalid required fields");
             }
         })
 
@@ -185,12 +188,16 @@ function CreateBlog({isEdit}) {
                 navigate(`/blogs/${res._id}`);
             } catch (err) {
                 setIsInProcess(false);
-                setIsError(true);
                 const message = err.message || "Something went wrong";
                 const errors = err.errors || {};
+                setErrorMsg(message);
                 
                 if (err.status === 401) {
                     navigate("/admin/login");
+                    return;
+                };
+                if (err.status === 403) {
+                    setErrorMsg("Demo account cannot publish or save draft");
                     return;
                 };
 
@@ -430,11 +437,11 @@ function CreateBlog({isEdit}) {
             </form>
 
             <div className="submitButtons">
-                <button type='button' id='saveDraftButton' onClick={handleSubmit}>Save Draft</button>
-                <button type='button' id='publishButton' onClick={handleSubmit}>Publish</button>
+                <button type='button' id='saveDraftButton' onClick={handleSubmit} disabled={user.role === "User"}>Save Draft</button>
+                <button type='button' id='publishButton' onClick={handleSubmit} disabled={user.role === "User"}>Publish</button>
             </div>
 
-            {isError && <SubmitFormMessage missingFormList={invalidForm} setMissingFormList={() => setIsError(false)} />}
+            {errorMsg && <SubmitFormMessage msg={errorMsg} missingFormList={invalidForm} setMissingFormList={() => setErrorMsg(null)} />}
             {isInProcess ? <ProcessPopupMsg msg={isDraft ? `Saving draft: ${formData.title} ...` : `Publishing blog: ${formData.title} ...`} /> : null}
         </div>
     )

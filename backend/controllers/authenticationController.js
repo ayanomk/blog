@@ -14,7 +14,11 @@ const authenticateUser = async (req, res) => {
     if (!isValid) throw new AppError("Invalid credentials");
 
     const token = jwt.sign(
-        { id: user._id },
+        { 
+            id: user._id,
+            username: user.username,
+            role: user.role
+        },
         process.env.JWT_SECRET,
         { expiresIn: "2h" }
     );
@@ -22,11 +26,12 @@ const authenticateUser = async (req, res) => {
     res.json({token})
 }
 
-const createUser = async (username, password) => {
+const createUser = async (username, password, role) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({
         username,
-        password: hashedPassword
+        password: hashedPassword,
+        role
     });
     await user.save();
 }

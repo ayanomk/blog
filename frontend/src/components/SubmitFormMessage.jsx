@@ -1,11 +1,11 @@
 import './SubmitFormMessage.css';
 
-function SubmitFormMessage({missingFormList, setMissingFormList}) {
+function SubmitFormMessage({msg, missingFormList, setMissingFormList}) {
 
     return <div className="SubmitFormMessage">
         <div className='validateMessage'>
             <button onClick={setMissingFormList}><span className='messageCancel'></span></button>
-            <h1>Missing or invalid required fields</h1>
+            <h1>{msg}</h1>
             <div className='missingList'>
                 <ul>
                     {Object.keys(missingFormList).map((key, idx) => (

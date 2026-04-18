@@ -4,6 +4,14 @@ import { jwtDecode } from 'jwt-decode';
 
 export const AuthContext = createContext();
 
+const getUserFromToken = (token) => {
+    try {
+        return jwtDecode(token);
+    } catch {
+        return null;
+    }
+}
+
 const isTokenExpired = (token) => {
     try {
         const decoded = jwtDecode(token);
@@ -16,24 +24,26 @@ const isTokenExpired = (token) => {
 export const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
 
-    const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    const [user, setUser] = useState(() => {
         const token = localStorage.getItem("token");
-        return token && !isTokenExpired(token);
-    });
+        if (!token || isTokenExpired(token)) return null;
+        return getUserFromToken(token);
+    })
 
     const login = (token) => {
         localStorage.setItem("token", token);
-        setIsLoggedIn(true);
+        if (!token) setUser(null);
+        else setUser(getUserFromToken(token));
     };
 
     const logout = () => {
         localStorage.removeItem("token");
-        setIsLoggedIn(false);
+        setUser(null);
         navigate("/");
     };
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+        <AuthContext.Provider value={{ user, login, logout }}>
             { children }
         </AuthContext.Provider>
     )

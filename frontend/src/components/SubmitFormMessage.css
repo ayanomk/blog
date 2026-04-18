@@ -24,6 +24,8 @@
     margin: 15px;
     margin-top: 0px;
     margin-bottom: 30px;
+    font-size: 2em;
+    font-family: "Merriweather", serif;
 }
 
 .SubmitFormMessage button {
