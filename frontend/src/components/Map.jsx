@@ -1,4 +1,5 @@
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import './Map.css';
 import { Link } from 'react-router-dom';
@@ -10,6 +11,12 @@ import Carousel from '../components/Carousel.jsx';
  * @returns JSX of map
  */
 function Map({trips}) {
+
+    const markerIcon = new L.Icon({
+        iconUrl: "/icon/marker.svg",
+        iconSize: [35, 35],
+        iconAnchor: [13, 33],
+    });
 
     const cityGroups = {};
     trips.forEach(trip => {
@@ -42,7 +49,7 @@ function Map({trips}) {
 
             {/* markers */}
             {cityGroupsArray.map((group, idx) => (
-                <Marker key={idx} position={[group.lat, group.lng]}>
+                <Marker key={idx} position={[group.lat, group.lng]} icon={markerIcon}>
                     <Popup>
                         <div className='markerPopup'>
                             <div className="popupBlog">
