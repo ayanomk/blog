@@ -9,11 +9,16 @@
     width: 100%;
     font-size: 10rem;
     text-align: center;
-    color: #78525b;
+    color: #514242;
+    /* background: linear-gradient(135deg, #7d6b6b, #463a3a);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent; */
+    /* color: #78525b;
     background: linear-gradient(135deg, #bc9a9f, #78525b);
         background-clip: text;
         -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        -webkit-text-fill-color: transparent; */
     filter: drop-shadow(2px 2px 1px #140d19);
 }
 
