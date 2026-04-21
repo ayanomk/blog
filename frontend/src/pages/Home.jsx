@@ -4,7 +4,7 @@ import HeroThree from "../components/HomeThree";
 function Home() {
   return (
     <div className="home">
-      <h1>Little<br/>Adventures</h1>
+      <h1 className="homeTitle">Little<br/>Adventures</h1>
       <HeroThree />
     </div>
   )

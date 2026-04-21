@@ -1,9 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import Loading from "./Loading";
 
 function HeroThree() {
     const mountRef = useRef(null);
+    const [isBackpackLoaded, setIsBackpackLoaded] = useState(false);
     
     useEffect(() => {
         // remove all canvas inside .heroThree div
@@ -81,6 +83,7 @@ function HeroThree() {
                 model.position.set(0.1, - 1, 0);
                 model.rotation.z = PI * 0.1;
                 backpackGroup.add(model);
+                setIsBackpackLoaded(true);
             }
         )
         // particles
@@ -155,7 +158,12 @@ function HeroThree() {
         }
     }, []);
 
-    return <div ref={mountRef} className="heroThree" />
+    return (
+        <>
+            {!isBackpackLoaded && <Loading />}
+            <div ref={mountRef} className="heroThree" />
+        </>
+    )
 }
 
 export default HeroThree
