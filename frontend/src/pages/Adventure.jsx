@@ -6,6 +6,7 @@ import { getAllBlogs, getBlogsByFilter } from '../services/blogService.js';
 import FilterControls from '../components/Filter.jsx';
 
 import { AuthContext } from "../context/AuthContext";
+import Loading from '../components/Loading.jsx';
 
 /**
  * 
@@ -103,6 +104,7 @@ function Adventure() {
     // JSX
     return (
         <div className="adventures">
+            {allBlogs,length > 0 && <Loading />}
             <header>
                 <h1>my adventures around the world</h1>
             </header>
