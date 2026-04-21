@@ -1,0 +1,41 @@
+.loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9001;
+    height: 100vh;
+    width: 100vw;
+    background-color: #eae6e0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading img {
+    width: 20%;
+    display: block;
+    margin-bottom: 40px;
+    animation: shake 2s ease infinite alternate;
+}
+@keyframes shake {
+    35% {
+        transform: rotate(0.8deg);
+    }
+    40% {
+        transform: rotate(0deg);
+    }
+    45% {
+        transform: rotate(-0.8deg);
+    }
+}
+@media (max-width: 1000px) {
+    .loading img {
+        width: 30%;
+    }
+}
+@media (max-width: 600px) {
+    .loading img {
+        width: 40%;
+    }
+}
