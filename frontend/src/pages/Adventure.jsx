@@ -7,6 +7,7 @@ import FilterControls from '../components/Filter.jsx';
 
 import { AuthContext } from "../context/AuthContext";
 import Loading from '../components/Loading.jsx';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * 
@@ -14,6 +15,7 @@ import Loading from '../components/Loading.jsx';
  */
 function Adventure() {
     const {user} = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const [draftPublishFilter, setDraftPublishFilter] = useState([]);
     const [isDataLoaded, setIsDataLoaded] = useState(false);
@@ -28,6 +30,7 @@ function Adventure() {
             })
             .catch(err => {
                 if (import.meta.env.MODE === 'development') console.log(err);
+                else navigate('/somethingwentwrong');
             });
         } else {
             setDraftPublishFilter(["Publish"])
@@ -37,6 +40,7 @@ function Adventure() {
             })
             .catch(err => {
                 if (import.meta.env.MODE === 'development') console.log(err);
+                else navigate('/somethingwentwrong');
             });
         }
         setIsDataLoaded(true);
