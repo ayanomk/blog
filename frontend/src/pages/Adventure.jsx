@@ -16,6 +16,7 @@ function Adventure() {
     const {user} = useContext(AuthContext);
 
     const [draftPublishFilter, setDraftPublishFilter] = useState([]);
+    const [isDataLoaded, setIsDataLoaded] = useState(false);
 
     // get all blog data from backend
     const [allBlogs, setAllBlogs] = useState([]);
@@ -38,6 +39,7 @@ function Adventure() {
                 if (import.meta.env.MODE === 'development') console.log(err);
             });
         }
+        setIsDataLoaded(true);
     }, []);
     
     // filter option lists
@@ -104,7 +106,7 @@ function Adventure() {
     // JSX
     return (
         <div className="adventures">
-            {allBlogs,length > 0 && <Loading />}
+            {!isDataLoaded && <Loading />}
             <header>
                 <h1>my adventures around the world</h1>
             </header>
