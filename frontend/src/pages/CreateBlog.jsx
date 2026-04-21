@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom"
 import { editBlog, getBlogById } from "../services/blogService.js";
 import { AuthContext } from "../context/AuthContext";
 
-
+import { retry } from '../utils/retryFetch.js';
 import { createBlog } from '../services/blogService.js';
 import ProcessPopupMsg from '../components/ProcessPopupMsg.jsx';
 
@@ -183,10 +183,10 @@ function CreateBlog({isEdit}) {
                 if (isEdit) {
                     finalFormData.append("previousImages", JSON.stringify(previousImages));
                     setIsInProcess(true);
-                    res = await editBlog(id, finalFormData);
+                    res = await retry(() => editBlog(id, finalFormData), 5, 2000);
                 } else {
                     setIsInProcess(true);
-                    res = await createBlog(finalFormData);
+                    res = await retry(() => createBlog(finalFormData), 5, 2000);
                 }
                 navigate(`/blogs/${res._id}`);
             } catch (err) {

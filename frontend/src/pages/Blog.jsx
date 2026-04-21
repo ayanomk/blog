@@ -8,6 +8,7 @@ import { deleteBlog } from "../services/blogService.js";
 import ProcessPopupMsg from "../components/ProcessPopupMsg.jsx";
 import { AuthContext } from "../context/AuthContext";
 import SubmitFormMessage from '../components/SubmitFormMessage.jsx';
+import { retry } from '../utils/retryFetch.js';
 
 // Create HTML
 const htmlRenderer = (block, blockIdx) => {
@@ -113,7 +114,7 @@ function Blog() {
 
         try {
             setIsInDelete(true);
-            const res = await deleteBlog(_id, deletes);
+            const res = await retry(() => deleteBlog(_id, deletes), 5, 2000);
             navigate(`/adventures`)
         } catch (err) {
             if (err.status === 403) {
