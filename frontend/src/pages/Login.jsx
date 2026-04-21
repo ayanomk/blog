@@ -3,6 +3,7 @@ import "./Login.css";
 import { validateLogin } from '../services/loginService.js';
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext.jsx";
+import { retry } from '../utils/retryFetch.js';
 
 function Login() {
     const {login} = useContext(AuthContext);
@@ -19,7 +20,7 @@ function Login() {
     const handleLogin = async (e) => {
         e.preventDefault();
 
-        const res = await validateLogin(loginInfo);
+        const res = await retry(() => validateLogin(loginInfo), 5, 2000);
         if (res.status == "fail") setError("Invalid username or password");
         else {
             login(res.token);
