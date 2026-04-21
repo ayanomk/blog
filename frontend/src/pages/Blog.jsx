@@ -128,7 +128,7 @@ function Blog() {
     // get relevant blog data
     useEffect(() => {
         if (!blogData) return;
-        const isPublish = user === null ? "" : "Publish";
+        const isPublish = user === null ? "Publish" : "";
 
         getBlogsByFilter({ excludeId: id, tripId: blogData.tripId, state: isPublish })
             .then(setRelatedBlogData)
