@@ -26,25 +26,16 @@ function Adventure() {
         const initialBlogLoad = async () => {
             try {
                 if (user !== null) {
-                    getAllBlogs()
-                    .then((data) => {
-                        setAllBlogs(data);
-                    })
-                    .catch(err => {
-                        if (import.meta.env.MODE === 'development') console.log(err);
-                        else navigate('/somethingwentwrong');
-                    });
+                    const data = await getAllBlogs();
+                    setAllBlogs(data);
                 } else {
                     setDraftPublishFilter(["Publish"])
-                    getBlogsByFilter({ state: "Publish" })
-                    .then((data) => {
-                        setAllBlogs(data);
-                    })
-                    .catch(err => {
-                        if (import.meta.env.MODE === 'development') console.log(err);
-                        else navigate('/somethingwentwrong');
-                    });
+                    const data = await getBlogsByFilter({ state: "Publish" })
+                    setAllBlogs(data);
                 }
+            } catch (err) {
+                if (import.meta.env.MODE === 'development') console.log(err);
+                else navigate('/somethingwentwrong');
             } finally {
                 setIsDataLoaded(true);
             }
