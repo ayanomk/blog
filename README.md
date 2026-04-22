@@ -10,10 +10,18 @@ This project demonstrates end-to-end development, including API design, authenti
 [Little Adventures | Travel Stories](https://little-adventures.vercel.app)
 
 ## Demo Account
-Username: demo_admin
+Username: demo_admin  
 Password: password123!
 > [!NOTE]
 > Demo account has limited permissions. Users can view drafts and access the create page, but cannot publish, save, or delete posts.
+
+# Screenshots
+## Homepage
+![Homepage](./screenshots/homepage.png)
+## Map View
+![Map View](./screenshots/map.png)
+## Create Blog Post
+![Create Blog Post](./screenshots/create.png)
 
 # Features
 - Create, edit, and manage blog posts
