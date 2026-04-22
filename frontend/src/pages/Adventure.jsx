@@ -23,28 +23,34 @@ function Adventure() {
     // get all blog data from backend
     const [allBlogs, setAllBlogs] = useState([]);
     useEffect(() => {
-        if (user !== null) {
-            getAllBlogs()
-            .then((data) => {
-                setAllBlogs(data);
-            })
-            .catch(err => {
-                if (import.meta.env.MODE === 'development') console.log(err);
-                else navigate('/somethingwentwrong');
-            });
-        } else {
-            setDraftPublishFilter(["Publish"])
-            getBlogsByFilter({ state: "Publish" })
-            .then((data) => {
-                setAllBlogs(data);
-            })
-            .catch(err => {
-                if (import.meta.env.MODE === 'development') console.log(err);
-                else navigate('/somethingwentwrong');
-            });
+        const initialBlogLoad = async () => {
+            try {
+                if (user !== null) {
+                    getAllBlogs()
+                    .then((data) => {
+                        setAllBlogs(data);
+                    })
+                    .catch(err => {
+                        if (import.meta.env.MODE === 'development') console.log(err);
+                        else navigate('/somethingwentwrong');
+                    });
+                } else {
+                    setDraftPublishFilter(["Publish"])
+                    getBlogsByFilter({ state: "Publish" })
+                    .then((data) => {
+                        setAllBlogs(data);
+                    })
+                    .catch(err => {
+                        if (import.meta.env.MODE === 'development') console.log(err);
+                        else navigate('/somethingwentwrong');
+                    });
+                }
+            } finally {
+                setIsDataLoaded(true);
+            }
         }
-        setIsDataLoaded(true);
-    }, []);
+        initialBlogLoad();
+    }, [user]);
     
     // filter option lists
     const tripYears = [...new Set(allBlogs.map((t) => t.year))].sort((a, b) => a - b);
