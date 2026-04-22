@@ -1,16 +1,91 @@
-# React + Vite
+# Travel Blog Web Application (Little Adventures | Travel Stories)
+*Built and deployed independently as a portfolio project.  
+A full-stack travel blog platform where users can explore blog posts through an interactive map and card-based interface, with advanced filtering and location-based grouping.
+Logged in users (currently limited to developer and demo accounts) can access admin side to create, edit, delete blogs.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This application was built to keep track of my travels and share those stories with others, especially my mother, who loves travelling.  
+This project demonstrates end-to-end development, including API design, authentication, media handling, and deployment.
 
-Currently, two official plugins are available:
+# Live Demo
+[Little Adventures | Travel Stories](https://little-adventures.vercel.app)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Demo Account
+Username: demo_admin
+Password: password123!
+> [!NOTE]
+> Demo account has limited permissions. Users can view drafts and access the create page, but cannot publish, save, or delete posts.
 
-## React Compiler
+# Features
+- Create, edit, and manage blog posts
+- Image preview during blog creation
+- Interactive map view using location-based data
+- Grouped blog posts with carousel per location
+- Filter blogs by year, region, and publish/draft state
+- Toggle between map and card views
+- JWT-based authentication
+- Responsive design across devices
+- Asynchronous data fetching with loading states
+- Interactive 3D element on homepage using Three.js
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+# Tech Stack
+## Frontend
+- React
+- React Router
+- Leaflet
+- CSS
+- Three.js
+## Backend
+- Node.js
+- Express
+## Database
+- MongoDB
+- Cloudinary (image storage)
+## Deployment
+- Vercel (Frontend)
+- Render (Backend)
 
-## Expanding the ESLint configuration
+# Architecture
+- Frontend communicates with backend via REST APIs
+- Authentication handled using JWT tokens
+- Blog data stored in MongoDB and fetched dynamically
+- Images stored in Cloudinary, with URLs persisted in MongoDB
+- Map markers generated based on grouped location data
+- Blog recommendations based on blog series and location
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# Challenges & Solutions
+## Backend Cold Start (slow initial load)
+**Problem**  
+The backend, hosted on free-tier Render, would go idle after inactivity, leading to slow initial responses or failed requests.
+
+**Solution**  
+- Implemented retry logic on the frontend
+- Added loading states to improve perceived performance
+
+**Outcome**  
+Improved reliability and user experience during initial load.
+## Database Access Restrictions (IP Whitelisting)
+**Problem**  
+MongoDB access was restricted to whitelisted IP addresses, but the hosting platform did not provide a fixed outbound IP.
+
+**Solution**  
+- Temporarily allowed access from all IP addresses for development purposes
+
+**Outcome**  
+Enabled deployment without blocking database connectivity, with the intention to secure this further in production
+## Large Image Payloads (Performance Issue)
+**Problem**  
+Blog pages containing multiple high-resolution images resulted in slow load times.
+
+**Solution**  
+- Implemented lazy loading for images
+
+**Outcome**  
+Reduced initial load time and improved performance
+
+# Future Improvements
+- Strengthen database security by restricting MongoDB access to trusted IP addresses
+- Improve search and filtering capabilities
+- Implement caching for improved performance
+- Allow flexible blog content layouts (drag-and-drop components)
+- Add comments and user interaction features
+- Introduce custom domain and improve branding
