@@ -71,6 +71,10 @@
     background-color: #6b1d2f;
     color: #fff;
 }
+.loginPage .loginCard button:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
 .loginPage .demo-info {
     border: 1px solid #000;
     border-radius: 5px;

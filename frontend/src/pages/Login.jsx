@@ -11,6 +11,7 @@ function Login() {
     const navigate = useNavigate();
     const [viewPassowrd, setPasswordView] = useState(false);
     const [error, setError] = useState("");
+    const [isSubmitted, setIsSubmitted] = useState(false);
 
     const [loginInfo, setLoginInfo] = useState({
         username: '',
@@ -19,10 +20,13 @@ function Login() {
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        setIsSubmitted(true);
 
         const res = await retry(() => validateLogin(loginInfo), 5, 2000);
-        if (res.status == "fail") setError("Invalid username or password");
-        else {
+        if (res.status == "fail") {
+            setError("Invalid username or password")
+            setIsSubmitted(false);
+        } else {
             login(res.token);
             navigate("/adventures")
         }
@@ -55,7 +59,7 @@ function Login() {
                         <img src={viewPassowrd ? "/icon/view-stroke-rounded.svg" : "/icon/view-off-stroke-rounded.svg"} onClick={() => setPasswordView(!viewPassowrd)} alt="" />
                     </div>
                 </div>
-                <button type="submit" onClick={handleLogin}>LOGIN</button>
+                <button type="submit" onClick={handleLogin} disabled={isSubmitted}>LOGIN</button>
             </form>
             <div className="demo-info">
                 <h1>Demo account</h1>
